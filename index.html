@@ -26,7 +26,7 @@
   --accent:#0F6E6A; --accent-hi:#0F6E6A; --accent-soft:#E3F1EE; --on-accent:#FFFFFF;
   --c2:#0F6E6A; --warn:#A8471F; --plate:#FFFFFF;
   --grid:rgba(28,33,39,.045); --grid-major:rgba(28,33,39,.085);
-  --glass:color-mix(in srgb,var(--surface) 64%,transparent); --glass-2:color-mix(in srgb,var(--paper) 50%,transparent); --frost:blur(1.2px);
+  --glass:var(--surface); --glass-2:var(--paper); --frost:none;
   --display:"Schibsted Grotesk","Avenir Next","Helvetica Neue",sans-serif;
   --body:"Schibsted Grotesk","Avenir Next","Helvetica Neue",sans-serif;
   --mono:"Martian Mono","IBM Plex Mono",Menlo,ui-monospace,monospace;
@@ -87,7 +87,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 .hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:56px;padding-block:56px 48px;align-items:start}
 .side{display:grid;gap:26px;min-width:0;align-self:center}
 .side .plist-wrap{margin-top:0}
-.side .plist li a{background:var(--glass-2);-webkit-backdrop-filter:var(--frost);backdrop-filter:var(--frost)}
+.side .plist li a{background:transparent}
 .hero h1{font-size:clamp(46px,7.4vw,82px);font-weight:650;letter-spacing:-.035em;line-height:.98}
 .hero .role{font-size:clamp(18px,2.3vw,22px);font-weight:500;font-style:italic;color:var(--accent);margin-top:14px;max-width:36ch;line-height:1.3}
 .abstract{display:grid;grid-template-columns:minmax(0,1fr) 168px;gap:22px;margin-top:18px;align-items:start}
@@ -104,14 +104,14 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 .facts dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:4px}
 .facts dd{margin:0;color:var(--ink);line-height:1.5}
 
-/* page background: one large drawing fixed behind the content that reacts to scrolling.
-   ML view: a loss landscape that turns while gradient descent advances. Energy view: a process diagram whose
-   units switch on in sequence as you scroll, with the medium flowing through the live pipes. */
+/* landing background: one large drawing behind the intro and the project table, fading out as you scroll into
+   the projects. It plays once on load (descent to the minimum / process units switching on) and then follows the
+   table: hovering a project moves the descent to its milestone or lights up its units. */
 .wrap{position:relative;z-index:1}
 .bg-stage{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.55) 0,#000 32%);mask-image:linear-gradient(90deg,rgba(0,0,0,.55) 0,#000 32%)}
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.3) 0,rgba(0,0,0,.45) 38%,#000 55%);mask-image:linear-gradient(90deg,rgba(0,0,0,.3) 0,rgba(0,0,0,.45) 38%,#000 55%)}
 #bg-loss{position:absolute;inset:0;width:100%;height:100%}
-#bg-flow{position:absolute;left:50%;top:50%;width:min(88vw,1060px);height:auto;transform:translate(-54%,calc(-50% + var(--par,0px)))}
+#bg-flow{position:absolute;left:50%;top:50%;width:min(88vw,1060px);height:auto;transform:translate(-47%,calc(-50% + var(--par,0px)))}
 #bg-flow .unit *,#bg-flow .pipe{fill:none;stroke:var(--ink);stroke-opacity:.13;stroke-width:1.1;transition:stroke .6s,stroke-opacity .6s}
 #bg-flow .unit.live *{stroke:var(--accent);stroke-opacity:.38}
 #bg-flow .pipe.live{stroke:var(--accent);stroke-opacity:.4;stroke-dasharray:5 7;animation:flow 1.4s linear infinite}
@@ -119,6 +119,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 #bg-flow .arr{fill:var(--ink);fill-opacity:.25}
 #bg-flow .lbl{font:400 8px var(--mono);fill:var(--ink);fill-opacity:.2;transition:fill .6s,fill-opacity .6s}
 #bg-flow .lbl.live{fill:var(--accent);fill-opacity:.42}
+#bg-flow.focusing .unit:not(.focus) *{stroke-opacity:.08}
+#bg-flow.focusing .lbl:not(.focus){fill-opacity:.12}
+#bg-flow .unit.focus *{stroke:var(--accent);stroke-opacity:.7;stroke-width:1.7}
+#bg-flow .lbl.focus{fill:var(--accent);fill-opacity:.85;font-weight:500}
 @keyframes flow{to{stroke-dashoffset:-24}}
 @media (prefers-reduced-motion:reduce){#bg-flow .pipe.live{animation:none}}
 @media (max-width:860px){.bg-stage{opacity:.55;-webkit-mask-image:none;mask-image:none}#bg-flow{width:170vw;transform:translate(-55%,calc(-50% + var(--par,0px)))}}
@@ -209,7 +213,7 @@ blockquote cite{display:block;margin-top:8px;font-style:normal;font:400 10.5px v
 /* project index in the hero (table of contents) */
 .plist-wrap{margin-top:32px}
 .plist{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--ink)}
-.plist li a{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:10px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.plist li a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:10px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
 .plist li a:hover .pt{color:var(--accent)}
 .plist .pk{font-family:var(--mono);font-size:11px;color:var(--accent);line-height:1.4;min-width:0}
 .plist .pt{font-weight:500;font-size:15.5px}
@@ -288,41 +292,46 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       <g class="unit" data-step="1"><path d="M78 86 L92 62 L128 62 L114 86 Z M85 74 H121 M110 62 L96 86 M103 86 V96"/></g>
       <path class="pipe el" data-step="1" d="M40 92 V112 H184 V96 H198" marker-end="url(#bg-ar)"/>
       <path class="pipe el" data-step="1" d="M103 96 V112" marker-end="url(#bg-ar)"/>
+      <path class="pipe el" data-step="1" d="M141 112 V120" marker-end="url(#bg-ar)"/>
+      <g class="unit" data-step="1" data-proj="v2g reviews"><rect x="124" y="122" width="34" height="16" rx="2"/><path d="M158 127 H161 V133 H158 M131 130 H137 M134 127 V133 M146 130 H151"/></g>
+      <text class="lbl" data-step="1" data-proj="v2g reviews" x="166" y="134" text-anchor="start">EVs · V2G</text>
       <path class="pipe" data-step="2" d="M10 170 H56" marker-end="url(#bg-ar)"/>
-      <g class="unit" data-step="2"><circle cx="70" cy="170" r="12"/><path d="M64 162 L80 170 L64 178 Z"/></g>
+      <g class="unit" data-proj="karachi" data-step="2"><circle cx="70" cy="170" r="12"/><path d="M64 162 L80 170 L64 178 Z"/></g>
       <path class="pipe" data-step="2" d="M82 170 H106" marker-end="url(#bg-ar)"/>
-      <g class="unit" data-step="2"><rect x="108" y="156" width="40" height="28"/><path d="M108 184 L148 156" stroke-dasharray="4 3"/></g>
+      <g class="unit" data-proj="karachi" data-step="2"><rect x="108" y="156" width="40" height="28"/><path d="M108 184 L148 156" stroke-dasharray="4 3"/></g>
       <path class="pipe" data-step="2" d="M148 170 H228 V107" marker-end="url(#bg-ar)"/>
-      <g class="unit" data-step="3"><rect x="200" y="40" width="56" height="64" rx="3"/><path d="M216 48 V96 M240 48 V96"/></g>
+      <g class="unit" data-proj="ptg" data-step="3"><rect x="200" y="40" width="56" height="64" rx="3"/><path d="M216 48 V96 M240 48 V96"/></g>
       <path class="pipe" data-step="3" d="M256 56 H298" marker-end="url(#bg-ar)"/>
       <path class="pipe" data-step="3" d="M256 88 H282" marker-end="url(#bg-ar)"/>
-      <g class="unit" data-step="4"><rect x="300" y="42" width="72" height="28" rx="14"/></g>
+      <g class="unit" data-proj="ptg" data-step="4"><rect x="300" y="42" width="72" height="28" rx="14"/></g>
       <path class="pipe" data-step="4" d="M372 56 H420 V118" marker-end="url(#bg-ar)"/>
       <g class="unit" data-step="5"><circle cx="420" cy="134" r="14"/><path d="M408 127 L432 123 M408 141 L432 145"/></g>
       <path class="pipe" data-step="5" d="M420 148 V174" marker-end="url(#bg-ar)"/>
-      <g class="unit" data-step="6"><rect x="404" y="176" width="32" height="76" rx="10"/><path d="M404 196 H436 M404 232 H436 M408 196 L432 232 M432 196 L408 232"/></g>
+      <g class="unit" data-proj="ptg" data-step="6"><rect x="404" y="176" width="32" height="76" rx="10"/><path d="M404 196 H436 M404 232 H436 M408 196 L432 232 M432 196 L408 232"/></g>
       <path class="pipe" data-step="6" d="M466 214 H440" marker-end="url(#bg-ar)"/>
       <path class="pipe" data-step="6" d="M420 252 V270 H334" marker-end="url(#bg-ar)"/>
-      <g class="unit" data-step="7"><circle cx="318" cy="270" r="14"/><path d="M304 270 L309 262 L315 278 L321 262 L327 278 L332 270"/></g>
+      <g class="unit" data-proj="chp" data-step="7"><circle cx="318" cy="270" r="14"/><path d="M304 270 L309 262 L315 278 L321 262 L327 278 L332 270"/></g>
       <path class="pipe" data-step="7" d="M318 256 V232" marker-end="url(#bg-ar)"/>
       <path class="pipe" data-step="7" d="M304 270 H236" marker-end="url(#bg-ar)"/>
       <g class="unit" data-step="8"><path d="M232 262 V278 M226 262 V278"/></g>
-      <path class="pipe" data-step="8" d="M226 270 H198" marker-end="url(#bg-ar)"/>
+      <path class="pipe" data-step="8" d="M226 270 H190" marker-end="url(#bg-ar)"/>
+      <g class="unit" data-step="8" data-proj="twin chp"><rect x="148" y="258" width="40" height="24" rx="3"/><path d="M156 258 V252 M168 258 V252 M180 258 V252 M148 270 H138"/><circle cx="128" cy="270" r="10"/><path d="M124 266 A5 5 0 1 0 132 270 H128"/></g>
       <text class="lbl" data-step="1" x="40" y="10" text-anchor="middle">wind</text>
       <text class="lbl" data-step="1" x="103" y="54" text-anchor="middle">PV</text>
       <text class="lbl" data-step="2" x="14" y="163" text-anchor="start">water</text>
-      <text class="lbl" data-step="2" x="70" y="198" text-anchor="middle">pump</text>
-      <text class="lbl" data-step="2" x="128" y="200" text-anchor="middle">filter</text>
-      <text class="lbl" data-step="3" x="228" y="32" text-anchor="middle">electrolyser</text>
-      <text class="lbl" data-step="3" x="286" y="92" text-anchor="start">O₂</text>
-      <text class="lbl" data-step="4" x="336" y="86" text-anchor="middle">H₂ storage</text>
+      <text class="lbl" data-proj="karachi" data-step="2" x="70" y="198" text-anchor="middle">pump</text>
+      <text class="lbl" data-proj="karachi" data-step="2" x="128" y="200" text-anchor="middle">filter</text>
+      <text class="lbl" data-proj="ptg" data-step="3" x="228" y="32" text-anchor="middle">electrolyser</text>
+      <text class="lbl" data-proj="ptg" data-step="3" x="286" y="92" text-anchor="start">O₂</text>
+      <text class="lbl" data-proj="ptg" data-step="4" x="336" y="86" text-anchor="middle">H₂ storage</text>
       <text class="lbl" data-step="5" x="400" y="138" text-anchor="end">compressor</text>
-      <text class="lbl" data-step="6" x="456" y="208" text-anchor="middle">CO₂</text>
-      <text class="lbl" data-step="6" x="398" y="218" text-anchor="end">methanation</text>
-      <text class="lbl" data-step="7" x="324" y="228" text-anchor="start">heat</text>
-      <text class="lbl" data-step="7" x="318" y="296" text-anchor="middle">heat exchanger</text>
-      <text class="lbl" data-step="8" x="194" y="266" text-anchor="end">CH₄ to</text>
-      <text class="lbl" data-step="8" x="194" y="278" text-anchor="end">gas grid</text>
+      <text class="lbl" data-proj="ptg" data-step="6" x="456" y="208" text-anchor="middle">CO₂</text>
+      <text class="lbl" data-proj="ptg" data-step="6" x="398" y="218" text-anchor="end">methanation</text>
+      <text class="lbl" data-proj="chp" data-step="7" x="324" y="228" text-anchor="start">heat</text>
+      <text class="lbl" data-proj="chp" data-step="7" x="318" y="296" text-anchor="middle">heat exchanger</text>
+      <text class="lbl" data-step="8" x="229" y="254" text-anchor="middle">gas grid</text>
+      <text class="lbl" data-step="8" x="207" y="264" text-anchor="middle">CH₄</text>
+      <text class="lbl" data-step="8" data-proj="twin chp" x="158" y="298" text-anchor="middle">gas engine · genset</text>
     </svg>
 </div>
 
@@ -1100,15 +1109,12 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     projects.filter(function (p) { return inTrack(p, track); })
       .sort(function (x, y) { return orderOf(x, track) - orderOf(y, track); })
       .forEach(function (p) {
-        var key = p.querySelector('.keys li b');
         var li = document.createElement('li'), a = document.createElement('a');
         a.href = '#' + p.id;
-        var k = document.createElement('span'); k.className = 'pk';
-        k.textContent = p.dataset.key || (key ? key.textContent : p.querySelector('.titleblock dd').textContent);
         var t = document.createElement('span'); t.className = 'pt';
         t.textContent = p.dataset.title || p.querySelector('h3').textContent;
         var g = document.createElement('span'); g.className = 'pg'; g.textContent = '→'; g.setAttribute('aria-hidden', 'true');
-        a.append(k, t, g); li.appendChild(a); ol.appendChild(li);
+        a.append(t, g); li.appendChild(a); ol.appendChild(li);
       });
   }
 
@@ -1216,62 +1222,108 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
   });
 })();
 
-// page background: scroll position drives both drawings; colours come from the theme
+// page background: the project on screen (or under the pointer) drives both drawings; colours come from the theme
 (function () {
   var cv = document.getElementById('bg-loss'), flow = document.getElementById('bg-flow');
   if (!cv || !cv.getContext || !flow) return;
   var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function f(x, y) { return 0.55 * (1.25 * x * x + 0.75 * y * y) + 0.13 * Math.sin(4 * x + 1) * Math.cos(3 * y); }
-  // gradient descent with momentum from a high corner, precomputed once
   var pts = [[0.88, -0.86]], x = 0.88, y = -0.86, vx = 0, vy = 0, e = 1e-4, k;
   for (k = 0; k < 80; k++) {
     var gx = (f(x + e, y) - f(x - e, y)) / (2 * e), gy = (f(x, y + e) - f(x, y - e)) / (2 * e);
     vx = 0.6 * vx - 0.12 * gx; vy = 0.6 * vy - 0.12 * gy; x += vx; y += vy; pts.push([x, y]);
   }
-  var units = flow.querySelectorAll('[data-step]');
-  function progress() { var h = document.documentElement.scrollHeight - innerHeight; return h > 0 ? Math.min(1, Math.max(0, scrollY / h)) : 0; }
-  function drawLoss(p) {
-    var w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return;
+  var LAST = pts.length - 1, units = flow.querySelectorAll('[data-step]'), linked = flow.querySelectorAll('[data-proj]');
+  // ML view: one milestone on the descent per project, in the order the projects appear
+  var mlProjects = [].slice.call(document.querySelectorAll('.proj[data-tracks~="ml"]'))
+    .sort(function (a, b) { return a.dataset.orderMl - b.dataset.orderMl; });
+  var milestone = {};
+  // milestones spread evenly by distance along the path (the path takes tiny steps near the minimum)
+  var cum = [0]; for (k = 1; k <= LAST; k++) cum.push(cum[k - 1] + Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]));
+  mlProjects.forEach(function (p, n) {
+    var goal = cum[LAST] * (0.18 + 0.62 * n / Math.max(1, mlProjects.length - 1)), m = 0;
+    while (m < LAST && cum[m] < goal) m++;
+    milestone[p.id] = m;
+  });
+  var hoverId = null, shown = 0, t0 = performance.now(), stage = document.querySelector('.bg-stage'), hero = document.querySelector('.hero');
+
+  // scroll position within the landing view (0 at the top, 1 once the hero has scrolled away)
+  function progress() { var h = hero ? hero.offsetHeight : innerHeight; return h > 0 ? Math.min(1, Math.max(0, scrollY / h)) : 0; }
+  function fade() {
+    if (!hero || !hero.offsetParent) return 0;
+    var b = hero.getBoundingClientRect().bottom; return Math.min(1, Math.max(0, (b - innerHeight * 0.1) / (innerHeight * 0.45)));
+  }
+  function target(cur) { return cur && milestone[cur] != null ? milestone[cur] : LAST; }
+
+  function drawLoss(p, cur) {
+    var w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return false;
     var dpr = window.devicePixelRatio || 1, ctx = cv.getContext('2d');
     if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
-    var cs = getComputedStyle(document.documentElement), ink = cs.getPropertyValue('--ink').trim(), acc = cs.getPropertyValue('--accent').trim();
+    var cs = getComputedStyle(document.documentElement), ink = cs.getPropertyValue('--ink').trim(), acc = cs.getPropertyValue('--accent').trim(), mono = cs.getPropertyValue('--mono');
     var narrow = w < 860, S = narrow ? w * 0.4 : Math.min(w * 0.3, h * 0.4), H = S * 0.6;
     var cx = narrow ? w * 0.5 : w * 0.46, cy = h * 0.5 - (calm ? 0 : p * h * 0.1);
-    var a = calm ? -0.45 : -0.95 + p * 1.25, ca = Math.cos(a), sa = Math.sin(a), c30 = Math.cos(Math.PI / 6), s30 = 0.5;
+    var a = calm ? -0.45 : -0.7 + p * 0.8, ca = Math.cos(a), sa = Math.sin(a), c30 = Math.cos(Math.PI / 6), s30 = 0.5;
     function P(u, v) { var X = u * ca - v * sa, Y = u * sa + v * ca; return [cx + (X - Y) * c30 * S, cy + (X + Y) * s30 * S - f(u, v) * H + H * 0.55]; }
+    function at(t) { var i = Math.floor(t), fr = t - i, A = pts[i], B = pts[Math.min(i + 1, LAST)]; return [A[0] + (B[0] - A[0]) * fr, A[1] + (B[1] - A[1]) * fr]; }
     var N = 30, M = 44, i, j, q;
-    ctx.lineWidth = 1; ctx.strokeStyle = ink; ctx.globalAlpha = 0.09;
+    ctx.lineWidth = 1; ctx.strokeStyle = ink; ctx.globalAlpha = 0.12;
     for (i = 0; i <= N; i++) {
       var t = -1 + 2 * i / N;
       ctx.beginPath(); for (j = 0; j <= M; j++) { q = P(t, -1 + 2 * j / M); j ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); } ctx.stroke();
       ctx.beginPath(); for (j = 0; j <= M; j++) { q = P(-1 + 2 * j / M, t); j ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); } ctx.stroke();
     }
-    var n = Math.max(1, Math.round(p * (pts.length - 1)));
     ctx.setLineDash([3, 5]); ctx.strokeStyle = acc; ctx.globalAlpha = 0.22; ctx.lineWidth = 1.2; ctx.beginPath();
     pts.forEach(function (r, m) { q = P(r[0], r[1]); m ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }); ctx.stroke(); ctx.setLineDash([]);
-    ctx.globalAlpha = 0.6; ctx.lineWidth = 1.8; ctx.beginPath();
-    for (i = 0; i <= n; i++) { q = P(pts[i][0], pts[i][1]); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); } ctx.stroke();
-    ctx.fillStyle = acc;
-    for (i = 0; i <= n; i += 5) { q = P(pts[i][0], pts[i][1]); ctx.beginPath(); ctx.arc(q[0], q[1], 2.2, 0, 7); ctx.fill(); }
-    q = P(pts[n][0], pts[n][1]); ctx.globalAlpha = 0.85; ctx.beginPath(); ctx.arc(q[0], q[1], 5, 0, 7); ctx.fill();
-    ctx.globalAlpha = 0.5; ctx.fillStyle = ink; ctx.font = '10px ' + cs.getPropertyValue('--mono');
-    var loss = f(pts[n][0], pts[n][1]);
-    ctx.fillText('step ' + n + ' · loss ' + loss.toFixed(3), q[0] + 10, q[1] - 8);
+    var n = shown, end = at(n);
+    ctx.globalAlpha = 0.8; ctx.lineWidth = 2.2; ctx.beginPath();
+    for (i = 0; i <= Math.floor(n); i++) { q = P(pts[i][0], pts[i][1]); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
+    q = P(end[0], end[1]); ctx.lineTo(q[0], q[1]); ctx.stroke();
+    // project milestones along the path
+    ctx.font = '11px ' + mono;
+    mlProjects.forEach(function (pr) {
+      var m = milestone[pr.id], r = P(pts[m][0], pts[m][1]), on = pr.id === cur;
+      ctx.globalAlpha = on ? 1 : 0.6; ctx.strokeStyle = acc; ctx.fillStyle = on ? acc : cs.getPropertyValue('--paper');
+      ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(r[0], r[1], on ? 6.5 : 4.5, 0, 7); ctx.fill(); ctx.stroke();
+    });
+    ctx.fillStyle = acc; ctx.globalAlpha = 1; ctx.beginPath(); ctx.arc(q[0], q[1], 5, 0, 7); ctx.fill();
+    if (!cur) { ctx.globalAlpha = 0.5; ctx.fillStyle = ink; ctx.fillText('step ' + Math.round(n) + ' · loss ' + f(end[0], end[1]).toFixed(3), q[0] + 9, q[1] - 10); }
     ctx.globalAlpha = 1;
+    return true;
   }
-  function updateFlow(p) {
-    var cur = 1 + Math.floor(p * 7.999);
-    units.forEach(function (el) { el.classList.toggle('live', +el.dataset.step <= cur); });
-    flow.style.setProperty('--par', (calm ? 0 : -p * 90) + 'px');
+  function updateFlow(p, cur) {
+    var step = calm ? 8 : Math.min(8, 1 + Math.floor((performance.now() - t0) / 320));
+    units.forEach(function (el) { el.classList.toggle('live', +el.dataset.step <= step); });
+    var any = false;
+    linked.forEach(function (el) { var on = !!cur && (' ' + el.dataset.proj + ' ').indexOf(' ' + cur + ' ') > -1; el.classList.toggle('focus', on); any = any || on; });
+    flow.classList.toggle('focusing', any);
+    flow.style.setProperty('--par', (calm ? 0 : -p * 60) + 'px');
   }
+
   var queued = false;
-  function frame() { queued = false; var p = progress(); drawLoss(p); updateFlow(p); }
+  function frame() {
+    queued = false;
+    var o = fade(); stage.style.opacity = o;
+    var p = progress(), cur = hoverId, goal = target(cur);
+    // the first descent on load is slow, like training; jumps between milestones are quicker
+    shown = calm ? goal : shown + (goal - shown) * (cur ? 0.14 : 0.035);
+    if (Math.abs(goal - shown) < 0.05) shown = goal; else request();
+    if (!calm && performance.now() - t0 < 3000) request();
+    if (o > 0) { drawLoss(p, cur); updateFlow(p, cur); }
+  }
   function request() { if (!queued) { queued = true; requestAnimationFrame(frame); } }
   addEventListener('scroll', request, {passive: true}); addEventListener('resize', request);
   new MutationObserver(request).observe(document.documentElement, {attributes: true, attributeFilter: ['data-theme']});
   new MutationObserver(request).observe(cv, {attributes: true, attributeFilter: ['class']});
   if (window.matchMedia) { var mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', request); }
+  // hovering a project (its card or its row in the landing table) highlights it straight away
+  function hoverOn(id) { hoverId = id; request(); }
+  function hoverOff() { hoverId = null; request(); }
+  var plist = document.getElementById('plist');
+  if (plist) {
+    plist.addEventListener('mouseover', function (ev) { var a = ev.target.closest('a[href^="#"]'); if (a) hoverOn(a.getAttribute('href').slice(1)); });
+    plist.addEventListener('mouseleave', hoverOff);
+  }
   frame();
 })();
 </script>
