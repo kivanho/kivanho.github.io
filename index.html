@@ -79,7 +79,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 
 /* hero: title, abstract with a margin note, figure and author block */
 .hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:56px;padding-block:56px 48px;align-items:start}
-.side{display:grid;gap:26px;min-width:0;align-self:center}
+.side{display:grid;gap:26px;min-width:0;align-self:end}
 .hero h1{font-size:clamp(46px,7.4vw,82px);font-weight:650;letter-spacing:-.035em;line-height:.98}
 .hero .role{font-size:clamp(18px,2.3vw,22px);font-weight:500;font-style:italic;color:var(--accent);margin-top:14px;max-width:36ch;line-height:1.3}
 .abstract{display:grid;grid-template-columns:minmax(0,1fr) 168px;gap:22px;margin-top:18px;align-items:start}
@@ -95,6 +95,20 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 .facts > div:last-child{border-bottom:0}
 .facts dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:4px}
 .facts dd{margin:0;color:var(--ink);line-height:1.5}
+
+/* hero backgrounds: a loss landscape (ML view) and an energy process flow (energy view), faint, fading out towards the text */
+.hero{position:relative}
+.hero > *:not(.hero-bg){position:relative;z-index:1}
+.hero-bg{position:absolute;top:28px;right:0;width:44%;height:clamp(200px,28vw,320px);z-index:0;pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%);mask-image:linear-gradient(90deg,transparent 0,#000 18%)}
+.hero-bg canvas,.hero-bg svg{position:absolute;inset:0;width:100%;height:100%}
+.ef-box{fill:var(--paper);stroke:var(--ink);stroke-opacity:.2}
+.ef-box.hot{stroke:var(--accent);stroke-opacity:.55;fill:var(--accent-soft)}
+.ef-line{fill:none;stroke:var(--ink);stroke-opacity:.2;stroke-width:1.2}
+.ef-line.hot{stroke:var(--accent);stroke-opacity:.55}
+.ef-txt{font:400 11.5px var(--mono);fill:var(--ink);fill-opacity:.42;letter-spacing:.02em}
+.ef-txt.hot{fill:var(--accent);fill-opacity:.85}
+@media (max-width:860px){.hero-bg{display:none}} /* single column: no free band, so no background behind text */
 
 /* sections */
 section.block{padding-block:56px;border-top:1px solid var(--line)}
@@ -269,6 +283,30 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
 
   <div class="page" data-page="home">
   <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <canvas id="bg-loss" data-show="ml"></canvas>
+      <svg data-show="energy" viewBox="0 0 480 290" preserveAspectRatio="xMaxYMin meet">
+        <defs><marker id="ef-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" style="fill:var(--ink);fill-opacity:.3"/></marker></defs>
+        <rect class="ef-box" x="10" y="16" width="130" height="36" rx="8"/><text class="ef-txt" x="75" y="38" text-anchor="middle">wind · PV</text>
+        <rect class="ef-box hot" x="175" y="16" width="130" height="36" rx="8"/><text class="ef-txt hot" x="240" y="38" text-anchor="middle">electrolysis</text>
+        <rect class="ef-box" x="340" y="16" width="130" height="36" rx="8"/><text class="ef-txt" x="405" y="38" text-anchor="middle">H₂ storage</text>
+        <rect class="ef-box" x="10" y="126" width="130" height="36" rx="8"/><text class="ef-txt" x="75" y="148" text-anchor="middle">power grid</text>
+        <rect class="ef-box hot" x="175" y="126" width="130" height="36" rx="8"/><text class="ef-txt hot" x="240" y="148" text-anchor="middle">EVs · V2G</text>
+        <rect class="ef-box hot" x="340" y="126" width="130" height="36" rx="8"/><text class="ef-txt hot" x="405" y="148" text-anchor="middle">methanation</text>
+        <rect class="ef-box" x="10" y="236" width="130" height="36" rx="8"/><text class="ef-txt" x="75" y="258" text-anchor="middle">district heat</text>
+        <rect class="ef-box hot" x="175" y="236" width="130" height="36" rx="8"/><text class="ef-txt hot" x="240" y="258" text-anchor="middle">CHP</text>
+        <rect class="ef-box" x="340" y="236" width="130" height="36" rx="8"/><text class="ef-txt" x="405" y="258" text-anchor="middle">gas grid</text>
+        <path class="ef-line" d="M140 34 H173" marker-end="url(#ef-ar)"/>
+        <path class="ef-line" d="M305 34 H338" marker-end="url(#ef-ar)"/>
+        <path class="ef-line" d="M75 52 V124" marker-end="url(#ef-ar)"/>
+        <path class="ef-line" d="M405 52 V124" marker-end="url(#ef-ar)"/>
+        <path class="ef-line" d="M140 139 H173" marker-end="url(#ef-ar)"/>
+        <path class="ef-line" d="M175 149 H142" marker-end="url(#ef-ar)"/>
+        <path class="ef-line" d="M405 162 V234" marker-end="url(#ef-ar)"/>
+        <path class="ef-line" d="M340 254 H307" marker-end="url(#ef-ar)"/>
+        <path class="ef-line" d="M175 254 H142" marker-end="url(#ef-ar)"/>
+      </svg>
+    </div>
         <div>
       <h1>Kien van Ho</h1>
       <p class="role" data-show="ml">Physics-informed ML and modelling for energy systems</p>
@@ -1144,6 +1182,47 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     function fallback() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); done('Selected, copy it now'); }
     try { navigator.clipboard.writeText(el.textContent).then(function () { done('Copied'); }, fallback); } catch (e) { fallback(); }
   });
+})();
+
+// hero background, ML view: a loss landscape as a wireframe with a gradient-descent path; colours come from the theme
+(function () {
+  var cv = document.getElementById('bg-loss'); if (!cv || !cv.getContext) return;
+  function f(x, y) { return 0.55 * (1.25 * x * x + 0.75 * y * y) + 0.13 * Math.sin(4 * x + 1) * Math.cos(3 * y); }
+  function draw() {
+    var r = cv.getBoundingClientRect(); if (!r.width || !r.height) return;
+    var dpr = window.devicePixelRatio || 1, ctx = cv.getContext('2d');
+    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, r.width, r.height);
+    var cs = getComputedStyle(document.documentElement), ink = cs.getPropertyValue('--ink').trim(), acc = cs.getPropertyValue('--accent').trim();
+    var S = Math.min(r.width / 3.7, r.height / 2.85), H = S * 0.55, cx = r.width - 1.8 * S - 6, cy = 1.2 * S + 6;
+    var c30 = Math.cos(Math.PI / 6), s30 = Math.sin(Math.PI / 6);
+    function P(x, y) { return [cx + (x - y) * c30 * S, cy + (x + y) * s30 * S - f(x, y) * H + H * 0.9]; }
+    var N = 26, i, j, p;
+    ctx.lineWidth = 1; ctx.strokeStyle = ink; ctx.globalAlpha = 0.13;
+    for (i = 0; i <= N; i++) {
+      var a = -1 + 2 * i / N;
+      ctx.beginPath(); for (j = 0; j <= 60; j++) { p = P(a, -1 + 2 * j / 60); j ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); } ctx.stroke();
+      ctx.beginPath(); for (j = 0; j <= 60; j++) { p = P(-1 + 2 * j / 60, a); j ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); } ctx.stroke();
+    }
+    // gradient descent with momentum from a high corner
+    var x = 0.88, y = -0.86, vx = 0, vy = 0, e = 1e-4, pts = [[x, y]];
+    for (i = 0; i < 70; i++) {
+      var gx = (f(x + e, y) - f(x - e, y)) / (2 * e), gy = (f(x, y + e) - f(x, y - e)) / (2 * e);
+      vx = 0.6 * vx - 0.12 * gx; vy = 0.6 * vy - 0.12 * gy; x += vx; y += vy; pts.push([x, y]);
+    }
+    ctx.globalAlpha = 0.7; ctx.strokeStyle = acc; ctx.lineWidth = 1.8; ctx.beginPath();
+    pts.forEach(function (q, k) { p = P(q[0], q[1]); k ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+    ctx.fillStyle = acc;
+    pts.forEach(function (q, k) { if (k % 5) return; p = P(q[0], q[1]); ctx.beginPath(); ctx.arc(p[0], p[1], 2.4, 0, 7); ctx.fill(); });
+    p = P(pts[pts.length - 1][0], pts[pts.length - 1][1]); ctx.globalAlpha = 0.9; ctx.beginPath(); ctx.arc(p[0], p[1], 4, 0, 7); ctx.fill();
+    ctx.globalAlpha = 0.45; ctx.fillStyle = ink; ctx.font = '10px ' + cs.getPropertyValue('--mono');
+    p = P(-1, -1); ctx.textAlign = 'center'; ctx.fillText('loss', p[0], p[1] - 10); ctx.textAlign = 'start';
+    ctx.globalAlpha = 1;
+  }
+  if (window.ResizeObserver) new ResizeObserver(draw).observe(cv); else window.addEventListener('resize', draw);
+  new MutationObserver(draw).observe(document.documentElement, {attributes: true, attributeFilter: ['data-theme']});
+  if (window.matchMedia) { var mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', draw); }
+  draw();
 })();
 </script>
 </body>
