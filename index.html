@@ -1,0 +1,1066 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kien van Ho · Portfolio</title>
+<meta name="description" content="Kien van Ho: physics-informed ML, hybrid modelling and energy-systems engineering. Project case studies and experience.">
+<link rel="canonical" href="https://kivanho.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kivanho.github.io/">
+<meta property="og:title" content="Kien van Ho · Portfolio">
+<meta property="og:description" content="Physics-informed ML and modelling for energy systems. Case studies: hybrid crack-growth model, engine digital twin, small-data model selection.">
+<meta property="og:image" content="https://kivanho.github.io/img/thesis_knots.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23142E46'/%3E%3Cpath d='M6 25 C12 24 15 18 17 13 S23 7 26 7' fill='none' stroke='%2343BEC4' stroke-width='2.5'/%3E%3Ccircle cx='17' cy='13' r='2.2' fill='%23F6F9FA'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,600..800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: engineering-report page with two reading tracks (ML / energy engineering). Each project is a sheet with a
+   drawing-style title block, a short version that is always visible, and a full case study behind a disclosure.
+   Palette carried over from the LaTeX PDF portfolio. */
+:root{
+  --paper:#F6F9FA; --surface:#FFFFFF; --wash:#EAF1F4;
+  --ink:#142E46; --text:#2F3F4F; --muted:#5A6B7B; --line:#CDDCE4;
+  --accent:#087E85; --accent-soft:#D7EEEF; --c2:#4F6F94; --warn:#9A5B10;
+  --plate:#FFFFFF;
+  --display:"Archivo","Avenir Next Condensed","Arial Narrow",ui-sans-serif,system-ui,sans-serif;
+  --body:"Figtree","Avenir Next",ui-sans-serif,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",Menlo,ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0D1822; --surface:#13222F; --wash:#182B3A;
+  --ink:#E8F0F4; --text:#C9D6DE; --muted:#93A5B3; --line:#27404F;
+  --accent:#43BEC4; --accent-soft:#163A40; --c2:#8DB0D6; --warn:#E3A55A; --plate:#F4F7F8; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0D1822; --surface:#13222F; --wash:#182B3A;
+  --ink:#E8F0F4; --text:#C9D6DE; --muted:#93A5B3; --line:#27404F;
+  --accent:#43BEC4; --accent-soft:#163A40; --c2:#8DB0D6; --warn:#E3A55A; --plate:#F4F7F8; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--display);font-stretch:87%;color:var(--ink);text-wrap:balance;margin:0;line-height:1.12}
+p{margin:0}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+[data-show]:not(.on){display:none!important}
+
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap;padding-block:18px;border-bottom:1px solid var(--line)}
+.top nav{display:flex;gap:18px;flex-wrap:wrap}
+.top nav a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+.top nav a:hover{color:var(--ink)}
+.mark{font-family:var(--mono);font-size:13px;color:var(--ink)}
+
+/* track switch */
+.switch{display:inline-flex;border:1px solid var(--line);border-radius:6px;padding:3px;background:var(--surface);gap:3px;flex-wrap:wrap}
+.switch button{font:600 14px var(--body);border:0;background:transparent;color:var(--muted);padding:8px 14px;border-radius:4px;cursor:pointer}
+.switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.switch-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+.switch-row .hint{font-size:13px;color:var(--muted)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:48px;padding-block:44px 44px;align-items:start}
+.hero h1{font-size:clamp(44px,8vw,80px);font-weight:800;font-stretch:78%;letter-spacing:-.01em;line-height:1}
+.hero .role{font-size:clamp(18px,2.4vw,22px);color:var(--accent);font-weight:600;margin-top:10px}
+.hero .lede{margin-top:18px;max-width:60ch;font-size:17px}
+.facts{display:grid;border-top:2px solid var(--ink);margin-top:6px}
+.facts div{display:grid;grid-template-columns:100px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.facts dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.facts dd{margin:0;color:var(--ink)}
+
+/* sections */
+section.block{padding-block:52px;border-top:1px solid var(--line)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.sec-head h2{font-size:clamp(26px,3.4vw,34px);font-weight:700}
+.sec-head p{max-width:56ch;color:var(--muted);font-size:15px}
+button.ghost{font:600 13px var(--body);background:transparent;border:1px solid var(--line);color:var(--ink);padding:7px 12px;border-radius:4px;cursor:pointer}
+button.ghost:hover{border-color:var(--accent)}
+
+/* project sheets */
+.projects{display:flex;flex-direction:column;gap:28px}
+.proj{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.titleblock{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line);background:var(--wash);margin:0}
+.titleblock div{padding:9px 16px;border-right:1px solid var(--line);min-width:0}
+.titleblock div:last-child{border-right:0}
+.titleblock dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.titleblock dd{margin:2px 0 0;font-size:14px;color:var(--ink);font-weight:500}
+.proj-main{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;padding:26px 28px 22px;align-items:start}
+.proj-main.solo{grid-template-columns:minmax(0,1fr)}
+.proj h3{font-size:clamp(22px,2.6vw,28px);font-weight:700;margin-top:6px}
+.proj .summary{margin-top:10px;font-size:16px;max-width:70ch}
+.keys{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.keys li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;font-size:14.5px;align-items:baseline}
+.keys li b{font-family:var(--mono);font-weight:500;color:var(--accent);font-size:14px;white-space:nowrap}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.tags span{font-family:var(--mono);font-size:12px;padding:3px 8px;border:1px solid var(--line);border-radius:3px;color:var(--text)}
+.tags a.code{font-family:var(--mono);font-size:12px;padding:3px 8px;border:1px solid var(--accent);border-radius:3px;color:var(--accent);text-decoration:none;font-weight:500}
+.tags a.code:hover{background:var(--accent-soft)}
+figure{margin:0;min-width:0}
+.plate{background:var(--plate);border:1px solid var(--line);border-radius:4px;padding:10px}
+.plate img{display:block;width:100%;height:auto}
+figcaption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.45}
+
+/* disclosure */
+details.more{border-top:1px solid var(--line)}
+details.more > summary{list-style:none;cursor:pointer;padding:14px 28px;font-weight:600;font-size:15px;color:var(--accent);display:flex;align-items:center;gap:10px}
+details.more > summary::-webkit-details-marker{display:none}
+details.more > summary::before{content:"+";font-family:var(--mono);font-size:18px;line-height:1;width:20px;height:20px;display:inline-grid;place-items:center;border:1px solid var(--accent);border-radius:3px;flex:none}
+details.more[open] > summary::before{content:"−"}
+details.more > summary:hover{background:var(--wash)}
+.deep{padding:4px 28px 30px;display:grid;gap:26px}
+.deep-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px}
+.deep > *,.deep-grid > *{min-width:0}
+.deep h4{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 6px;font-weight:500}
+.deep p,.deep li{font-size:15px}
+.deep ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.note{padding:12px 14px;border-left:3px solid var(--warn);background:var(--wash);font-size:14.5px;border-radius:0 4px 4px 0}
+.note b{color:var(--ink)}
+blockquote{margin:0;padding:14px 18px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 4px 4px 0}
+blockquote p{font-size:16px;color:var(--ink)}
+blockquote cite{display:block;margin-top:6px;font-style:normal;font-size:13px;color:var(--muted)}
+
+/* tables */
+.tbl{overflow-x:auto}
+.data{width:100%;border-collapse:collapse;font-size:14px;min-width:420px}
+.data th,.data td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+.data th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.data td{font-variant-numeric:tabular-nums;color:var(--ink)}
+.data td.r,.data th.r{text-align:right}
+.data td.best{color:var(--accent);font-weight:700}
+.data td.bad{color:var(--warn);font-weight:600}
+.data.narrow{min-width:0}
+
+/* flow diagram */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.flow .node{flex:1 1 130px;border:1px solid var(--line);border-radius:4px;padding:10px 12px;background:var(--paper);min-width:0}
+.flow .node b{display:block;color:var(--ink);font-size:14px}
+.flow .node span{font-size:12.5px;color:var(--muted);line-height:1.4;display:block;margin-top:2px}
+.flow .node.ml{border-color:var(--accent);background:var(--accent-soft)}
+.flow .arr{align-self:center;color:var(--muted);font-family:var(--mono)}
+
+/* chart */
+.chart svg{display:block;width:100%;height:auto}
+.chart text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.chart .val{fill:var(--ink)}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+.crossref{margin-top:28px;padding:18px 20px;border:1px dashed var(--line);border-radius:6px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:15px}
+
+/* profile project list */
+.plist-wrap{margin-top:26px}
+.plist{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--line);counter-reset:none}
+.plist li a{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:10px 8px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink);border-radius:3px}
+.plist li a:hover{background:var(--wash)}
+.plist .pk{font-family:var(--mono);font-size:13px;color:var(--accent);white-space:nowrap}
+.plist .pt{font-weight:600;font-size:15px}
+.plist .pg{color:var(--muted);font-family:var(--mono)}
+.exp-page{border-top:0;padding-block:36px 52px}
+.back{font-size:14px;font-weight:600;text-decoration:none}
+
+/* experience */
+.log{display:grid;border-top:2px solid var(--ink)}
+.entry{display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;padding:20px 0;border-bottom:1px solid var(--line)}
+.entry .when{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.entry h3{font-size:19px;font-weight:700}
+.entry .org{color:var(--accent);font-weight:600;font-size:15px;margin-top:2px}
+.entry ul{margin:10px 0 0;padding-left:18px;display:grid;gap:4px;font-size:15px}
+.pub{margin-top:32px;padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:6px;font-size:15px}
+
+/* skills + contact */
+.cols{display:flex;gap:32px;flex-wrap:wrap}
+.cols > div{flex:1 1 240px;min-width:0}
+.cols h3{font-size:16px;font-weight:700;margin-bottom:10px}
+.cols p{font-size:15px}
+.contact{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:20px}
+.email{font-family:var(--mono);font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:10px 14px;border-radius:4px;user-select:all}
+button.copy{font:600 14px var(--body);background:var(--accent);color:var(--surface);border:0;padding:11px 16px;border-radius:4px;cursor:pointer}
+.foot{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:520px){
+  .keys li{grid-template-columns:minmax(0,1fr);gap:0}
+  .keys li b{white-space:normal}
+  .flow .arr{display:none}
+}
+@media (max-width:860px){
+  .plist li a{grid-template-columns:minmax(0,1fr) auto}
+  .plist .pk{grid-column:1 / -1}
+  .hero,.proj-main,.deep-grid{grid-template-columns:minmax(0,1fr)}
+  .hero{gap:28px;padding-block:32px}
+  .titleblock{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .titleblock div:nth-child(2){border-right:0}
+  .titleblock div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .proj-main{padding:20px}
+  details.more > summary{padding:14px 20px}
+  .deep{padding:4px 20px 24px}
+  .entry{grid-template-columns:minmax(0,1fr);gap:6px}
+}
+@media (prefers-reduced-motion:no-preference){.switch button,button.copy,button.ghost{transition:background .15s,color .15s,border-color .15s}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <span class="mark">KIEN VAN HO · PORTFOLIO</span>
+    <nav aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+      <a href="https://github.com/kivanho">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <div class="page" data-page="home">
+  <section class="hero">
+    <div>
+      <h1>Kien van Ho</h1>
+      <p class="role" data-show="ml">Physics-informed ML and modelling for energy systems</p>
+      <p class="role" data-show="energy">Energy and process engineering: sizing, scenarios and investment cases</p>
+      <p class="lede" data-show="ml">I build models that keep the physics and learn from the data, and I validate them carefully on small, expensive datasets. At Siemens Energy that was a hybrid crack-growth model for gas turbines. At Mercedes-Benz, a robot energy model. In my master's, an engine digital twin I led and implemented.</p>
+      <p class="lede" data-show="energy">Engineer trained in energy systems and process design in Germany, France and Hungary. In my projects I sized a drinking-water plant for Karachi with my team, modelled Berlin's vehicle-to-grid potential, and assessed campus CHP and Power-to-Gas pathways. In industry: production engineering at Mercedes-Benz and a master's thesis with Siemens Energy on gas-turbine component life.</p>
+      <div class="switch-row">
+        <div class="switch" role="group" aria-label="Choose a view">
+          <button type="button" id="t-ml" data-track="ml" aria-pressed="true">Machine learning &amp; modelling</button>
+          <button type="button" id="t-energy" data-track="energy" aria-pressed="false">Energy &amp; process engineering</button>
+        </div>
+        <span class="hint">Same person, two views. Projects are reordered for each.</span>
+      </div>
+      <div class="plist-wrap">
+        <p class="label" id="plist-label">Projects in this view</p>
+        <ol class="plist" id="plist"></ol>
+      </div>
+    </div>
+    <dl class="facts">
+      <div><dt>Education</dt><dd>Erasmus Mundus Master ME3+ (IMT Atlantique, FR &amp; BME, HU), double M.Sc. in Mechanical Engineering Modelling and Process &amp; Bioprocess Engineering, summa cum laude, 2026 · B.Sc. Engineering Science, TU Berlin, grade 1.4</dd></div>
+      <div><dt>Industry</dt><dd>Siemens Energy (master's thesis) · Mercedes-Benz (2 internships) · PSI Metals (working student) · <a href="#experience">Experience →</a></dd></div>
+      <div><dt>Based in</dt><dd>Berlin (hybrid or on-site) · remote within Germany · open to relocating to Hamburg or Freiburg</dd></div>
+      <div><dt>Languages</dt><dd>German, Vietnamese (native) · English C1–C2 · French B2</dd></div>
+      <div><dt>Available</dt><dd>Full-time from June 2027</dd></div>
+      <div><dt>Code</dt><dd><a href="https://github.com/kivanho">github.com/kivanho</a></dd></div>
+    </dl>
+  </section>
+
+  <section class="block" id="projects">
+    <div class="sec-head">
+      <div>
+        <p class="label" id="track-label">Machine learning &amp; modelling</p>
+        <h2 style="margin-top:6px">Projects</h2>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <p>Each project shows the short version. Open it for the full case study.</p>
+        <button class="ghost" type="button" id="expand-all">Expand all</button>
+      </div>
+    </div>
+
+    <div class="projects" id="project-list">
+
+      <!-- ============ MASTER'S THESIS ============ -->
+      <article class="proj" id="thesis" data-tracks="ml" data-order-ml="1" data-key="−20.1% error">
+        <dl class="titleblock">
+          <div><dt>Type</dt><dd>Master's thesis</dd></div>
+          <div><dt>Partner</dt><dd>Siemens Energy</dd></div>
+          <div><dt>Period</dt><dd class="num">Feb – Aug 2026</dd></div>
+          <div><dt>Team</dt><dd>Individual</dd></div>
+        </dl>
+        <div class="proj-main">
+          <div>
+            <p class="label">Gas turbines · fracture mechanics · hybrid ML</p>
+            <h3>Physics-informed ML for short-crack growth</h3>
+            <p class="summary">A neural network that predicts crack-growth curves for gas-turbine components with manufacturing defects. It is trained on experiments and held to the shape of an established fracture-mechanics model (IBESS) through the loss, so life estimates improve while the curves keep the physical model's shape.</p>
+            <ul class="keys">
+              <li><b>−20.1%</b><span>mean absolute log error vs. the physics baseline (0.965 → 0.771)</span></li>
+              <li><b>56</b><span>experimental specimens, each predicted blind with nested cross-validation</span></li>
+              <li><b>Trade-off</b><span>29 of 56 predictions now overestimate life (baseline: 8), so the model is less conservative; documented as the open problem</span></li>
+            </ul>
+            <div class="tags"><span>Python</span><span>TensorFlow</span><span>scikit-learn</span><span>pandas</span><span>Nested CV</span><span>Custom physics loss</span><a class="code" href="https://github.com/kivanho/physics-informed-crack-growth">Code on GitHub ↗</a></div>
+          </div>
+          <figure>
+            <div class="plate"><img src="img/thesis.jpg" alt="Blind parity plot of predicted versus experimental cycles to nucleation on log axes. Thesis model points (slope 0.48) sit closer to the perfect-prediction line than baseline points (slope 0.35)." width="876" height="648" loading="lazy"></div>
+            <figcaption>Blind predictions vs. experiment, cycles to crack nucleation. Squares: physical baseline (IBESS). Circles: thesis model. Axis values hidden. Thesis Fig. 15.</figcaption>
+          </figure>
+        </div>
+        <details class="more">
+          <summary>Full case study: model design, validation, limits</summary>
+          <div class="deep">
+            <div class="deep-grid">
+              <div>
+                <h4>Problem</h4>
+                <p>The physical short-crack model (IBESS) is interpretable but, on the experimental data, it systematically underestimated fatigue life. With only 56 specimens from one material and one load ratio, a free black-box model would overfit and lose physical meaning.</p>
+              </div>
+              <div>
+                <h4>What the network predicts</h4>
+                <p>Instead of free values at every point, the network outputs 16 decoder parameters per specimen: 7 density knots each for the depth and surface crack fronts, one terminal surface-to-depth ratio, and one cycle "warp" multiplier. Integrating and normalising the knots guarantees monotonically growing crack curves by construction.</p>
+              </div>
+              <div>
+                <h4>Inputs</h4>
+                <p>Initial defect size (a₀, c₀), max/min stress, specimen width and thickness, defect type (surface or embedded, one-hot), plus derived aspect ratio, stress range, stress ratio and log-transformed size and load terms. All standardised. Physics curves are used only in the loss, never as inputs.</p>
+              </div>
+              <div>
+                <h4>Loss function</h4>
+                <p>Total loss = experimental error (MSE of log cycles) + four physics penalties: curve shape vs. IBESS, terminal crack-front ratio, concavity of the threshold curve (checked at 17 points), and a cap on the warp correction so timing cannot absorb all the error.</p>
+              </div>
+            </div>
+            <figure>
+              <div class="plate"><img src="img/thesis_knots.jpg" alt="Two panels: before training, the predicted crack-extension curve through seven green density knots is irregular and the predicted nucleation cycle misses the experimental one; after training the curve is smooth and both cycle markers coincide." width="1309" height="390" loading="lazy"></div>
+              <figcaption>Schematic: seven density knots (green) shape the predicted crack-extension curve, and training aligns predicted and experimental nucleation cycles. Thesis Fig. 12.</figcaption>
+            </figure>
+            <div class="deep-grid">
+              <div>
+                <h4>Validation</h4>
+                <ul>
+                  <li>Nested cross-validation with 5 outer folds, so each of the 56 specimens gets exactly one blind prediction.</li>
+                  <li>Loss weights tuned by repeated inner validation inside each outer training fold.</li>
+                  <li>Preprocessing, feature construction and model selection all fitted inside training folds only, to rule out leakage.</li>
+                  <li>After prediction, physical quantities (geometry, crack closure, J-integral, ΔK, da/dN) are recomputed as a consistency check.</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Results</h4>
+                <div class="tbl">
+                  <table class="data">
+                    <thead><tr><th>Metric</th><th class="r">Baseline</th><th class="r">Thesis</th><th class="r">Change</th></tr></thead>
+                    <tbody>
+                      <tr><td>MAE (log)</td><td class="r">0.965</td><td class="r">0.771</td><td class="r best">−20.1%</td></tr>
+                      <tr><td>RMSE (log)</td><td class="r">1.171</td><td class="r">1.062</td><td class="r best">−9.3%</td></tr>
+                      <tr><td>Late predictions</td><td class="r">8 / 56</td><td class="r">29 / 56</td><td class="r bad">+21</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p style="margin-top:10px">Errors are measured in natural-log cycle space, so the typical miss shrank from a factor of about 2.6 to about 2.2 in cycles. The error distribution moved from a consistent underestimate to centred on zero, and the median prediction ratio moved close to 1. The smaller RMSE gain shows that typical predictions improved more than the worst ones.</p>
+              </div>
+            </div>
+            <div class="note"><b>Limits I documented.</b> A "late" prediction overestimates life, which is the unsafe direction, so the model is less conservative than the baseline. One specimen was predicted at more than three times its measured life, showing instability with so little data. A deployable version would need a lower bound, a one-sided loss or a safety factor, and data across more materials and load ratios. The thesis is a feasibility study, not a certified lifetime assessment.</div>
+            <blockquote>
+              <p>“His ability to translate complex physical relationships into comprehensible data-driven models deserves particular mention.”</p>
+              <cite>Reference letter, Predictive Analytics, Siemens Energy (translated from German)</cite>
+            </blockquote>
+          </div>
+        </details>
+      </article>
+
+      <!-- ============ DIGITAL TWIN ============ -->
+      <article class="proj" id="twin" data-tracks="ml energy" data-order-ml="2" data-order-energy="4" data-key="R² 0.93">
+        <dl class="titleblock">
+          <div><dt>Type</dt><dd>Master's project</dd></div>
+          <div><dt>Context</dt><dd>IMT Atlantique · GreenTwins</dd></div>
+          <div><dt>Period</dt><dd class="num">Feb – Jun 2025</dd></div>
+          <div><dt>Team</dt><dd>3 · I led and implemented</dd></div>
+        </dl>
+        <div class="proj-main">
+          <div>
+            <p class="label">Digital twin · dual-fuel engine · ML services</p>
+            <h3>Digital twin of a dual-fuel engine</h3>
+            <p class="summary">A working twin of a 14.4 kWe dual-fuel (diesel and biogas) generator set: set power and fuel mix, and ML models plus physics formulas predict efficiency, exhaust temperature and fuel flows, served through an API into a 3D platform.</p>
+            <ul class="keys">
+              <li><b>R² 0.93</b><span>kNN efficiency model on a held-out 20% test set</span></li>
+              <li><b>FastAPI + Docker</b><span>models served as a live API into the GreenTwins digital-twin platform (Datagrowb)</span></li>
+              <li><b>Lead</b><span>project lead and main implementer in a team of three</span></li>
+            </ul>
+            <div class="tags"><span>Python</span><span>scikit-learn</span><span>FastAPI</span><span>Docker</span><span>Azure</span><span>Blender</span><a class="code" href="https://github.com/kivanho/dual-fuel-digital-twin">Code on GitHub ↗</a></div>
+          </div>
+          <figure>
+            <div class="plate"><img src="img/twin_dashboard.jpg" alt="Validation dashboard with inputs for diesel energy share and power output, and time-series plots of efficiency, power output, fuel mass flow, exhaust gas temperature, current and torque." width="936" height="646" loading="lazy"></div>
+            <figcaption>Local dashboard: change diesel share and power, watch efficiency, fuel flow, exhaust temperature, current and torque respond. Report Fig. 9.</figcaption>
+          </figure>
+        </div>
+        <details class="more">
+          <summary>Full case study: architecture, models, validation</summary>
+          <div class="deep">
+            <div>
+              <h4>How it works</h4>
+              <div class="flow" role="img" aria-label="Data flow: operator inputs go to ML models, then physics formulas, then a PID controller, then a FastAPI service in Docker on Azure, which feeds the GreenTwins dashboard and 3D view.">
+                <div class="node"><b>Inputs</b><span>power output, diesel energy share, methane content</span></div>
+                <span class="arr" aria-hidden="true">→</span>
+                <div class="node ml"><b>ML models</b><span>efficiency (kNN), exhaust temperature (linear regression)</span></div>
+                <span class="arr" aria-hidden="true">→</span>
+                <div class="node"><b>Physics</b><span>energy balance gives diesel and methane mass flows</span></div>
+                <span class="arr" aria-hidden="true">→</span>
+                <div class="node"><b>PID control</b><span>regulates flows; power, current and torque computed</span></div>
+                <span class="arr" aria-hidden="true">→</span>
+                <div class="node"><b>FastAPI in Docker</b><span>/update_inputs, /live_state stream, /reset; Azure</span></div>
+                <span class="arr" aria-hidden="true">→</span>
+                <div class="node"><b>GreenTwins</b><span>dashboards and Blender 3D model</span></div>
+              </div>
+            </div>
+            <div class="deep-grid">
+              <div>
+                <h4>Models</h4>
+                <ul>
+                  <li><b>Electrical efficiency:</b> k-nearest-neighbours regression (k = 10, Manhattan distance) on power and methane share, tuned with 5-fold grid search; R² 0.929 on a 20% hold-out set.</li>
+                  <li><b>Exhaust temperature:</b> linear regression on power, refined with diesel share and methane content; R² 0.956 on the training data.</li>
+                  <li>Features chosen from a correlation analysis of earlier lab engine-mapping runs on a Cat DE18E3 generator converted to dual-fuel.</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Plausibility check against lab data</h4>
+                <div class="tbl">
+                  <table class="data narrow">
+                    <thead><tr><th>Mid-load operating point</th><th class="r">Twin vs. measured</th></tr></thead>
+                    <tbody>
+                      <tr><td>Efficiency</td><td class="r">within 0.1 pp</td></tr>
+                      <tr><td>Exhaust temperature</td><td class="r">within 1.5%</td></tr>
+                      <tr><td>Methane flow</td><td class="r">within 0.5%</td></tr>
+                      <tr><td>Diesel flow</td><td class="r">within 0.5%</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p style="margin-top:8px">"Measured" is the nearest recorded lab operating point (raw lab data not published), which the models had seen in training, so this is a consistency check rather than independent validation. Fuel flows follow from the predicted efficiency through the energy balance. The controller settles in under 5 seconds.</p>
+              </div>
+            </div>
+            <figure>
+              <div class="plate"><img src="img/twin_engine.jpg" alt="GreenTwins platform view showing a 3D model of the engine and generator." width="1247" height="658" loading="lazy"></div>
+              <figcaption>Engine view inside the GreenTwins platform. Report Fig. 13.</figcaption>
+            </figure>
+            <div class="note"><b>Limits.</b> Inputs are set by hand; a live data connection to the running engine was scoped as future work, together with controller tuning and predictive maintenance. The exhaust-temperature R² is a training fit, not a held-out score.</div>
+          </div>
+        </details>
+      </article>
+
+      <!-- ============ MERCEDES ROBOT ENERGY (industry, confidential) ============ -->
+      <article class="proj" id="robot" data-tracks="ml" data-order-ml="3" data-key="Up to 15%">
+        <dl class="titleblock">
+          <div><dt>Type</dt><dd>Industry project</dd></div>
+          <div><dt>Company</dt><dd>Mercedes-Benz AG</dd></div>
+          <div><dt>Period</dt><dd class="num">Feb – Aug 2024</dd></div>
+          <div><dt>Team</dt><dd>Intern, production digitalisation</dd></div>
+        </dl>
+        <div class="proj-main solo">
+          <div>
+            <p class="label">Hybrid modelling · industrial robots · energy efficiency</p>
+            <h3>Energy model of an assembly robot</h3>
+            <p class="summary">The physics-plus-data approach I later took further in my thesis, here applied in production: a physics-based model of a universal robot in engine assembly, a neural network that predicts its energy use, and trajectory studies to find where energy could be saved.</p>
+            <ul class="keys">
+              <li><b>Up to 15%</b><span>modelled savings potential from optimised instead of arbitrary trajectories</span></li>
+              <li><b>Physics</b><span>Python model of the robot's energy consumption along its motion</span></li>
+              <li><b>ML</b><span>neural network for energy prediction, developed and validated against the robot's data</span></li>
+            </ul>
+            <div class="tags"><span>Python</span><span>Neural networks</span><span>Physics-based modelling</span><span>Production data</span></div>
+            <p class="muted" style="margin-top:14px;font-size:13.5px">Internal company project: figures and code stay with Mercedes-Benz. Happy to walk through the approach in an interview.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- ============ BACHELOR THESIS ============ -->
+      <article class="proj" id="bachelor" data-tracks="ml" data-order-ml="4" data-key="Paper 2025">
+        <dl class="titleblock">
+          <div><dt>Type</dt><dd>Bachelor's thesis</dd></div>
+          <div><dt>Context</dt><dd>TU Berlin · product development</dd></div>
+          <div><dt>Period</dt><dd class="num">2024</dd></div>
+          <div><dt>Team</dt><dd>Individual thesis</dd></div>
+        </dl>
+        <div class="proj-main">
+          <div>
+            <p class="label">Small-data regression · model selection</p>
+            <h3>Predicting vehicle attributes from early design data</h3>
+            <p class="summary">Can you predict how a car will perform from nine design parameters, with data on only 31 cars? I compared four regression models on five functional attributes to find out where ML helps and where it doesn't.</p>
+            <ul class="keys">
+              <li><b>4 models</b><span>linear regression, Lasso, kNN and support vector regression</span></li>
+              <li><b>5 targets</b><span>passenger and cargo volume, fuel efficiency, towing, acceleration</span></li>
+              <li><b>Paper</b><span>the work fed into a 2025 <i>Proceedings of the Design Society</i> paper I co-authored</span></li>
+            </ul>
+            <div class="tags"><span>Python</span><span>scikit-learn</span><span>Feature selection</span><span>Cross-validation</span><a class="code" href="https://github.com/kivanho/small-data-model-selection">Code on GitHub ↗</a></div>
+          </div>
+          <figure>
+            <div class="plate"><img src="img/bachelor.jpg" alt="Four scatterplots of fuel efficiency and acceleration against fuel tank capacity and engine displacement for 31 vehicles." width="672" height="560" loading="lazy"></div>
+            <figcaption>Exploring the data: fuel efficiency and acceleration vs. tank capacity and engine displacement. From the thesis defence.</figcaption>
+          </figure>
+        </div>
+        <details class="more">
+          <summary>Full case study: method and results</summary>
+          <div class="deep">
+            <div class="deep-grid">
+              <div>
+                <h4>Data and features</h4>
+                <p>31 midsize sedans (2002 US market, de Weck 2010). Nine design variables: fuel tank capacity, engine displacement, weight, wheelbase, ground clearance, height, length, tyre width and tyre diameter. One car (Honda Accord) held back as a final check.</p>
+              </div>
+              <div>
+                <h4>Method</h4>
+                <p>Mean imputation and standardisation, then sequential floating forward feature selection. Each model tuned and scored with 5-fold cross-validation, with linear regression as the literature baseline.</p>
+              </div>
+            </div>
+            <div>
+              <h4>Cross-validated R² by attribute</h4>
+              <div class="tbl">
+                <table class="data">
+                  <thead><tr><th>Attribute</th><th class="r">Linear</th><th class="r">Lasso</th><th class="r">kNN</th><th class="r">SVR</th></tr></thead>
+                  <tbody>
+                    <tr><td>Passenger volume</td><td class="r">0.58</td><td class="r">0.59</td><td class="r">0.75</td><td class="r best">0.78</td></tr>
+                    <tr><td>Cargo volume</td><td class="r best">0.71</td><td class="r">0.66</td><td class="r">0.65</td><td class="r">0.67</td></tr>
+                    <tr><td>Fuel efficiency</td><td class="r">0.22</td><td class="r">0.16</td><td class="r best">0.42</td><td class="r">0.15</td></tr>
+                    <tr><td>Acceleration</td><td class="r best">0.42</td><td class="r">0.35</td><td class="r">0.31</td><td class="r">0.38</td></tr>
+                    <tr><td>Towing capacity</td><td class="r">−2.91</td><td class="r">−2.83</td><td class="r best">0.24</td><td class="r">−0.18</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p style="margin-top:8px" class="muted">Best model per attribute highlighted. Source: thesis defence.</p>
+            </div>
+            <div class="deep-grid">
+              <div>
+                <h4>Findings</h4>
+                <ul>
+                  <li>No single model wins; the right choice depends on the attribute.</li>
+                  <li>Non-linear models beat linear regression on most targets.</li>
+                  <li>Passenger volume is well explained by the design data; towing capacity is not, and linear models fail badly on it.</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Looking back</h4>
+                <p>Hyperparameters were chosen on the same folds used for scoring, so these R² values are likely optimistic. My master's thesis uses nested cross-validation, which removes that bias.</p>
+              </div>
+            </div>
+          </div>
+        </details>
+      </article>
+
+      <!-- ============ KARACHI ============ -->
+      <article class="proj" id="karachi" data-tracks="energy" data-order-energy="1" data-key="$94.5 M CAPEX">
+        <dl class="titleblock">
+          <div><dt>Type</dt><dd>Process design project</dd></div>
+          <div><dt>Context</dt><dd>IMT Atlantique · drinking water</dd></div>
+          <div><dt>Period</dt><dd class="num">2025</dd></div>
+          <div><dt>Team</dt><dd>6 · research and sizing calcs</dd></div>
+        </dl>
+        <div class="proj-main">
+          <div>
+            <p class="label">Water treatment · unit sizing · project finance</p>
+            <h3>Drinking-water plant at Hub Dam, Karachi</h3>
+            <p class="summary">A full treatment plant for very hard, turbid reservoir water, from intake pipe to chlorination, sized unit by unit in Excel and costed with CAPEX, OPEX and IRR. My part was mainly the research and the sizing calculations.</p>
+            <ul class="keys">
+              <li><b>189,250 m³/d</b><span>design flow at full build-out (2.19 m³/s, about 50 MGD; phase I 25 MGD)</span></li>
+              <li><b>$94.5 M</b><span>CAPEX incl. 5% contingency; OPEX $12.1 M per year</span></li>
+              <li><b>IRR 8%</b><span>against a 6–7% hurdle rate</span></li>
+            </ul>
+            <div class="tags"><span>Excel</span><span>Process design</span><span>Hydraulics</span><span>CAPEX / OPEX</span></div>
+          </div>
+          <figure>
+            <div class="plate"><img src="img/karachi.jpg" alt="Process flow diagram of the proposed drinking-water treatment plant at Karachi, from intake and screening through flotation, filtration, softening and disinfection to storage." width="1400" height="788" loading="lazy"></div>
+            <figcaption>Team process-flow diagram of the treatment train. Unit volumes in the diagram are from an earlier design iteration; the table in the case study has the final sizing.</figcaption>
+          </figure>
+        </div>
+        <details class="more">
+          <summary>Full case study: design basis, units, economics</summary>
+          <div class="deep">
+            <div class="deep-grid">
+              <div>
+                <h4>Problem</h4>
+                <p>Karachi supplies about 650 MGD against 820–1,200 MGD of demand. Karachi water-quality data show hardness up to 2,000 mg/L CaCO₃ and turbidity up to 65 NTU, which the design takes as its basis, so the plant needs softening and strong particle removal, not just disinfection.</p>
+              </div>
+              <div>
+                <h4>Design basis</h4>
+                <p>1.5 m intake pipe at 1.24 m/s (Re ≈ 1.4 × 10⁶, 0.10 bar loss over 0.5 km). Alum 70 mg/L, chlorine 5 mg/L, COD 60 mg/L, activated-carbon capacity 600 mg COD/g, 20 min empty-bed contact time, 1% water loss.</p>
+              </div>
+            </div>
+            <div>
+              <h4>Treatment train and unit sizes</h4>
+              <div class="tbl">
+                <table class="data">
+                  <thead><tr><th>Step</th><th>Purpose</th><th class="r">Size</th></tr></thead>
+                  <tbody>
+                    <tr><td>Storage</td><td>buffer raw water</td><td class="r">2 × 3,927 m³</td></tr>
+                    <tr><td>Dissolved-air flotation</td><td>remove flocs and turbidity</td><td class="r">12 × 160 m³</td></tr>
+                    <tr><td>Sand filtration</td><td>polish particles</td><td class="r">12 units</td></tr>
+                    <tr><td>Lime softening</td><td>reduce hardness</td><td class="r">lime 1,423 mg/L</td></tr>
+                    <tr><td>Activated carbon</td><td>remove organics</td><td class="r">4 × 657 m³ (20 min contact)</td></tr>
+                    <tr><td>Chlorination</td><td>disinfection</td><td class="r">4,800 m³ · 39.4 kg Cl₂/h</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="deep-grid">
+              <div>
+                <h4>Economics</h4>
+                <p>CAPEX $90.0 M plus 5% contingency. In the team's cost breakdown, disinfection (35.5%) and activated carbon (34.2%) are the largest items. Cash-flow analysis gives an IRR of 8%, above the 6–7% hurdle rate.</p>
+              </div>
+              <div>
+                <h4>Limits</h4>
+                <p>Academic design estimates, not an operating plant. The team flagged public trust, high utility costs and governance as the main delivery risks.</p>
+              </div>
+            </div>
+          </div>
+        </details>
+      </article>
+
+      <!-- ============ CHP ============ -->
+      <article class="proj" id="chp" data-tracks="energy" data-order-energy="5" data-key="215 kW CHP">
+        <dl class="titleblock">
+          <div><dt>Type</dt><dd>Case-study analysis</dd></div>
+          <div><dt>Context</dt><dd>BME · waste-heat utilisation</dd></div>
+          <div><dt>Period</dt><dd class="num">Dec 2025</dd></div>
+          <div><dt>Team</dt><dd>Individual</dd></div>
+        </dl>
+        <div class="proj-main">
+          <div>
+            <p class="label">CHP sizing · heat demand · investment case</p>
+            <h3>Gas CHP for a London university campus</h3>
+            <p class="summary">Should a London university campus run its own combined heat and power unit, and how big? A course presentation in which I worked through a published CHP assessment (Amber et al., 2018): load analysis, sizing logic, investment case and energy-price sensitivity.</p>
+            <ul class="keys">
+              <li><b>215 kW<sub>el</sub> / 304 kW<sub>th</sub></b><span>CHP option below the winter heat and electrical base loads</span></li>
+              <li><b>−395 t CO₂/yr</b><span>emissions cut estimated in the study</span></li>
+              <li><b>4.5–15 years</b><span>payback range across gas and electricity price scenarios</span></li>
+            </ul>
+            <div class="tags"><span>Load analysis</span><span>CHP sizing</span><span>NPV / IRR</span><span>Price sensitivity</span></div>
+          </div>
+          <figure>
+            <div class="plate"><img src="img/chp.jpg" alt="Seasonal thermal and electricity demand profiles over a day and annual load-duration curves for the campus." width="1200" height="675" loading="lazy"></div>
+            <figcaption>Seasonal demand profiles and load-duration curves from the published case study (Amber et al., 2018), as used in my presentation.</figcaption>
+          </figure>
+        </div>
+        <details class="more">
+          <summary>Full case study: loads, sizing, finance</summary>
+          <div class="deep">
+            <div class="deep-grid">
+              <div>
+                <h4>Baseline</h4>
+                <p>Existing boilers total 4,950 kW (3 × 1,500 + 450 kW). Annual use is about 4.2 GWh of heat and 3 GWh of electricity. Thermal base load is 400 kW in winter and 180 kW in summer; electrical base load is 275 kW.</p>
+              </div>
+              <div>
+                <h4>Sizing logic</h4>
+                <p>A CHP only pays off when its heat is used, so the unit sits under the winter heat base load (400 kW) and the electrical base load (275 kW) to run long hours: 215 kW electrical and 304 kW thermal at about 5,000 h/yr. Part-load efficiency ranges from 29–32% electrical and 42–49% thermal. A second option runs 24/7 below the electrical base load to cover 47% of one building's power.</p>
+              </div>
+              <div>
+                <h4>Investment case</h4>
+                <ul>
+                  <li>CAPEX about £403,000 and net savings about £51,000 a year</li>
+                  <li>Simple payback of roughly 8 years at current prices</li>
+                  <li>Gas use rises by about half, so savings depend on the electricity it displaces</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Finding</h4>
+                <p>Useful heat demand and the electricity-to-gas price ratio decide the case. Higher power prices or cheaper gas shorten payback; across the tested prices it ranged from about 4.5 to 15 years.</p>
+              </div>
+            </div>
+            <div class="note"><b>Limits.</b> A concept-level course study: the load data, CO₂ and savings figures come from the published assessment, which I analysed and presented rather than recalculated from scratch. Price uncertainty is the main risk. Detailed design and grid connection were outside its scope.</div>
+          </div>
+        </details>
+      </article>
+
+      <!-- ============ V2G ============ -->
+      <article class="proj" id="v2g" data-tracks="energy" data-order-energy="2" data-key="≤ 23.4% of peak energy">
+        <dl class="titleblock">
+          <div><dt>Type</dt><dd>Scenario model</dd></div>
+          <div><dt>Context</dt><dd>BME · energy storage + planning</dd></div>
+          <div><dt>Period</dt><dd class="num">2025</dd></div>
+          <div><dt>Team</dt><dd>Individual</dd></div>
+        </dl>
+        <div class="proj-main">
+          <div>
+            <p class="label">Vehicle-to-grid · peak demand · scenarios</p>
+            <h3>How much of Berlin's evening peak could parked EVs cover?</h3>
+            <p class="summary">A scenario model of Berlin's battery-electric fleet from 2025 to 2030, estimating how much stored energy owners could feed back during the evening peak, by season and participation rate.</p>
+            <ul class="keys">
+              <li><b>7.8–23.4%</b><span>of summer evening-peak energy (18–22 h) in 2030</span></li>
+              <li><b>5.0–15.0%</b><span>in winter, when the peak is longer and higher</span></li>
+              <li><b>34k → 309k</b><span>modelled BEV fleet, 2025 to 2030</span></li>
+            </ul>
+            <div class="tags"><span>Excel</span><span>Scenario analysis</span><span>Energy storage</span><span>Demand profiles</span></div>
+          </div>
+          <figure class="chart">
+            <div class="plate" style="background:var(--surface)">
+              <svg viewBox="0 0 360 222" role="img" aria-label="Bar chart of evening-peak coverage in 2030 by participation rate. Summer: 7.8% at 25%, 15.6% at 50%, 23.4% at 75%. Winter: 5.0%, 10.0%, 15.0%.">
+                <g stroke="var(--line)" stroke-width="1" fill="none">
+                  <line x1="40" y1="180" x2="350" y2="180"/>
+                  <line x1="40" y1="130" x2="350" y2="130" stroke-dasharray="2 3"/>
+                  <line x1="40" y1="80" x2="350" y2="80" stroke-dasharray="2 3"/>
+                  <line x1="40" y1="30" x2="350" y2="30" stroke-dasharray="2 3"/>
+                </g>
+                <text x="32" y="184" text-anchor="end">0%</text>
+                <text x="32" y="134" text-anchor="end">10%</text>
+                <text x="32" y="84" text-anchor="end">20%</text>
+                <text x="32" y="34" text-anchor="end">30%</text>
+                <!-- scale: 5 px per percentage point, baseline y=180 -->
+                <rect x="62" y="141" width="34" height="39" fill="var(--accent)"/>
+                <rect x="100" y="155" width="34" height="25" fill="var(--c2)"/>
+                <rect x="165" y="102" width="34" height="78" fill="var(--accent)"/>
+                <rect x="203" y="130" width="34" height="50" fill="var(--c2)"/>
+                <rect x="268" y="63" width="34" height="117" fill="var(--accent)"/>
+                <rect x="306" y="105" width="34" height="75" fill="var(--c2)"/>
+                <text class="val" x="79" y="136" text-anchor="middle">7.8</text>
+                <text class="val" x="117" y="150" text-anchor="middle">5.0</text>
+                <text class="val" x="182" y="97" text-anchor="middle">15.6</text>
+                <text class="val" x="220" y="125" text-anchor="middle">10.0</text>
+                <text class="val" x="285" y="58" text-anchor="middle">23.4</text>
+                <text class="val" x="323" y="100" text-anchor="middle">15.0</text>
+                <text x="98" y="198" text-anchor="middle">25%</text>
+                <text x="201" y="198" text-anchor="middle">50%</text>
+                <text x="304" y="198" text-anchor="middle">75%</text>
+                <text x="201" y="216" text-anchor="middle">share of owners taking part</text>
+              </svg>
+              <div class="legend"><span><i style="background:var(--accent)"></i>Summer (18–22 h)</span><span><i style="background:var(--c2)"></i>Winter (16–21 h)</span></div>
+            </div>
+            <figcaption>Share of Berlin's 2030 evening-peak energy that participating BEVs could supply. My calculation.</figcaption>
+          </figure>
+        </div>
+        <details class="more">
+          <summary>Full case study: model, assumptions, limits</summary>
+          <div class="deep">
+            <div class="deep-grid">
+              <div>
+                <h4>Demand side</h4>
+                <p>Evening peak plateaus per Berlin planning area (LOR) taken from Straub et al. (2023): 3.5 MW for 4 h in summer and 6 MW for 5 h in winter, scaled to all 448 areas. That gives 6,272 MWh (summer) and 13,440 MWh (winter) of energy in the peak window.</p>
+              </div>
+              <div>
+                <h4>Supply side</h4>
+                <p>Available energy E = N · C · SOC · PR · α · η: fleet size N, 60 kWh battery, 30% of charge released, participation 25/50/75%, simultaneity 0.40 (summer) or 0.55 (winter), 88% discharge efficiency. Fleet grows about 55% a year from 34,000 BEVs in 2025.</p>
+              </div>
+            </div>
+            <figure>
+              <div class="plate" style="max-width:540px"><img src="img/v2g.jpg" alt="Daily power profile for one Berlin planning area in winter, with demand peaking above 7,000 kW around 19:00." width="522" height="385" loading="lazy"></div>
+              <figcaption>Winter demand (orange), renewable (green) and non-renewable supply (red) for one planning area. Source figure: Straub et al. (2023), used as the demand basis.</figcaption>
+            </figure>
+            <div class="deep-grid">
+              <div>
+                <h4>Finding</h4>
+                <p>In 2025 V2G covers only 0.6–2.6% of the peak. By 2030 fleet growth makes it a meaningful flexibility resource, but how many owners take part and when cars are plugged in matter as much as the number of cars.</p>
+              </div>
+              <div>
+                <h4>Limits</h4>
+                <p>One planning area's demand profile scaled to all 448 areas, vehicles spread evenly across the city, fixed simultaneity factors and ideal coordination with the grid. Battery wear, economics, charger roll-out, regulation and local grid limits are not modelled, and the growth and participation rates are optimistic.</p>
+              </div>
+            </div>
+          </div>
+        </details>
+      </article>
+
+      <!-- ============ MERCEDES AXIAL-FLUX (industry) ============ -->
+      <article class="proj" id="axialflux" data-tracks="energy" data-order-energy="3" data-key="Industry, 12 months">
+        <dl class="titleblock">
+          <div><dt>Type</dt><dd>Industry role</dd></div>
+          <div><dt>Company</dt><dd>Mercedes-Benz AG</dd></div>
+          <div><dt>Period</dt><dd class="num">Feb 2023 – Feb 2024</dd></div>
+          <div><dt>Team</dt><dd>Intern, industrialisation</dd></div>
+        </dl>
+        <div class="proj-main solo">
+          <div>
+            <p class="label">Production planning · process data · predictive maintenance</p>
+            <h3>Industrialising an axial-flux electric motor</h3>
+            <p class="summary">A year in the team bringing a new electric-motor production line into series production: engineering for the new facilities and data-driven monitoring of a key machine.</p>
+            <ul class="keys">
+              <li><b>Facilities</b><span>designed extraction and filtration solutions for the new production facilities</span></li>
+              <li><b>Data</b><span>analysed critical process parameters and built a Power BI dashboard for monitoring and predictive maintenance of a press</span></li>
+            </ul>
+            <div class="tags"><span>Production planning</span><span>Process parameters</span><span>Power BI</span><span>Predictive maintenance</span></div>
+            <p class="muted" style="margin-top:14px;font-size:13.5px">Internal company project: documents stay with Mercedes-Benz. Happy to talk through it in an interview.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- ============ POWER-TO-GAS ============ -->
+      <article class="proj" id="ptg" data-tracks="energy" data-order-energy="6" data-key="~56% overall">
+        <dl class="titleblock">
+          <div><dt>Type</dt><dd>Technology assessment</dd></div>
+          <div><dt>Context</dt><dd>BME · biomass utilisation</dd></div>
+          <div><dt>Period</dt><dd class="num">Nov 2025</dd></div>
+          <div><dt>Team</dt><dd>Individual</dd></div>
+        </dl>
+        <div class="proj-main">
+          <div>
+            <p class="label">Hydrogen · methanation · energy balance</p>
+            <h3>Power-to-Gas: hydrogen or synthetic methane?</h3>
+            <p class="summary">An assessment of whether Power-to-Gas is a key technology for the energy transition: energy and mass balances for both routes, a comparison of electrolyser and methanation technologies, and a real plant case.</p>
+            <ul class="keys">
+              <li><b>1 → 0.70 kWh</b><span>electricity to hydrogen (alkaline electrolysis, 25 bar)</span></li>
+              <li><b>→ 0.56 kWh</b><span>as synthetic methane after methanation, about 56% overall</span></li>
+              <li><b>3 electrolysers</b><span>SOE, PEM and alkaline compared on efficiency, TRL and lifetime</span></li>
+            </ul>
+            <div class="tags"><span>Mass &amp; energy balance</span><span>Electrolysis</span><span>Methanation</span><span>Sector coupling</span></div>
+          </div>
+          <figure>
+            <div class="plate"><img src="img/ptg.jpg" alt="Energy and mass balance: 1 kWh of renewable electricity through alkaline electrolysis gives 0.7 kWh of hydrogen for mobility; methanation with CO2 gives 0.56 kWh of methane for the gas grid." width="1200" height="675" loading="lazy"></div>
+            <figcaption>My energy and mass balance per 1 kWh of renewable electricity.</figcaption>
+          </figure>
+        </div>
+        <details class="more">
+          <summary>Full case study: technologies, plant case, verdict</summary>
+          <div class="deep">
+            <div>
+              <h4>Electrolyser comparison (literature values)</h4>
+              <div class="tbl">
+                <table class="data">
+                  <thead><tr><th>Type</th><th class="r">Efficiency</th><th class="r">Temperature</th><th class="r">TRL</th><th class="r">Stack life</th></tr></thead>
+                  <tbody>
+                    <tr><td>Solid oxide (SOE)</td><td class="r">81–86%</td><td class="r">500–1000 °C</td><td class="r">6–7</td><td class="r">&lt; 40,000 h</td></tr>
+                    <tr><td>PEM</td><td class="r">67–82%</td><td class="r">50–90 °C</td><td class="r">8</td><td class="r">&lt; 20,000 h</td></tr>
+                    <tr><td>Alkaline (AEL)</td><td class="r">62–82%</td><td class="r">60–90 °C</td><td class="r">9</td><td class="r">&lt; 90,000 h</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="deep-grid">
+              <div>
+                <h4>Balance per kWh</h4>
+                <p>1 kWh of electricity and 189 g of water give 0.7 kWh (20 g) of hydrogen and 168 g of oxygen. Methanation with 110 g of CO₂ gives 0.56 kWh (40 g) of methane and 0.115 kWh of heat, which is worth recovering.</p>
+              </div>
+              <div>
+                <h4>Plant case: Werlte e-gas</h4>
+                <p>6 MW plant producing about 1,300 m³/h of hydrogen and 350 m³/h of synthetic natural gas at 54 ± 3% efficiency, about 4,000 h a year. Electricity is about 70% of operating cost; the plant is not economic without subsidies.</p>
+              </div>
+              <div>
+                <h4>Verdict</h4>
+                <p>Hydrogen keeps more of the energy; methanation trades about a fifth of it for compatibility with existing gas grids and storage. Either route is only climate-positive with renewable power and biogenic CO₂.</p>
+              </div>
+              <div>
+                <h4>Barriers</h4>
+                <p>High production cost driven by electricity price and utilisation, and unclear legal classification of the gas. Reactor options range from fixed-bed (TRL 9) to three-phase reactors (TRL 5).</p>
+              </div>
+            </div>
+          </div>
+        </details>
+      </article>
+
+      <!-- ============ REVIEWS: E-BUSES + SECOND-LIFE BATTERIES ============ -->
+      <article class="proj" id="reviews" data-tracks="energy" data-order-energy="7" data-key="2 reviews" data-title="E-buses and second-life batteries">
+        <dl class="titleblock">
+          <div><dt>Type</dt><dd>Technology reviews</dd></div>
+          <div><dt>Context</dt><dd>BME smart grids · TU Berlin EV tech</dd></div>
+          <div><dt>Period</dt><dd class="num">2023 and 2025</dd></div>
+          <div><dt>Team</dt><dd>Individual · team of 4</dd></div>
+        </dl>
+        <div class="proj-main">
+          <div>
+            <p class="label">E-mobility · smart grids · Oct 2025 · individual</p>
+            <h3 style="font-size:20px">Electric buses in a smart grid</h3>
+            <p class="summary" style="font-size:15px">How e-buses differ from cars for the grid (250–600+ kWh packs vs. 50–120 kWh), which charging set-ups fit which routes, and where smart charging, microgrids and V2G create value. Review of 11 recent sources.</p>
+          </div>
+          <div>
+            <p class="label">Battery storage · Jan 2023 · team of 4</p>
+            <h3 style="font-size:20px">Second life for EV batteries</h3>
+            <p class="summary" style="font-size:15px">What happens to EV batteries below 70–80% capacity: ageing, which chemistries suit reuse, and stationary-storage uses, from a 2.8 MWh Hamburg system built from 100 BMW EVs to a 10 MWh store at Rome airport.</p>
+          </div>
+        </div>
+        <details class="more">
+          <summary>More detail</summary>
+          <div class="deep">
+            <div class="deep-grid">
+              <div>
+                <h4>E-bus charging options</h4>
+                <ul>
+                  <li>Depot plug-in: about 50–150 kW, up to 300 kW</li>
+                  <li>High-power depot: 150–300 kW and above</li>
+                  <li>Pantograph opportunity charging: 300–600 kW and above, in 3–10 minute stops</li>
+                </ul>
+                <p style="margin-top:8px">Output: a six-phase roll-out roadmap and a value matrix for operators, utilities and cities. V2G with buses has to be weighed against battery wear and warranty limits.</p>
+              </div>
+              <div>
+                <h4>Second-life findings</h4>
+                <p>Cycle life differs widely: LTO reaches 3,000–7,000 cycles, NMC and LFP about 2,000. Main barriers are safety, the variety of pack designs, conversion effort and economics. Recycled materials could cut raw-material cost by up to 30%.</p>
+              </div>
+            </div>
+          </div>
+        </details>
+      </article>
+    </div>
+
+    <div class="crossref" data-show="ml">
+      <span>Also did energy-systems and process design work: campus CHP, a water treatment plant, Berlin V2G scenarios and Power-to-Gas.</span>
+      <button class="ghost" type="button" data-goto="energy">Show energy &amp; process view</button>
+    </div>
+    <div class="crossref" data-show="energy">
+      <span>The ML side in more depth: the Siemens Energy thesis, a Mercedes-Benz robot energy model and small-data model selection.</span>
+      <button class="ghost" type="button" data-goto="ml">Show ML &amp; modelling view</button>
+    </div>
+  </section>
+  </div>
+
+  <div class="page" data-page="experience" hidden>
+  <section class="block exp-page" id="experience">
+    <a class="back" href="#projects">← Back to projects</a>
+    <div class="sec-head" style="margin-top:20px">
+      <h2 id="exp-title" tabindex="-1" style="font-size:clamp(34px,5vw,48px)">Experience</h2>
+      <p>Energy, automotive production and industrial software.</p>
+    </div>
+    <div class="log">
+      <div class="entry">
+        <p class="when num">09/2026 – now</p>
+        <div><h3>Independent project, RAG system</h3><p class="org">Geoberlin · Berlin</p>
+          <ul><li>Designing and building a retrieval-augmented generation system for a surveying engineering firm.</li></ul></div>
+      </div>
+      <div class="entry">
+        <p class="when num">02/2026 – 08/2026</p>
+        <div><h3>Master's thesis student, physics-informed ML</h3><p class="org">Siemens Energy · Mülheim an der Ruhr</p>
+          <ul><li>Hybrid crack-growth model for gas-turbine components in the Predictive Analytics team. <a href="#thesis">See the case study</a>.</li></ul></div>
+      </div>
+      <div class="entry">
+        <p class="when num">02/2024 – 08/2024</p>
+        <div><h3>Intern, production digitalisation</h3><p class="org">Mercedes-Benz AG · Berlin</p>
+          <ul>
+            <li>Built a physics-based Python model of a universal robot in engine assembly to study its energy use.</li>
+            <li>Developed and validated a neural network that predicts the robot's energy consumption. <a href="#robot">See the project</a>.</li>
+            <li>Trajectory modelling showed up to 15% modelled energy-savings potential from optimised instead of arbitrary trajectories.</li>
+          </ul></div>
+      </div>
+      <div class="entry">
+        <p class="when num">02/2023 – 02/2024</p>
+        <div><h3>Intern, axial-flux motor industrialisation</h3><p class="org">Mercedes-Benz AG · Berlin</p>
+          <ul>
+            <li>Designed extraction and filtration solutions for new production facilities.</li>
+            <li>Analysed critical process parameters and built a Power BI dashboard for monitoring and predictive maintenance of a press.</li>
+          </ul></div>
+      </div>
+      <div class="entry">
+        <p class="when num">02/2022 – 02/2023</p>
+        <div><h3>Working student, software development</h3><p class="org">PSI Metals GmbH · Berlin</p>
+          <ul>
+            <li>Tested and optimised an industrial operator interface for an animal-feed production plant.</li>
+            <li>Adapted data models with PL/SQL routines and maintained the project database.</li>
+          </ul></div>
+      </div>
+    </div>
+    <div class="pub">
+      <p class="label" style="margin-bottom:6px">Publication</p>
+      <p>Rahn M, Göhlich D, Fay T-A, van Ho K (2025). Data-driven design: predicting functional attributes in early-stage automotive engineering. <i>Proceedings of the Design Society</i>, 5:1091–1099. <a href="https://doi.org/10.1017/pds.2025.10123">doi.org/10.1017/pds.2025.10123</a></p>
+    </div>
+  </section>
+  </div>
+
+  <section class="block" id="contact">
+    <div class="cols" id="skills">
+      <div data-skill="ml"><h3>Modelling &amp; ML</h3><p>Python (pandas, NumPy, TensorFlow, PyTorch, scikit-learn) · physics-informed and hybrid models · neural networks · regression on small datasets · nested cross-validation · physical-consistency checks</p></div>
+      <div data-skill="sw"><h3>Software &amp; data</h3><p>FastAPI · Docker · Git · SQL / PL/SQL · MATLAB · Power BI · RAG and LLM applications · Claude Code, Cursor</p></div>
+      <div data-skill="energy"><h3>Energy &amp; process</h3><p>Renewable integration · energy storage and V2G · smart grids · Power-to-Gas · CHP and waste heat · water treatment · Excel-based sizing and investment cases · Aspen, CycleTempo, Solid Edge, AutoCAD</p></div>
+    </div>
+
+    <div style="margin-top:44px">
+      <h2 style="font-size:clamp(26px,3.4vw,34px)">Let's talk</h2>
+      <p class="muted" style="margin-top:8px;max-width:62ch" data-show="ml">Looking for an entry-level role in ML, data science or hybrid modelling for the energy transition, starting June 2027.</p>
+      <p class="muted" style="margin-top:8px;max-width:62ch" data-show="energy">Looking for an entry-level role in energy-systems or project engineering for the energy transition, starting June 2027.</p>
+      <div class="contact">
+        <span class="email" id="email">vanhokien@gmail.com</span>
+        <button class="copy" id="copy-email" type="button">Copy email</button>
+        <a href="https://www.linkedin.com/in/kvanho/">LinkedIn ↗</a>
+        <a href="https://github.com/kivanho">GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span>Kien van Ho · Berlin</span>
+      <span>Figures are from my own project work unless a source is named.</span>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var list = document.getElementById('project-list');
+  var projects = Array.prototype.slice.call(list.querySelectorAll('.proj'));
+  var labels = {ml: 'Machine learning & modelling', energy: 'Energy & process engineering'};
+  var skillOrder = {ml: ['ml', 'sw', 'energy'], energy: ['energy', 'ml', 'sw']};
+  var track = 'ml';
+
+  function orderOf(p, t) { return Number(p.dataset[t === 'ml' ? 'orderMl' : 'orderEnergy']); }
+  function inTrack(p, t) { return (' ' + p.dataset.tracks + ' ').indexOf(' ' + t + ' ') > -1; }
+
+  function renderList() {
+    var ol = document.getElementById('plist');
+    ol.textContent = '';
+    projects.filter(function (p) { return inTrack(p, track); })
+      .sort(function (x, y) { return orderOf(x, track) - orderOf(y, track); })
+      .forEach(function (p) {
+        var key = p.querySelector('.keys li b');
+        var li = document.createElement('li'), a = document.createElement('a');
+        a.href = '#' + p.id;
+        var k = document.createElement('span'); k.className = 'pk';
+        k.textContent = p.dataset.key || (key ? key.textContent : p.querySelector('.titleblock dd').textContent);
+        var t = document.createElement('span'); t.className = 'pt';
+        t.textContent = p.dataset.title || p.querySelector('h3').textContent;
+        var g = document.createElement('span'); g.className = 'pg'; g.textContent = '→'; g.setAttribute('aria-hidden', 'true');
+        a.append(k, t, g); li.appendChild(a); ol.appendChild(li);
+      });
+  }
+
+  function setTrack(t) {
+    track = t;
+    projects.forEach(function (p) {
+      var on = inTrack(p, t);
+      p.hidden = !on;
+      p.style.order = on ? orderOf(p, t) : '';
+    });
+    document.querySelectorAll('[data-show]').forEach(function (el) { el.classList.toggle('on', el.dataset.show === t); });
+    document.querySelectorAll('.switch button').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.track === t ? 'true' : 'false');
+    });
+    document.getElementById('track-label').textContent = labels[t];
+    var skills = document.getElementById('skills');
+    skillOrder[t].forEach(function (k, i) { skills.querySelector('[data-skill="' + k + '"]').style.order = i; });
+    renderList();
+    syncExpandLabel();
+  }
+
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(function (pg) { pg.hidden = pg.dataset.page !== name; });
+  }
+
+  function visibleDetails() {
+    return projects.filter(function (p) { return !p.hidden; })
+      .map(function (p) { return p.querySelector('details'); }).filter(Boolean);
+  }
+  function syncExpandLabel() {
+    var ds = visibleDetails();
+    document.getElementById('expand-all').textContent = ds.length && ds.every(function (d) { return d.open; }) ? 'Collapse all' : 'Expand all';
+  }
+  document.getElementById('expand-all').addEventListener('click', function () {
+    var ds = visibleDetails(), open = !ds.every(function (d) { return d.open; });
+    ds.forEach(function (d) { d.open = open; });
+    syncExpandLabel();
+  });
+  projects.forEach(function (p) { var d = p.querySelector('details'); if (d) d.addEventListener('toggle', syncExpandLabel); });
+
+  var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function scrollTo(el) { if (el) el.scrollIntoView({behavior: calm ? 'auto' : 'smooth', block: 'start'}); }
+
+  // Routes: ml | energy (view), experience (page), contact | projects (scroll), or a project id (open it).
+  function route(h, scroll) {
+    if (h === 'ml' || h === 'energy') { showPage('home'); setTrack(h); if (scroll) scrollTo(document.getElementById('projects')); }
+    else if (h === 'experience') { showPage('experience'); window.scrollTo(0, 0); document.getElementById('exp-title').focus({preventScroll: true}); }
+    else if (h === 'contact') { scrollTo(document.getElementById('contact')); return; }
+    else if (h === 'projects') { showPage('home'); scrollTo(document.getElementById('projects')); }
+    else {
+      var p = h && document.getElementById(h);
+      if (!p || !p.classList.contains('proj')) { showPage('home'); return; }
+      showPage('home');
+      if (!inTrack(p, track)) setTrack(p.dataset.tracks.split(' ')[0]);
+      var d = p.querySelector('details'); if (d) d.open = true;
+      scrollTo(p);
+      var f = p.querySelector('summary') || p.querySelector('h3');
+      if (f) { if (!d) f.setAttribute('tabindex', '-1'); f.focus({preventScroll: true}); }
+    }
+    // the URL keeps views, pages and project ids, so links can be shared and Back works
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    e.preventDefault();
+    var h = a.getAttribute('href').slice(1);
+    if (h !== 'contact' && h !== 'projects') { try { history.pushState(null, '', '#' + h); } catch (err) {} }
+    route(h, true);
+  });
+  window.addEventListener('popstate', function () { route((location.hash || '').slice(1) || track, false); });
+  document.querySelectorAll('.switch button').forEach(function (b) {
+    b.addEventListener('click', function () { try { history.pushState(null, '', '#' + b.dataset.track); } catch (err) {} route(b.dataset.track, false); });
+  });
+  document.querySelectorAll('[data-goto]').forEach(function (b) {
+    b.addEventListener('click', function () { try { history.pushState(null, '', '#' + b.dataset.goto); } catch (err) {} route(b.dataset.goto, true); });
+  });
+
+  var h0 = (location.hash || '').slice(1);
+  setTrack('ml');
+  if (h0) route(h0, false);
+
+  document.getElementById('copy-email').addEventListener('click', function () {
+    var btn = this, el = document.getElementById('email');
+    function done(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = 'Copy email'; }, 1800); }
+    function fallback() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); done('Selected, copy it now'); }
+    try { navigator.clipboard.writeText(el.textContent).then(function () { done('Copied'); }, fallback); } catch (e) { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
