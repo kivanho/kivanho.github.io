@@ -25,6 +25,7 @@
   --ink:#1C2127; --text:#2E343B; --muted:#6B7178; --line:#D8D4CA; --line-2:#ABA69A;
   --accent:#0F6E6A; --accent-hi:#0F6E6A; --accent-soft:#E3F1EE; --on-accent:#FFFFFF;
   --c2:#0F6E6A; --warn:#A8471F; --plate:#FFFFFF;
+  --grid:rgba(28,33,39,.045); --grid-major:rgba(28,33,39,.085);
   --display:"Schibsted Grotesk","Avenir Next","Helvetica Neue",sans-serif;
   --body:"Schibsted Grotesk","Avenir Next","Helvetica Neue",sans-serif;
   --mono:"Martian Mono","IBM Plex Mono",Menlo,ui-monospace,monospace;
@@ -35,17 +36,21 @@
   --ink:#F1F3F5; --text:#D3D8DD; --muted:#98A0A8; --line:#3A434D; --line-2:#5B6671;
   --accent:#5DCAA5; --accent-hi:#5DCAA5; --accent-soft:#183A33; --on-accent:#0E1A17;
   --c2:#5DCAA5; --warn:#F0997B; --plate:#FFFFFF;
+  --grid:rgba(255,255,255,.035); --grid-major:rgba(255,255,255,.065);
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#15191D; --surface:#1B2026; --wash:#21272E;
   --ink:#F1F3F5; --text:#D3D8DD; --muted:#98A0A8; --line:#3A434D; --line-2:#5B6671;
   --accent:#5DCAA5; --accent-hi:#5DCAA5; --accent-soft:#183A33; --on-accent:#0E1A17;
   --c2:#5DCAA5; --warn:#F0997B; --plate:#FFFFFF;
+  --grid:rgba(255,255,255,.035); --grid-major:rgba(255,255,255,.065);
   color-scheme:dark}
 
 *{box-sizing:border-box}
 html{background:var(--paper)}
-body{margin:0;color:var(--text);font-family:var(--body);font-size:16.5px;line-height:1.65;background:var(--paper);
+body{margin:0;color:var(--text);font-family:var(--body);font-size:16.5px;line-height:1.65;background-color:var(--paper);
+  background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:120px 120px,120px 120px,24px 24px,24px 24px;background-position:-1px -1px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
 .wrap{max-width:1080px;margin:0 auto}
 .sheet{position:relative}
@@ -79,7 +84,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 
 /* hero: title, abstract with a margin note, figure and author block */
 .hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:56px;padding-block:56px 48px;align-items:start}
-.side{display:grid;gap:26px;min-width:0;align-self:end}
+.side{display:grid;gap:26px;min-width:0;align-self:center}
+.side .plist-wrap{margin-top:0}
+.side .plist li a{background:color-mix(in srgb,var(--paper) 62%,transparent);-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px)}
 .hero h1{font-size:clamp(46px,7.4vw,82px);font-weight:650;letter-spacing:-.035em;line-height:.98}
 .hero .role{font-size:clamp(18px,2.3vw,22px);font-weight:500;font-style:italic;color:var(--accent);margin-top:14px;max-width:36ch;line-height:1.3}
 .abstract{display:grid;grid-template-columns:minmax(0,1fr) 168px;gap:22px;margin-top:18px;align-items:start}
@@ -99,15 +106,15 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 /* hero backgrounds: a loss landscape (ML view) and an energy process flow (energy view), faint, fading out towards the text */
 .hero{position:relative}
 .hero > *:not(.hero-bg){position:relative;z-index:1}
-.hero-bg{position:absolute;top:28px;right:0;width:44%;height:clamp(200px,28vw,320px);z-index:0;pointer-events:none;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%);mask-image:linear-gradient(90deg,transparent 0,#000 18%)}
-.hero-bg canvas,.hero-bg svg{position:absolute;inset:0;width:100%;height:100%}
-.ef-box{fill:var(--paper);stroke:var(--ink);stroke-opacity:.2}
-.ef-box.hot{stroke:var(--accent);stroke-opacity:.55;fill:var(--accent-soft)}
-.ef-line{fill:none;stroke:var(--ink);stroke-opacity:.2;stroke-width:1.2}
-.ef-line.hot{stroke:var(--accent);stroke-opacity:.55}
-.ef-txt{font:400 11.5px var(--mono);fill:var(--ink);fill-opacity:.42;letter-spacing:.02em}
-.ef-txt.hot{fill:var(--accent);fill-opacity:.85}
+.hero-bg{position:absolute;top:0;bottom:0;right:0;width:72%;z-index:0;pointer-events:none;opacity:.75;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 34%);mask-image:linear-gradient(90deg,transparent 0,#000 34%)}
+.hero-bg canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-bg svg{position:absolute;right:0;top:50%;transform:translateY(-50%);width:min(64%,560px);height:auto}
+.pid,.pid path,.pid rect,.pid circle{fill:none;stroke:var(--ink);stroke-opacity:.36;stroke-width:1.3}
+.pid.hot,.pid.hot path,.pid.hot rect,.pid.hot circle{stroke:var(--accent);stroke-opacity:.75}
+.pid.el{stroke-dasharray:4 3}
+.pid-txt text{font:400 10px var(--mono);fill:var(--ink);fill-opacity:.42}
+.pid-txt text.hot{fill:var(--accent);fill-opacity:.9}
 @media (max-width:860px){.hero-bg{display:none}} /* single column: no free band, so no background behind text */
 
 /* sections */
@@ -285,26 +292,30 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
   <section class="hero">
     <div class="hero-bg" aria-hidden="true">
       <canvas id="bg-loss" data-show="ml"></canvas>
-      <svg data-show="energy" viewBox="0 0 480 290" preserveAspectRatio="xMaxYMin meet">
-        <defs><marker id="ef-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" style="fill:var(--ink);fill-opacity:.3"/></marker></defs>
-        <rect class="ef-box" x="10" y="16" width="130" height="36" rx="8"/><text class="ef-txt" x="75" y="38" text-anchor="middle">wind · PV</text>
-        <rect class="ef-box hot" x="175" y="16" width="130" height="36" rx="8"/><text class="ef-txt hot" x="240" y="38" text-anchor="middle">electrolysis</text>
-        <rect class="ef-box" x="340" y="16" width="130" height="36" rx="8"/><text class="ef-txt" x="405" y="38" text-anchor="middle">H₂ storage</text>
-        <rect class="ef-box" x="10" y="126" width="130" height="36" rx="8"/><text class="ef-txt" x="75" y="148" text-anchor="middle">power grid</text>
-        <rect class="ef-box hot" x="175" y="126" width="130" height="36" rx="8"/><text class="ef-txt hot" x="240" y="148" text-anchor="middle">EVs · V2G</text>
-        <rect class="ef-box hot" x="340" y="126" width="130" height="36" rx="8"/><text class="ef-txt hot" x="405" y="148" text-anchor="middle">methanation</text>
-        <rect class="ef-box" x="10" y="236" width="130" height="36" rx="8"/><text class="ef-txt" x="75" y="258" text-anchor="middle">district heat</text>
-        <rect class="ef-box hot" x="175" y="236" width="130" height="36" rx="8"/><text class="ef-txt hot" x="240" y="258" text-anchor="middle">CHP</text>
-        <rect class="ef-box" x="340" y="236" width="130" height="36" rx="8"/><text class="ef-txt" x="405" y="258" text-anchor="middle">gas grid</text>
-        <path class="ef-line" d="M140 34 H173" marker-end="url(#ef-ar)"/>
-        <path class="ef-line" d="M305 34 H338" marker-end="url(#ef-ar)"/>
-        <path class="ef-line" d="M75 52 V124" marker-end="url(#ef-ar)"/>
-        <path class="ef-line" d="M405 52 V124" marker-end="url(#ef-ar)"/>
-        <path class="ef-line" d="M140 139 H173" marker-end="url(#ef-ar)"/>
-        <path class="ef-line" d="M175 149 H142" marker-end="url(#ef-ar)"/>
-        <path class="ef-line" d="M405 162 V234" marker-end="url(#ef-ar)"/>
-        <path class="ef-line" d="M340 254 H307" marker-end="url(#ef-ar)"/>
-        <path class="ef-line" d="M175 254 H142" marker-end="url(#ef-ar)"/>
+      <svg data-show="energy" viewBox="0 0 480 300" preserveAspectRatio="xMidYMid meet">
+        <defs><marker id="ef-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" style="fill:var(--ink);fill-opacity:.35"/></marker></defs>
+        <g class="pid"><path d="M40 40 V92 M32 92 H48"/><path d="M40 40 L40 17 M40 40 L60 52 M40 40 L20 52"/><circle cx="40" cy="40" r="2.5"/></g>
+        <g class="pid"><path d="M78 86 L92 62 L128 62 L114 86 Z M85 74 H121 M110 62 L96 86 M103 86 V96"/></g>
+        <path class="pid el" d="M40 92 V112 H184 V96 H198" marker-end="url(#ef-ar)"/><path class="pid el" d="M103 96 V112"/>
+        <path class="pid" d="M10 170 H56" marker-end="url(#ef-ar)"/>
+        <g class="pid"><circle cx="70" cy="170" r="12"/><path d="M64 162 L80 170 L64 178 Z"/></g>
+        <path class="pid" d="M82 170 H106" marker-end="url(#ef-ar)"/>
+        <g class="pid hot"><rect x="108" y="156" width="40" height="28"/><path d="M108 184 L148 156" stroke-dasharray="4 3"/></g>
+        <path class="pid" d="M148 170 H228 V107" marker-end="url(#ef-ar)"/>
+        <g class="pid hot"><rect x="200" y="40" width="56" height="64" rx="3"/><path d="M216 48 V96 M240 48 V96"/></g>
+        <path class="pid" d="M256 56 H298" marker-end="url(#ef-ar)"/>
+        <path class="pid" d="M256 88 H282" marker-end="url(#ef-ar)"/>
+        <rect class="pid" x="300" y="42" width="72" height="28" rx="14"/>
+        <path class="pid" d="M372 56 H420 V118" marker-end="url(#ef-ar)"/>
+        <g class="pid"><circle cx="420" cy="134" r="14"/><path d="M408 127 L432 123 M408 141 L432 145"/></g>
+        <path class="pid" d="M420 148 V174" marker-end="url(#ef-ar)"/>
+        <g class="pid hot"><rect x="404" y="176" width="32" height="76" rx="10"/><path d="M404 196 H436 M404 232 H436 M408 196 L432 232 M432 196 L408 232"/></g>
+        <path class="pid" d="M466 214 H440" marker-end="url(#ef-ar)"/>
+        <path class="pid" d="M420 252 V270 H334" marker-end="url(#ef-ar)"/>
+        <g class="pid hot"><circle cx="318" cy="270" r="14"/><path d="M304 270 L309 262 L315 278 L321 262 L327 278 L332 270"/></g>
+        <path class="pid" d="M318 256 V232" marker-end="url(#ef-ar)"/>
+        <path class="pid" d="M304 270 H236 M232 262 V278 M226 262 V278 M226 270 H198" marker-end="url(#ef-ar)"/>
+        <g class="pid-txt"><text x="40" y="10" text-anchor="middle">wind</text><text x="103" y="54" text-anchor="middle">PV</text><text x="14" y="163">water</text><text x="70" y="198" text-anchor="middle">pump</text><text class="hot" x="128" y="200" text-anchor="middle">filter</text><text class="hot" x="228" y="32" text-anchor="middle">electrolyser</text><text x="286" y="92">O₂</text><text x="336" y="86" text-anchor="middle">H₂ storage</text><text x="400" y="138" text-anchor="end">compressor</text><text x="456" y="208" text-anchor="middle">CO₂</text><text class="hot" x="398" y="218" text-anchor="end">methanation</text><text x="324" y="228">heat</text><text class="hot" x="318" y="296" text-anchor="middle">heat exchanger</text><text x="194" y="266" text-anchor="end">CH₄ to</text><text x="194" y="278" text-anchor="end">gas grid</text></g>
       </svg>
     </div>
         <div>
@@ -326,14 +337,12 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
         </div>
         <span class="hint">Same person, two views.</span>
       </div>
+    </div>
+    <div class="side">
       <div class="plist-wrap">
         <p class="label" id="plist-label">Projects in this view</p>
         <ol class="plist" id="plist"></ol>
       </div>
-    </div>
-    <div class="side">
-    <figure class="fig" data-show="ml"><div class="plate"><img src="img/twin_overview.jpg" alt="Left: kNN efficiency curves over electrical power for three methane shares. Right: actual power following set-point steps from 8 to 12 kW and from 12 to 6 kW within a few seconds, with the fuel flows." width="1500" height="570"></div><figcaption><b>Fig. 1</b><span>Dual-fuel engine twin: efficiency model and response to set-point changes, from the public code (synthetic engine map).</span></figcaption></figure>
-    <figure class="fig" data-show="energy"><div class="plate"><img src="img/karachi.jpg" alt="Process flow diagram of the drinking-water treatment plant at Karachi, from intake through flotation, filtration, softening and disinfection to storage." width="1400" height="788"></div><figcaption><b>Fig. 1</b><span>Drinking-water plant, Karachi: team process-flow diagram of the treatment train.</span></figcaption></figure>
     </div>
   </section>
 
@@ -1194,7 +1203,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, r.width, r.height);
     var cs = getComputedStyle(document.documentElement), ink = cs.getPropertyValue('--ink').trim(), acc = cs.getPropertyValue('--accent').trim();
-    var S = Math.min(r.width / 3.7, r.height / 2.85), H = S * 0.55, cx = r.width - 1.8 * S - 6, cy = 1.2 * S + 6;
+    var S = Math.min(r.width / 3.5, r.height / 2.7, 200), H = S * 0.55, cx = r.width * 0.6, cy = (r.height - 2.68 * S) / 2 + 1.18 * S;
     var c30 = Math.cos(Math.PI / 6), s30 = Math.sin(Math.PI / 6);
     function P(x, y) { return [cx + (x - y) * c30 * S, cy + (x + y) * s30 * S - f(x, y) * H + H * 0.9]; }
     var N = 26, i, j, p;
