@@ -441,7 +441,7 @@ button.copy:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
                 <p style="margin-top:10px">Errors are measured in natural-log cycle space, so the typical miss shrank from a factor of about 2.6 to about 2.2 in cycles. The error distribution moved from a consistent underestimate to centred on zero, and the median prediction ratio moved close to 1. The smaller RMSE gain shows that typical predictions improved more than the worst ones.</p>
               </div>
             </div>
-            <div class="note"><b>Limits I documented.</b> A "late" prediction overestimates life, which is the unsafe direction, so the model is less conservative than the baseline. One specimen was predicted at more than three times its measured life, showing instability with so little data. A deployable version would need a lower bound, a one-sided loss or a safety factor, and data across more materials and load ratios. The thesis is a feasibility study, not a certified lifetime assessment.</div>
+            <div class="note"><b>Limits I documented.</b> A "late" prediction overestimates life, which is the unsafe direction, so the model is less conservative than the baseline. One specimen was predicted at more than three times its measured life, showing instability with so little data. A deployable version would need a lower bound, a one-sided loss or a safety factor, and data across more materials and stress ratios. The thesis is a feasibility study, not a certified lifetime assessment.</div>
             <blockquote>
               <p>“His ability to translate complex physical relationships into comprehensible data-driven models deserves particular mention.”</p>
               <cite>Reference letter, Predictive Analytics, Siemens Energy (translated from German)</cite>
@@ -569,6 +569,7 @@ button.copy:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
               <li><b>4 models</b><span>linear regression, Lasso, kNN and support vector regression</span></li>
               <li><b>5 targets</b><span>passenger and cargo volume, fuel efficiency, towing, acceleration</span></li>
               <li><b>Paper</b><span>the work fed into a 2025 <i>Proceedings of the Design Society</i> paper I co-authored</span></li>
+              <li><b>Re-checked</b><span>with nested, twin-aware cross-validation in the public code, the median R² falls from 0.55–0.69 to 0.15–0.27</span></li>
             </ul>
             <div class="tags"><span>Python</span><span>scikit-learn</span><span>Feature selection</span><span>Cross-validation</span><a class="code" href="https://github.com/kivanho/small-data-model-selection">Code on GitHub ↗</a></div>
           </div>
@@ -583,7 +584,7 @@ button.copy:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
             <div class="deep-grid">
               <div>
                 <h4>Data and features</h4>
-                <p>31 midsize sedans sold in the US in 2002, from a published platform study (de Weck, 2006). Nine design variables: fuel tank capacity, engine displacement, weight, wheelbase, ground clearance, height, length, tyre width and tyre diameter. One car (Honda Accord) held back as a final check.</p>
+                <p>31 midsize sedans sold in the US in 2002, from a published platform study (de Weck, 2006). Nine design variables: fuel tank capacity, engine displacement, front track width, wheelbase, ground clearance, height, length, tyre width and tyre diameter. One car (Honda Accord) held back as a final check.</p>
               </div>
               <div>
                 <h4>Method</h4>
@@ -608,16 +609,15 @@ button.copy:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
             </div>
             <div class="deep-grid">
               <div>
-                <h4>Findings</h4>
+                <h4>Thesis findings</h4>
                 <ul>
-                  <li>No single model wins; the right choice depends on the attribute.</li>
-                  <li>Non-linear models beat linear regression on most targets.</li>
-                  <li>Passenger volume is well explained by the design data; towing capacity is not, and linear models fail badly on it.</li>
+                  <li>No single model won; the best choice depended on the attribute.</li>
+                  <li>Passenger and cargo volume were the best explained attributes; towing capacity was not.</li>
                 </ul>
               </div>
               <div>
-                <h4>Looking back</h4>
-                <p>Hyperparameters were chosen on the same folds used for scoring, so these R² values are likely optimistic. My master's thesis uses nested cross-validation, which removes that bias.</p>
+                <h4>Re-evaluated in 2026</h4>
+                <p>The thesis tuned and scored on the same folds, and badge-engineered twins such as the Ford Taurus and Mercury Sable could land on both sides of a split. I re-ran the pipeline with repeated nested cross-validation that keeps twins in the same fold, and dropped 11 placeholder towing values. The median R² falls from 0.55–0.69 to 0.15–0.27. Cargo and passenger volume stay partly predictable (R² about 0.4–0.5), fuel efficiency and acceleration are weak, and towing capacity is not predictable from these variables. <a href="https://github.com/kivanho/small-data-model-selection">Code and results ↗</a></p>
               </div>
             </div>
           </div>
