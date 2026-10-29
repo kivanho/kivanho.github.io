@@ -22,7 +22,7 @@
    Type: Schibsted Grotesk (headings and body), Martian Mono (figure labels, metadata). */
 :root{
   --paper:#FBFAF7; --surface:#FFFFFF; --wash:#F3F1EC;
-  --ink:#1C2127; --text:#2E343B; --muted:#6B7178; --line:#E4E1D9; --line-2:#C9C5BB;
+  --ink:#1C2127; --text:#2E343B; --muted:#6B7178; --line:#D8D4CA; --line-2:#ABA69A;
   --accent:#0F6E6A; --accent-hi:#0F6E6A; --accent-soft:#E3F1EE; --on-accent:#FFFFFF;
   --c2:#0F6E6A; --warn:#A8471F; --plate:#FFFFFF;
   --display:"Schibsted Grotesk","Avenir Next","Helvetica Neue",sans-serif;
@@ -32,13 +32,13 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --paper:#15191D; --surface:#1B2026; --wash:#21272E;
-  --ink:#F1F3F5; --text:#D3D8DD; --muted:#98A0A8; --line:#2C333B; --line-2:#46505A;
+  --ink:#F1F3F5; --text:#D3D8DD; --muted:#98A0A8; --line:#3A434D; --line-2:#5B6671;
   --accent:#5DCAA5; --accent-hi:#5DCAA5; --accent-soft:#183A33; --on-accent:#0E1A17;
   --c2:#5DCAA5; --warn:#F0997B; --plate:#FFFFFF;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#15191D; --surface:#1B2026; --wash:#21272E;
-  --ink:#F1F3F5; --text:#D3D8DD; --muted:#98A0A8; --line:#2C333B; --line-2:#46505A;
+  --ink:#F1F3F5; --text:#D3D8DD; --muted:#98A0A8; --line:#3A434D; --line-2:#5B6671;
   --accent:#5DCAA5; --accent-hi:#5DCAA5; --accent-soft:#183A33; --on-accent:#0E1A17;
   --c2:#5DCAA5; --warn:#F0997B; --plate:#FFFFFF;
   color-scheme:dark}
@@ -79,7 +79,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 
 /* hero: title, abstract with a margin note, figure and author block */
 .hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:56px;padding-block:56px 48px;align-items:start}
-.side{display:grid;gap:26px;min-width:0}
+.side{display:grid;gap:26px;min-width:0;align-self:center}
 .hero h1{font-size:clamp(46px,7.4vw,82px);font-weight:650;letter-spacing:-.035em;line-height:.98}
 .hero .role{font-size:clamp(18px,2.3vw,22px);font-weight:500;font-style:italic;color:var(--accent);margin-top:14px;max-width:36ch;line-height:1.3}
 .abstract{display:grid;grid-template-columns:minmax(0,1fr) 168px;gap:22px;margin-top:18px;align-items:start}
@@ -106,8 +106,8 @@ button.ghost:hover{border-color:var(--ink)}
 
 /* projects: each one an article in the paper */
 .projects{display:flex;flex-direction:column;gap:30px}
-.proj{background:var(--surface);border:1px solid var(--line);border-radius:14px;position:relative;overflow:hidden;transition:border-color .25s var(--ease)}
-.proj:hover{border-color:var(--line-2)}
+.proj{background:var(--surface);border:1px solid var(--line-2);border-radius:14px;position:relative;overflow:hidden;transition:border-color .25s var(--ease)}
+.proj:hover{border-color:var(--ink)}
 .titleblock{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line);margin:0;background:var(--paper)}
 .titleblock div{padding:10px 18px;min-width:0}
 .titleblock dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
@@ -124,7 +124,7 @@ button.ghost:hover{border-color:var(--ink)}
 .tags a.code{font-family:var(--mono);font-size:10.5px;padding:3px 11px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);text-decoration:none;background:var(--accent-soft)}
 .tags a.code:hover{background:var(--accent);color:var(--on-accent)}
 figure{margin:0;min-width:0}
-.plate{background:var(--plate);border:1px solid var(--line);border-radius:10px;padding:10px;overflow:hidden}
+.plate{background:var(--plate);border:1px solid var(--line-2);border-radius:10px;padding:10px;overflow:hidden}
 .plate img{display:block;width:100%;height:auto}
 figcaption{font-size:13px;color:var(--muted);margin-top:9px;line-height:1.5}
 
@@ -136,7 +136,7 @@ details.more > summary::before{content:"+";font-family:var(--mono);font-size:13p
 details.more[open] > summary::before{content:"−";background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 details.more > summary:hover{background:var(--paper)}
 .deep{padding:6px 30px 32px;display:grid;gap:26px}
-.deep-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 38px}
+.deep-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px 34px} /* same columns as .proj-main, so details line up with the card above */
 .deep > *,.deep-grid > *{min-width:0}
 .deep h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 8px;font-weight:500}
 .deep p,.deep li{font-size:15.5px}
@@ -184,11 +184,14 @@ blockquote cite{display:block;margin-top:8px;font-style:normal;font:400 10.5px v
 .plist{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--ink)}
 .plist li a{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:10px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
 .plist li a:hover .pt{color:var(--accent)}
-.plist .pk{font-family:var(--mono);font-size:11.5px;color:var(--accent);white-space:nowrap}
+.plist .pk{font-family:var(--mono);font-size:11px;color:var(--accent);line-height:1.4;min-width:0}
 .plist .pt{font-weight:500;font-size:15.5px}
 .plist .pg{color:var(--muted);font-family:var(--mono);transition:transform .25s var(--ease)}
 .plist li a:hover .pg{transform:translateX(4px)}
 .exp-page{border-top:0;padding-block:40px 56px}
+.cv-h{font-size:13px;font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:44px 0 12px}
+.exp-page .facts{max-width:760px}
+.exp-page .pub{margin-top:28px}
 .back{font-size:14.5px;font-weight:500;text-decoration:none}
 
 /* experience */
@@ -199,12 +202,11 @@ blockquote cite{display:block;margin-top:8px;font-style:normal;font:400 10.5px v
 .entry .org{color:var(--accent);font-weight:500;font-size:15.5px;margin-top:3px}
 .entry ul{margin:10px 0 0;padding-left:18px;display:grid;gap:4px;font-size:15.5px}
 .entry li::marker{color:var(--line-2)}
-.pub{margin-top:34px;padding:18px 22px;background:var(--surface);border:1px solid var(--line);border-radius:14px;font-size:15.5px}
+.pub{margin-top:34px;padding:18px 22px;background:var(--surface);border:1px solid var(--line-2);border-radius:14px;font-size:15.5px}
 
 /* skills + contact */
-.cols{display:flex;gap:0;flex-wrap:wrap;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
-.cols > div{flex:1 1 240px;min-width:0;padding:18px 22px 18px 0}
-.cols > div + div{padding-left:22px;border-left:1px solid var(--line)}
+.cols{display:flex;gap:8px 36px;flex-wrap:wrap;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.cols > div{flex:1 1 240px;min-width:0;padding:18px 0}
 .cols h3{font-size:17px;font-weight:600;margin-bottom:8px}
 .cols p{font-size:15px}
 .cols p + p{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
@@ -236,8 +238,6 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
   details.more > summary{padding:14px 20px}
   .deep{padding:4px 20px 24px}
   .entry{grid-template-columns:minmax(0,1fr);gap:4px}
-  .cols > div,.cols > div + div{padding:16px 0;border-left:0;border-top:1px solid var(--line)}
-  .cols > div:first-child{border-top:0}
 }
 
 /* motion: a short settle on load, never hiding content */
@@ -260,7 +260,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     <span class="mark">KIEN VAN HO · PORTFOLIO</span>
     <nav aria-label="Sections">
       <a href="#projects">Projects</a>
-      <a href="#experience">Experience</a>
+      <a href="#cv">CV</a>
       <a href="#contact">Contact</a>
       <a href="https://github.com/kivanho">GitHub ↗</a>
       <button class="theme" type="button" id="theme" aria-label="Switch colour theme">Dark</button>
@@ -296,14 +296,6 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     <div class="side">
     <figure class="fig" data-show="ml"><div class="plate"><img src="img/twin_overview.jpg" alt="Left: kNN efficiency curves over electrical power for three methane shares. Right: actual power following set-point steps from 8 to 12 kW and from 12 to 6 kW within a few seconds, with the fuel flows." width="1500" height="570"></div><figcaption><b>Fig. 1</b><span>Dual-fuel engine twin: efficiency model and response to set-point changes, from the public code (synthetic engine map).</span></figcaption></figure>
     <figure class="fig" data-show="energy"><div class="plate"><img src="img/karachi.jpg" alt="Process flow diagram of the drinking-water treatment plant at Karachi, from intake through flotation, filtration, softening and disinfection to storage." width="1400" height="788"></div><figcaption><b>Fig. 1</b><span>Drinking-water plant, Karachi: team process-flow diagram of the treatment train.</span></figcaption></figure>
-    <dl class="facts">
-      <div><dt>Education</dt><dd>Erasmus Mundus Master ME3+ (IMT Atlantique, FR &amp; BME, HU), double M.Sc. in Mechanical Engineering Modelling and Process &amp; Bioprocess Engineering, summa cum laude, 2026 · B.Sc. Engineering Science, TU Berlin, grade 1.4</dd></div>
-      <div><dt>Industry</dt><dd>Siemens Energy (master's thesis) · Mercedes-Benz (2 internships) · PSI Metals (working student) · <a href="#experience">Experience →</a></dd></div>
-      <div><dt>Based in</dt><dd>Berlin (hybrid or on-site) · remote within Germany · open to relocating to Hamburg or Freiburg</dd></div>
-      <div><dt>Languages</dt><dd>German, Vietnamese (native) · English C1–C2 · French B2</dd></div>
-      <div><dt>Available</dt><dd>Full-time from June 2027</dd></div>
-      <div><dt>Code</dt><dd><a href="https://github.com/kivanho">github.com/kivanho</a></dd></div>
-    </dl>
     </div>
   </section>
 
@@ -322,7 +314,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     <div class="projects" id="project-list">
 
       <!-- ============ MASTER'S THESIS ============ -->
-      <article class="proj" id="thesis" data-tracks="ml" data-order-ml="1" data-key="−20.1% error">
+      <article class="proj" id="thesis" data-tracks="ml" data-order-ml="1" data-key="Individual">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Master's thesis</dd></div>
           <div><dt>Partner</dt><dd>Siemens Energy</dd></div>
@@ -406,12 +398,12 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ DIGITAL TWIN ============ -->
-      <article class="proj" id="twin" data-tracks="ml energy" data-order-ml="2" data-order-energy="4" data-key="R² 0.93">
+      <article class="proj" id="twin" data-tracks="ml energy" data-order-ml="2" data-order-energy="4" data-key="Team of 3 · lead">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Master's project</dd></div>
           <div><dt>Context</dt><dd>IMT Atlantique · GreenTwins</dd></div>
           <div><dt>Period</dt><dd class="num">Feb – Jun 2025</dd></div>
-          <div><dt>Team</dt><dd>3 · I led and implemented</dd></div>
+          <div><dt>Team</dt><dd>Team of 3 · lead</dd></div>
         </dl>
         <div class="proj-main">
           <div>
@@ -484,12 +476,12 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ MERCEDES ROBOT ENERGY (industry, confidential) ============ -->
-      <article class="proj" id="robot" data-tracks="ml" data-order-ml="3" data-key="Up to 15%">
+      <article class="proj" id="robot" data-tracks="ml" data-order-ml="3" data-key="Intern project">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Industry project</dd></div>
           <div><dt>Company</dt><dd>Mercedes-Benz AG</dd></div>
           <div><dt>Period</dt><dd class="num">Feb – Aug 2024</dd></div>
-          <div><dt>Team</dt><dd>Intern, production digitalisation</dd></div>
+          <div><dt>Team</dt><dd>Intern project</dd></div>
         </dl>
         <div class="proj-main solo">
           <div>
@@ -508,12 +500,12 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ BACHELOR THESIS ============ -->
-      <article class="proj" id="bachelor" data-tracks="ml" data-order-ml="4" data-key="Paper 2025">
+      <article class="proj" id="bachelor" data-tracks="ml" data-order-ml="4" data-key="Individual">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Bachelor's thesis</dd></div>
           <div><dt>Context</dt><dd>TU Berlin · product development</dd></div>
           <div><dt>Period</dt><dd class="num">2024</dd></div>
-          <div><dt>Team</dt><dd>Individual thesis</dd></div>
+          <div><dt>Team</dt><dd>Individual</dd></div>
         </dl>
         <div class="proj-main">
           <div>
@@ -580,12 +572,12 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ KARACHI ============ -->
-      <article class="proj" id="karachi" data-tracks="energy" data-order-energy="1" data-key="$94.5 M CAPEX">
+      <article class="proj" id="karachi" data-tracks="energy" data-order-energy="1" data-key="Team of 6">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Process design project</dd></div>
           <div><dt>Context</dt><dd>IMT Atlantique · drinking water</dd></div>
           <div><dt>Period</dt><dd class="num">2025</dd></div>
-          <div><dt>Team</dt><dd>6 · research and sizing calcs</dd></div>
+          <div><dt>Team</dt><dd>Team of 6</dd></div>
         </dl>
         <div class="proj-main">
           <div>
@@ -648,7 +640,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ CHP ============ -->
-      <article class="proj" id="chp" data-tracks="energy" data-order-energy="5" data-key="215 kW CHP">
+      <article class="proj" id="chp" data-tracks="energy" data-order-energy="5" data-key="Individual">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Case-study analysis</dd></div>
           <div><dt>Context</dt><dd>BME · waste-heat utilisation</dd></div>
@@ -703,7 +695,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ V2G ============ -->
-      <article class="proj" id="v2g" data-tracks="energy" data-order-energy="2" data-key="≤ 23.4% of peak energy">
+      <article class="proj" id="v2g" data-tracks="energy" data-order-energy="2" data-key="Individual">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Scenario model</dd></div>
           <div><dt>Context</dt><dd>BME · energy storage + planning</dd></div>
@@ -790,12 +782,12 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ MERCEDES AXIAL-FLUX (industry) ============ -->
-      <article class="proj" id="axialflux" data-tracks="energy" data-order-energy="3" data-key="Industry, 12 months">
+      <article class="proj" id="axialflux" data-tracks="energy" data-order-energy="3" data-key="Intern project">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Industry role</dd></div>
           <div><dt>Company</dt><dd>Mercedes-Benz AG</dd></div>
           <div><dt>Period</dt><dd class="num">Feb 2023 – Feb 2024</dd></div>
-          <div><dt>Team</dt><dd>Intern, industrialisation</dd></div>
+          <div><dt>Team</dt><dd>Intern project</dd></div>
         </dl>
         <div class="proj-main solo">
           <div>
@@ -813,7 +805,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ POWER-TO-GAS ============ -->
-      <article class="proj" id="ptg" data-tracks="energy" data-order-energy="6" data-key="~56% overall">
+      <article class="proj" id="ptg" data-tracks="energy" data-order-energy="6" data-key="Individual">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Technology assessment</dd></div>
           <div><dt>Context</dt><dd>BME · biomass utilisation</dd></div>
@@ -876,7 +868,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ REVIEWS: E-BUSES + SECOND-LIFE BATTERIES ============ -->
-      <article class="proj" id="reviews" data-tracks="energy" data-order-energy="7" data-key="2 reviews" data-title="E-buses and second-life batteries">
+      <article class="proj" id="reviews" data-tracks="energy" data-order-energy="7" data-key="Individual · team of 4" data-title="E-buses and second-life batteries">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Technology reviews</dd></div>
           <div><dt>Context</dt><dd>BME smart grids · TU Berlin EV tech</dd></div>
@@ -933,9 +925,20 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
   <section class="block exp-page" id="experience">
     <a class="back" href="#projects">← Back to projects</a>
     <div class="sec-head" style="margin-top:20px">
-      <h2 id="exp-title" tabindex="-1" style="font-size:clamp(34px,5vw,48px)">Experience</h2>
-      <p>Energy, automotive production and industrial software.</p>
+      <h2 id="exp-title" tabindex="-1" style="font-size:clamp(34px,5vw,48px)">CV</h2>
+      <p>Profile, experience, publication and skills.</p>
     </div>
+    <h3 class="cv-h">Profile</h3>
+    <dl class="facts">
+      <div><dt>Education</dt><dd>Erasmus Mundus Master ME3+ (IMT Atlantique, FR &amp; BME, HU), double M.Sc. in Mechanical Engineering Modelling and Process &amp; Bioprocess Engineering, summa cum laude, 2026 · B.Sc. Engineering Science, TU Berlin, grade 1.4</dd></div>
+      <div><dt>Industry</dt><dd>Siemens Energy (master's thesis) · Mercedes-Benz (2 internships) · PSI Metals (working student)</dd></div>
+      <div><dt>Based in</dt><dd>Berlin (hybrid or on-site) · remote within Germany · open to relocating to Hamburg or Freiburg</dd></div>
+      <div><dt>Languages</dt><dd>German, Vietnamese (native) · English C1–C2 · French B2</dd></div>
+      <div><dt>Available</dt><dd>Full-time from June 2027</dd></div>
+      <div><dt>Code</dt><dd><a href="https://github.com/kivanho">github.com/kivanho</a></dd></div>
+    </dl>
+
+    <h3 class="cv-h">Experience</h3>
     <div class="log">
       <div class="entry">
         <p class="when num">09/2026 – now</p>
@@ -977,15 +980,17 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       <p class="label" style="margin-bottom:6px">Publication</p>
       <p>Rahn M, Göhlich D, Fay T-A, van Ho K (2025). Data-driven design: predicting functional attributes in early-stage automotive engineering. <i>Proceedings of the Design Society</i>, 5:1091–1099. <a href="https://doi.org/10.1017/pds.2025.10123">doi.org/10.1017/pds.2025.10123</a></p>
     </div>
-  </section>
-  </div>
 
-  <section class="block" id="contact">
+    <h3 class="cv-h">Skills</h3>
     <div class="cols" id="skills">
       <div data-skill="ml"><h3>Modelling &amp; ML</h3><p>Python (pandas, NumPy, TensorFlow, PyTorch, scikit-learn) · physics-informed and hybrid models · neural networks · regression on small datasets · nested cross-validation · physical-consistency checks</p></div>
       <div data-skill="sw"><h3>Software &amp; data</h3><p>FastAPI · Docker · Git · SQL / PL/SQL · MATLAB · Power BI · RAG and LLM applications · Claude Code, Cursor</p></div>
       <div data-skill="energy"><h3>Energy &amp; process</h3><p><span class="sub">Knowledge</span>Thermodynamics · renewable integration · energy storage and V2G · smart grids · Power-to-Gas · CHP and waste heat · water treatment · plant sizing and investment cases</p><p><span class="sub">Tools</span>Aspen · CycleTempo · Excel · Siemens Solid Edge · AutoCAD</p></div>
     </div>
+  </section>
+  </div>
+
+  <section class="block" id="contact">
 
     <div class="talk">
       <h2>Let's talk</h2>
@@ -1083,7 +1088,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
   // Routes: ml | energy (view), experience (page), contact | projects (scroll), or a project id (open it).
   function route(h, scroll) {
     if (h === 'ml' || h === 'energy') { showPage('home'); setTrack(h); if (scroll) scrollTo(document.getElementById('projects')); }
-    else if (h === 'experience') { showPage('experience'); window.scrollTo(0, 0); document.getElementById('exp-title').focus({preventScroll: true}); }
+    else if (h === 'cv' || h === 'experience') { showPage('experience'); window.scrollTo(0, 0); document.getElementById('exp-title').focus({preventScroll: true}); }
     else if (h === 'contact') { scrollTo(document.getElementById('contact')); return; }
     else if (h === 'projects') { showPage('home'); scrollTo(document.getElementById('projects')); }
     else {
