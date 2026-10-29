@@ -217,6 +217,8 @@ blockquote cite{display:block;margin-top:8px;font-style:normal;font:500 10.5px v
 .cols > div:last-child{border-right:0}
 .cols h3{font-size:20px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.03em}
 .cols p{font-size:15px}
+.cols p + p{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.cols .sub{display:block;font:500 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
 .talk{margin-top:60px}
 .talk h2{font-size:clamp(38px,5vw,60px);font-weight:700;text-transform:uppercase}
 .contact{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin-top:22px}
@@ -996,7 +998,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     <div class="cols" id="skills">
       <div data-skill="ml"><h3>Modelling &amp; ML</h3><p>Python (pandas, NumPy, TensorFlow, PyTorch, scikit-learn) · physics-informed and hybrid models · neural networks · regression on small datasets · nested cross-validation · physical-consistency checks</p></div>
       <div data-skill="sw"><h3>Software &amp; data</h3><p>FastAPI · Docker · Git · SQL / PL/SQL · MATLAB · Power BI · RAG and LLM applications · Claude Code, Cursor</p></div>
-      <div data-skill="energy"><h3>Energy &amp; process</h3><p>Renewable integration · energy storage and V2G · smart grids · Power-to-Gas · CHP and waste heat · water treatment · Excel-based sizing and investment cases · Aspen, CycleTempo, Solid Edge, AutoCAD</p></div>
+      <div data-skill="energy"><h3>Energy &amp; process</h3><p><span class="sub">Knowledge</span>Thermodynamics · renewable integration · energy storage and V2G · smart grids · Power-to-Gas · CHP and waste heat · water treatment · plant sizing and investment cases</p><p><span class="sub">Tools</span>Aspen · CycleTempo · Excel · Siemens Solid Edge · AutoCAD</p></div>
     </div>
 
     <div class="talk">
