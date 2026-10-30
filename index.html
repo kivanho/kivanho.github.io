@@ -305,14 +305,14 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
         <div>
       <h1>Kien van Ho</h1>
       <p class="role" data-show="ml">Physics-informed ML and modelling for energy systems</p>
-      <p class="role" data-show="energy">Energy and process engineering: balances, scenarios and investment cases</p>
+      <p class="role" data-show="energy">Energy and process engineering: balances and scenario models</p>
       <div class="abstract">
-          <p class="lede" data-show="ml">I build models that keep the physics and learn from the data, and I validate them carefully on small, expensive datasets. At Siemens Energy that was a hybrid crack-growth model for gas turbines. At Mercedes-Benz, a robot energy model. In my master's, an engine digital twin: I led the team of three and did most of the implementation.</p>
-          <p class="lede" data-show="energy">I model energy systems and size process plants: my own scenario model shows how much of Berlin's evening peak parked EVs could cover by 2030, and with a team of six I sized a drinking-water plant for Karachi. I also analysed CHP and Power-to-Gas cases, and wrote my master's thesis with Siemens Energy on gas-turbine component life.</p>
+          <p class="lede" data-show="ml">I build models that keep the physics and learn from the data, and I test them on small, expensive datasets. At Siemens Energy that was a hybrid crack-growth model for gas turbines. At Mercedes-Benz, a robot energy model. In my master's, an engine digital twin: I led the team of three and did most of the implementation.</p>
+          <p class="lede" data-show="energy">In my master's I built a scenario model of how much of Berlin's evening peak parked EVs could cover by 2030, and with a team of six I sized a drinking-water plant for Karachi. I also analysed CHP and Power-to-Gas cases. In industry: production engineering at Mercedes-Benz and a thesis with Siemens Energy on gas-turbine component life.</p>
       </div>
       <p class="creds"><span>Double Erasmus Mundus M.Sc. ME3+</span> <span>Siemens Energy · Mercedes-Benz · Berlin</span></p>
-      <p class="seek" data-show="ml">Open to entry-level roles in ML and data science for energy · <a href="Kien_van_Ho_CV.pdf?v=2026-10-30">CV (PDF)</a></p>
-      <p class="seek" data-show="energy">Open to entry-level roles in energy-systems and project engineering · <a href="Kien_van_Ho_CV.pdf?v=2026-10-30">CV (PDF)</a></p>
+      <p class="seek" data-show="ml">Open to entry-level roles in ML and data science for energy · <a href="Kien_van_Ho_CV.pdf?v=2026-10-30b">CV (PDF)</a></p>
+      <p class="seek" data-show="energy">Open to entry-level roles in energy-systems and process engineering · <a href="Kien_van_Ho_CV.pdf?v=2026-10-30b">CV (PDF)</a></p>
       <div class="switch-row">
         <div class="switch" role="group" aria-label="Choose a view">
           <button type="button" id="t-ml" data-track="ml" aria-pressed="true">Machine learning &amp; modelling</button>
@@ -433,15 +433,15 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
             <h3>Digital twin of a dual-fuel engine</h3>
             <p class="summary">A prototype twin of a 14.4 kWe dual-fuel (diesel and biogas) generator set: set power and fuel mix, and ML models plus physics formulas predict efficiency, exhaust temperature and fuel flows, served through an API into a 3D platform.</p>
             <ul class="keys">
-              <li><b>R² 0.93</b><span>kNN efficiency model on a held-out 20% test set</span></li>
+              <li><b>R² 0.93</b><span>kNN efficiency model on lab data, random 20% held out</span></li>
               <li><b>FastAPI + Docker</b><span>models served through an API to the GreenTwins digital-twin platform (Datagrowb), with code and data on Azure</span></li>
-              <li><b>&lt; 5 s</b><span>for the fuel-flow control to settle after a set-point change</span></li>
+              <li><b>Prototype</b><span>inputs set by hand; a live connection to the engine was scoped as future work</span></li>
             </ul>
             <div class="tags"><span>Python</span><span>scikit-learn</span><span>FastAPI</span><span>Docker</span><span>Azure</span><span>Blender</span><a class="code" href="https://github.com/kivanho/dual-fuel-digital-twin">Service code, synthetic engine map ↗</a></div>
           </div>
           <figure>
-            <div class="plate"><img src="img/twin_dashboard.jpg" alt="Validation dashboard with inputs for diesel energy share and power output, and time-series plots of efficiency, power output, fuel mass flow, exhaust gas temperature, current and torque." width="936" height="646" loading="lazy"></div>
-            <figcaption>Local dashboard: change diesel share and power, watch efficiency, fuel flow, exhaust temperature, current and torque respond. Lab reference values removed.</figcaption>
+            <div class="plate"><img src="img/twin_overview.jpg" alt="Left: kNN electrical efficiency against power for three methane shares on a synthetic engine map. Right: power, methane flow and diesel flow following set-point changes under PI flow loops." width="1500" height="570" loading="lazy"></div>
+            <figcaption>From the public code on a synthetic engine map, not lab data: the efficiency model (left) and the flow loops following set-point changes (right).</figcaption>
           </figure>
         </div>
         <details class="more">
@@ -485,7 +485,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
                     </tbody>
                   </table>
                 </div>
-                <p class="after">"Measured" is the nearest recorded lab operating point (raw lab data not published), which the models had seen in training, so this is a consistency check rather than independent validation. Fuel flows follow from the predicted efficiency through the energy balance. The controller settles in under 5 seconds.</p>
+                <p class="after">"Measured" is the nearest recorded lab operating point (raw lab data not published), which the models had seen in training, so this is a consistency check rather than independent validation. Fuel flows follow from the predicted efficiency through the energy balance. In simulation, the controller settles in under 5 seconds.</p>
               </div>
             </div>
             <figure>
@@ -509,7 +509,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
           <div>
             <p class="label">Hybrid modelling · industrial robots · energy efficiency</p>
             <h3>Energy model of an assembly robot</h3>
-            <p class="summary">The physics-plus-data approach I later took further in my thesis, here applied in production: a physics-based model of a universal robot in engine assembly, a neural network that predicts its energy use, and trajectory studies to find where energy could be saved.</p>
+            <p class="summary">The physics-plus-data approach I later took further in my thesis, here on a universal robot in engine assembly: a physics-based model, a neural network that predicts its energy use, and trajectory studies to find where energy could be saved.</p>
             <ul class="keys">
               <li><b>Up to 15%</b><span>modelled savings potential from optimised instead of arbitrary trajectories</span></li>
               <li><b>Physics</b><span>Python model of the robot's energy consumption along its motion</span></li>
@@ -538,7 +538,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
               <li><b>4 models</b><span>linear regression, Lasso, kNN and support vector regression</span></li>
               <li><b>5 targets</b><span>passenger and cargo volume, fuel efficiency, towing, acceleration</span></li>
               <li><b>Paper</b><span>the work fed into a 2025 <i>Proceedings of the Design Society</i> paper I co-authored</span></li>
-              <li><b>Re-checked</b><span>with nested, twin-aware cross-validation in the public code, the median R² falls from 0.55–0.69 to 0.15–0.27</span></li>
+              <li><b>Re-checked</b><span>in the public code, a stricter protocol (nested, twin-aware cross-validation) lowers the median R² across models from 0.55–0.69 to 0.15–0.27</span></li>
             </ul>
             <div class="tags"><span>Python</span><span>scikit-learn</span><span>Feature selection</span><span>Cross-validation</span><a class="code" href="https://github.com/kivanho/small-data-model-selection">Code and re-evaluation ↗</a></div>
           </div>
@@ -574,7 +574,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
                   </tbody>
                 </table>
               </div>
-              <p class="after muted">Highest per attribute highlighted. These scores are optimistic: tuning and scoring used the same folds (see the 2026 re-evaluation below).</p>
+              <p class="after muted">Highest per attribute highlighted. These scores are optimistic: tuning and scoring used the same folds. A later re-implementation of this protocol gives medians of 0.55–0.69 (see the 2026 re-evaluation below).</p>
             </div>
             <div class="deep-grid">
               <div>
@@ -586,7 +586,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
               </div>
               <div>
                 <h4>Re-evaluated in 2026</h4>
-                <p>The thesis tuned and scored on the same folds, and badge-engineered twins such as the Ford Taurus and Mercury Sable could land on both sides of a split. I re-ran the pipeline with repeated nested cross-validation that keeps twins in the same fold, and dropped 11 placeholder towing values. The median R² falls from 0.55–0.69 to 0.15–0.27. Cargo and passenger volume stay partly predictable (R² about 0.4–0.5), fuel efficiency and acceleration are weak, and towing capacity is not predictable from these variables. <a href="https://github.com/kivanho/small-data-model-selection">Code and results ↗</a></p>
+                <p>The thesis tuned and scored on the same folds, and badge-engineered twins such as the Ford Taurus and Mercury Sable could land on both sides of a split. I re-implemented that protocol (median R² 0.55–0.69 across models) and compared it with repeated nested cross-validation that keeps twins in the same fold, after dropping 11 placeholder towing values. The median R² falls to 0.15–0.27. With the best model, cargo volume stays partly predictable (R² about 0.5) and passenger volume less so (about 0.4), fuel efficiency and acceleration are weak, and towing capacity is not predictable from these variables. <a href="https://github.com/kivanho/small-data-model-selection">Code and results ↗</a></p>
               </div>
             </div>
           </div>
@@ -596,7 +596,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       <!-- ============ KARACHI ============ -->
       <article class="proj" id="karachi" data-tracks="energy" data-order-energy="2">
         <dl class="titleblock">
-          <div><dt>Type</dt><dd>Process design project</dd></div>
+          <div><dt>Type</dt><dd>Course project</dd></div>
           <div><dt>Context</dt><dd>IMT Atlantique · drinking water</dd></div>
           <div><dt>Period</dt><dd class="num">2025</dd></div>
           <div><dt>Team</dt><dd>Team of 6</dd></div>
@@ -608,8 +608,8 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
             <p class="summary">A full treatment plant for very hard, turbid reservoir water, from intake pipe to chlorination, sized unit by unit in Excel and costed with CAPEX, OPEX and IRR. My part was mainly the research and the sizing calculations.</p>
             <ul class="keys">
               <li><b>189,250 m³/d</b><span>design flow at full build-out (2.19 m³/s, about 50 MGD in US gallons; phase I 25 MGD)</span></li>
-              <li><b>$94.5 M</b><span>CAPEX incl. 5% contingency; OPEX $12.1 M per year</span></li>
-              <li><b>IRR 8%</b><span>against a 6–7% hurdle rate</span></li>
+              <li><b>$94.5 M</b><span>team estimate of CAPEX incl. 5% contingency; OPEX $12.1 M per year</span></li>
+              <li><b>IRR 8%</b><span>team estimate, against a 6–7% hurdle rate</span></li>
             </ul>
             <div class="tags"><span>Excel</span><span>Process design</span><span>Hydraulics</span><span>CAPEX / OPEX</span></div>
           </div>
@@ -664,7 +664,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       <!-- ============ CHP ============ -->
       <article class="proj" id="chp" data-tracks="energy" data-order-energy="5">
         <dl class="titleblock">
-          <div><dt>Type</dt><dd>Case-study analysis</dd></div>
+          <div><dt>Type</dt><dd>Course case study</dd></div>
           <div><dt>Context</dt><dd>BME · waste-heat utilisation</dd></div>
           <div><dt>Period</dt><dd class="num">Dec 2025</dd></div>
           <div><dt>Team</dt><dd>Individual</dd></div>
@@ -719,7 +719,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       <!-- ============ V2G ============ -->
       <article class="proj" id="v2g" data-tracks="energy" data-order-energy="1">
         <dl class="titleblock">
-          <div><dt>Type</dt><dd>Scenario model</dd></div>
+          <div><dt>Type</dt><dd>Course project</dd></div>
           <div><dt>Context</dt><dd>BME · energy storage + planning</dd></div>
           <div><dt>Period</dt><dd class="num">2025</dd></div>
           <div><dt>Team</dt><dd>Individual</dd></div>
@@ -730,7 +730,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
             <h3>Can parked EVs cover Berlin's evening peak?</h3>
             <p class="summary">A scenario model of Berlin's battery-electric fleet from 2025 to 2030, estimating how much stored energy owners could feed back during the evening peak, by season and participation rate.</p>
             <ul class="keys">
-              <li><b>7.8–23.4%</b><span>of summer evening-peak energy (18–22 h) in 2030</span></li>
+              <li><b>7.8–23.4%</b><span>of summer evening-peak energy (18–22 h) in 2030, under optimistic assumptions</span></li>
               <li><b>5.0–15.0%</b><span>in winter, when the peak is longer and higher</span></li>
               <li><b>34k → 309k</b><span>modelled BEV fleet, 2025 to 2030</span></li>
             </ul>
@@ -829,7 +829,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       <!-- ============ POWER-TO-GAS ============ -->
       <article class="proj" id="ptg" data-tracks="energy" data-order-energy="6">
         <dl class="titleblock">
-          <div><dt>Type</dt><dd>Technology assessment</dd></div>
+          <div><dt>Type</dt><dd>Course project</dd></div>
           <div><dt>Context</dt><dd>BME · biomass utilisation</dd></div>
           <div><dt>Period</dt><dd class="num">Nov 2025</dd></div>
           <div><dt>Team</dt><dd>Individual</dd></div>
@@ -892,7 +892,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       <!-- ============ REVIEWS: E-BUSES + SECOND-LIFE BATTERIES ============ -->
       <article class="proj duo" id="reviews" data-tracks="energy" data-order-energy="7" data-title="E-buses and second-life batteries">
         <dl class="titleblock">
-          <div><dt>Type</dt><dd>Technology reviews</dd></div>
+          <div><dt>Type</dt><dd>Course reviews</dd></div>
           <div><dt>Context</dt><dd>BME smart grids · TU Berlin EV tech</dd></div>
           <div><dt>Period</dt><dd class="num">2023 and 2025</dd></div>
           <div><dt>Team</dt><dd>Individual · team of 4</dd></div>
@@ -948,7 +948,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     <a class="back" href="#projects">← Back to projects</a>
     <div class="sec-head">
       <h2 id="exp-title" tabindex="-1">CV</h2>
-      <a class="dl" href="Kien_van_Ho_CV.pdf?v=2026-10-30">Download CV (PDF)</a>
+      <a class="dl" href="Kien_van_Ho_CV.pdf?v=2026-10-30b">Download CV (PDF)</a>
     </div>
     <h3 class="cv-h">Profile</h3>
     <dl class="facts">
@@ -996,7 +996,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
         <p class="when num">02/2022 – 02/2023</p>
         <div><h4>Working student, software development</h4><p class="org">PSI Metals GmbH · Berlin</p>
           <ul>
-            <li>Tested and optimised an industrial operator interface for an animal-feed production plant.</li>
+            <li>Tested and optimised an industrial operator interface for an animal-feed production plant, working with the project team and business partners.</li>
             <li>Adapted data models with PL/SQL routines and maintained the project database.</li>
           </ul></div>
       </div>
@@ -1023,7 +1023,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     <div class="cols" id="skills">
       <div data-skill="ml"><h4>Modelling &amp; ML</h4><p>Python (pandas, NumPy, TensorFlow, PyTorch, scikit-learn) · physics-informed and hybrid models · neural networks · regression on small datasets · nested cross-validation · physical-consistency checks</p></div>
       <div data-skill="sw"><h4>Software &amp; data</h4><p>FastAPI · Docker · Git · SQL / PL/SQL · MATLAB · Power BI · RAG and LLM applications · Claude Code</p></div>
-      <div data-skill="energy"><h4>Energy &amp; process</h4><p><span class="sub">Knowledge</span>Thermodynamics · renewable integration · energy storage and V2G · smart grids · Power-to-Gas · CHP and waste heat · water treatment · plant sizing and investment cases</p><p><span class="sub">Tools</span>Aspen · CycleTempo · Excel · Siemens Solid Edge · AutoCAD</p></div>
+      <div data-skill="energy"><h4>Energy &amp; process</h4><p><span class="sub">Knowledge</span>Thermodynamics · renewable integration · energy storage and V2G · smart grids · Power-to-Gas · CHP and waste heat · water treatment · plant sizing</p><p><span class="sub">Tools</span>Aspen · CycleTempo · Excel · Siemens Solid Edge · AutoCAD</p></div>
     </div>
   </section>
   </div>
@@ -1033,7 +1033,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     <div class="talk">
       <h2>Let's talk</h2>
       <p class="muted" data-show="ml">Looking for an entry-level role in ML, data science or hybrid modelling for the energy transition.</p>
-      <p class="muted" data-show="energy">Looking for an entry-level role in energy-systems or project engineering for the energy transition.</p>
+      <p class="muted" data-show="energy">Looking for an entry-level role in energy-systems or process engineering for the energy transition.</p>
       <div class="contact">
         <a class="email" id="email" href="mailto:vanhokien@gmail.com">vanhokien@gmail.com</a>
         <button class="copy" id="copy-email" type="button" aria-live="polite">Copy email</button>
@@ -1250,7 +1250,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     var dpr = window.devicePixelRatio || 1, ctx = cv.getContext('2d');
     if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
-    var cs = getComputedStyle(document.documentElement), ink = cs.getPropertyValue('--ink').trim(), acc = cs.getPropertyValue('--accent').trim(), mono = cs.getPropertyValue('--mono');
+    var cs = getComputedStyle(document.documentElement), ink = cs.getPropertyValue('--ink').trim(), acc = cs.getPropertyValue('--accent').trim();
     var narrow = w < 860, a0 = anchor(), S = narrow ? w * 0.4 : Math.min(a0.w * 0.36, h * 0.26), H = S * 0.6;
     var cx = narrow ? w * 0.5 : a0.cx, cy = narrow ? h * 0.5 - (calm ? 0 : p * h * 0.1) : a0.bottom - 190 + 20 + S * 1.15;
     var a = calm ? -0.45 : -0.7 + p * 0.8, ca = Math.cos(a), sa = Math.sin(a), c30 = Math.cos(Math.PI / 6), s30 = 0.5;
@@ -1270,14 +1270,12 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     for (i = 0; i <= Math.floor(n); i++) { q = P(pts[i][0], pts[i][1]); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
     q = P(end[0], end[1]); ctx.lineTo(q[0], q[1]); ctx.stroke();
     // project milestones along the path
-    ctx.font = '11px ' + mono;
     mlProjects.forEach(function (pr) {
       var m = milestone[pr.id], r = P(pts[m][0], pts[m][1]), on = pr.id === cur;
       ctx.globalAlpha = on ? 1 : 0.6; ctx.strokeStyle = acc; ctx.fillStyle = on ? acc : cs.getPropertyValue('--paper');
       ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(r[0], r[1], on ? 6.5 : 4.5, 0, 7); ctx.fill(); ctx.stroke();
     });
     ctx.fillStyle = acc; ctx.globalAlpha = 1; ctx.beginPath(); ctx.arc(q[0], q[1], 5, 0, 7); ctx.fill();
-    if (!cur) { ctx.globalAlpha = 0.35; ctx.fillStyle = ink; ctx.fillText('step ' + Math.round(n / RES) + ' · loss ' + f(end[0], end[1]).toFixed(3), q[0] + 9, q[1] - 10); }
     ctx.globalAlpha = 1;
     return true;
   }
