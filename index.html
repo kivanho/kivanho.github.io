@@ -84,7 +84,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 
 /* hero: title, abstract, view switch and project table */
 .hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:56px;padding-block:56px 48px;align-items:start}
-.side{display:grid;gap:26px;min-width:0;align-self:center}
+.side{display:grid;gap:26px;min-width:0;align-self:start;padding-bottom:190px} /* room for the drawing below the table */
 .side .plist-wrap{margin-top:0}
 .hero h1{font-size:clamp(46px,7.4vw,82px);font-weight:650;letter-spacing:-.035em;line-height:.98}
 .hero .role{font-size:clamp(18px,2.3vw,22px);font-weight:500;font-style:italic;color:var(--accent);margin-top:14px;max-width:36ch;line-height:1.3}
@@ -96,28 +96,19 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 .facts dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:4px}
 .facts dd{margin:0;color:var(--ink);line-height:1.5}
 
-/* landing background: one large drawing behind the project table, fading out as you scroll into
+/* landing background: one drawing just below the project table, fading out as you scroll into
    the projects. It plays once on load (descent to the minimum / battery charging to full) and then follows the
    table: hovering a project moves the descent to its milestone or charges the battery up to its cell. */
 .bg-stage{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
   -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.15) 0,rgba(0,0,0,.25) 42%,#000 60%);mask-image:linear-gradient(90deg,rgba(0,0,0,.15) 0,rgba(0,0,0,.25) 42%,#000 60%)}
 #bg-loss{position:absolute;inset:0;width:100%;height:100%}
-#bg-batt{position:absolute;left:var(--ax,72%);top:var(--ay,50%);width:var(--aw,min(52vw,640px));height:auto;transform:translate(-50%,calc(-50% + var(--par,0px)))}
-#bg-batt .shell,#bg-batt .cell,#bg-batt .wallbox *,#bg-batt .axis{fill:none;stroke:var(--ink);stroke-opacity:.18;stroke-width:1.1;transition:stroke .4s,stroke-opacity .4s}
-#bg-batt .axis{stroke-opacity:.14}
-#bg-batt .cc{stroke-dasharray:3 4}
+#bg-batt{position:absolute;left:var(--ax,72%);top:var(--ay,55%);width:var(--aw,min(36vw,440px));height:auto;transform:translate(-50%,var(--par,0px))}
+#bg-batt .shell,#bg-batt .cell{fill:none;stroke:var(--ink);stroke-opacity:.18;stroke-width:1.1;transition:stroke .4s,stroke-opacity .4s}
 #bg-batt .fill{fill:var(--accent);fill-opacity:.12;transition:fill-opacity .4s}
-#bg-batt .cable{fill:none;stroke:var(--accent);stroke-opacity:.45;stroke-width:1.4;stroke-dasharray:2 5;animation:flow 1.4s linear infinite}
-#bg-batt .curve{fill:none;stroke:var(--accent);stroke-opacity:.5;stroke-width:1.4;stroke-dasharray:1;stroke-dashoffset:1}
-#bg-batt .curve.u{stroke:var(--ink);stroke-opacity:.3}
-#bg-batt .lbl{font:400 8px var(--mono);fill:var(--ink);fill-opacity:.32}
-#bg-batt .soc{font-size:12px;fill:var(--accent);fill-opacity:.5}
 #bg-batt.focusing .cellg:not(.focus) .fill{fill-opacity:.06}
 #bg-batt .cellg.focus .cell{stroke:var(--accent);stroke-opacity:.75;stroke-width:1.7}
 #bg-batt .cellg.focus .fill{fill-opacity:.34}
-@keyframes flow{to{stroke-dashoffset:-24}}
-@media (prefers-reduced-motion:reduce){#bg-batt .cable{animation:none}}
-@media (max-width:860px){.bg-stage{-webkit-mask-image:none;mask-image:none}.bg-stage>*{opacity:.45}#bg-batt{left:50%;top:50%;width:150vw;transform:translate(-50%,calc(-50% + var(--par,0px)))}}
+@media (max-width:860px){.bg-stage{-webkit-mask-image:none;mask-image:none}.bg-stage>*{opacity:.45}#bg-batt{left:50%;top:50%;width:110vw;transform:translate(-50%,calc(-50% + var(--par,0px)))}}
 
 .creds{margin-top:22px;font-size:15px;font-weight:500;color:var(--ink)}
 .creds span{display:block}
@@ -270,6 +261,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
 @media (max-width:860px){
   .hero,.proj-main,.deep-grid{grid-template-columns:minmax(0,1fr)}
   .hero{gap:32px;padding-block:36px}
+  .side{padding-bottom:0}
   .titleblock{grid-template-columns:repeat(2,minmax(0,1fr))}
   .proj-main{padding:22px 20px}
   details.more > summary{padding:14px 20px}
@@ -292,22 +284,10 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
 <body>
 <div class="bg-stage" aria-hidden="true">
     <canvas id="bg-loss" data-show="ml"></canvas>
-    <svg id="bg-batt" data-show="energy" viewBox="0 0 480 300">
-      <g class="wallbox"><rect x="14" y="22" width="48" height="72" rx="6"/><rect x="24" y="32" width="28" height="14" rx="2"/><path d="M40 52 L32 66 H42 L36 80"/></g>
-      <path class="cable" d="M38 94 V117 Q38 125 46 125 H86"/>
+    <svg id="bg-batt" data-show="energy" viewBox="80 54 306 142">
       <rect class="shell" x="100" y="60" width="280" height="130" rx="12"/>
       <rect class="shell" x="86" y="104" width="14" height="42" rx="3"/>
       <g id="bg-cells"></g>
-      <path class="axis" d="M100 206 V284 H380"/>
-      <path class="axis cc" d="M228 210 V284"/>
-      <path class="curve u" pathLength="1" d="M104 272 C140 252 190 228 228 214 H380"/>
-      <path class="curve" pathLength="1" d="M104 228 H228 C264 228 284 268 380 278"/>
-      <text class="lbl" x="38" y="14" text-anchor="middle">11 kW</text>
-      <text class="lbl soc" id="bg-soc" x="106" y="203">SOC 0 %</text>
-      <text class="lbl" x="386" y="217">U</text>
-      <text class="lbl" x="386" y="281">I</text>
-      <text class="lbl" x="164" y="297" text-anchor="middle">CC</text>
-      <text class="lbl" x="304" y="297" text-anchor="middle">CV</text>
     </svg>
 </div>
 
@@ -1250,7 +1230,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     g.appendChild(fl); g.appendChild(o); cellBox.appendChild(g);
     cells.push({g: g, fill: fl}); cellOf[p.id] = i;
   });
-  var curves = batt.querySelectorAll('.curve'), socText = document.getElementById('bg-soc'), soc = 0;
+  var soc = 0;
   // position along the path (0..1 of its length) to a fractional point index
   function idxAt(u) {
     var L = u * cum[LAST], i = 0; while (i < LAST && cum[i + 1] < L) i++;
@@ -1278,8 +1258,8 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
     var cs = getComputedStyle(document.documentElement), ink = cs.getPropertyValue('--ink').trim(), acc = cs.getPropertyValue('--accent').trim(), mono = cs.getPropertyValue('--mono');
-    var narrow = w < 860, a0 = anchor(), S = narrow ? w * 0.4 : Math.min(a0.w * 0.62, h * 0.36), H = S * 0.6;
-    var cx = narrow ? w * 0.5 : a0.cx, cy = narrow ? h * 0.5 - (calm ? 0 : p * h * 0.1) : a0.cy + S * 0.12;
+    var narrow = w < 860, a0 = anchor(), S = narrow ? w * 0.4 : Math.min(a0.w * 0.36, h * 0.26), H = S * 0.6;
+    var cx = narrow ? w * 0.5 : a0.cx, cy = narrow ? h * 0.5 - (calm ? 0 : p * h * 0.1) : a0.bottom - 190 + 20 + S * 1.15;
     var a = calm ? -0.45 : -0.7 + p * 0.8, ca = Math.cos(a), sa = Math.sin(a), c30 = Math.cos(Math.PI / 6), s30 = 0.5;
     function P(u, v) { var X = u * ca - v * sa, Y = u * sa + v * ca; return [cx + (X - Y) * c30 * S, cy + (X + Y) * s30 * S - f(u, v) * H + H * 0.55]; }
     function at(t) { var i = Math.floor(t), fr = t - i, A = pts[i], B = pts[Math.min(i + 1, LAST)]; return [A[0] + (B[0] - A[0]) * fr, A[1] + (B[1] - A[1]) * fr]; }
@@ -1308,24 +1288,22 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     ctx.globalAlpha = 1;
     return true;
   }
-  // both drawings sit behind the project table: its centre line and width, measured each frame
+  // both drawings sit just below the project table, centred on it: measured each frame
   var side = document.querySelector('.hero .side');
   function anchor() {
     var r = side && side.getBoundingClientRect();
-    return r && r.width ? {cx: r.left + r.width / 2, cy: r.top + r.height / 2, w: r.width} : {cx: innerWidth * 0.72, cy: innerHeight * 0.5, w: innerWidth * 0.36};
+    return r && r.width ? {cx: r.left + r.width / 2, bottom: r.bottom, w: r.width} : {cx: innerWidth * 0.72, bottom: innerHeight * 0.45, w: innerWidth * 0.36};
   }
   function updateBatt(p, cur) {
-    if (innerWidth >= 860) { var a = anchor(); batt.style.setProperty('--ax', a.cx + 'px'); batt.style.setProperty('--ay', a.cy + 'px'); batt.style.setProperty('--aw', Math.min(a.w * 1.35, 680) + 'px'); }
+    if (innerWidth >= 860) { var a = anchor(); batt.style.setProperty('--ax', a.cx + 'px'); batt.style.setProperty('--ay', (a.bottom - 190 + 24) + 'px'); batt.style.setProperty('--aw', Math.min(a.w * 0.7, 320) + 'px'); }
     else { batt.style.removeProperty('--ax'); batt.style.removeProperty('--ay'); batt.style.removeProperty('--aw'); }
-    var at = cur && cellOf[cur] != null ? cellOf[cur] : -1, r = soc / cells.length;
+    var at = cur && cellOf[cur] != null ? cellOf[cur] : -1;
     cells.forEach(function (c, i) {
       var fr = Math.min(1, Math.max(0, soc - i));
       c.fill.setAttribute('y', CY + CH * (1 - fr)); c.fill.setAttribute('height', CH * fr);
       c.g.classList.toggle('focus', i === at);
     });
     batt.classList.toggle('focusing', at > -1);
-    socText.textContent = 'SOC ' + Math.round(r * 100) + ' %';
-    curves.forEach(function (el) { el.style.strokeDashoffset = 1 - r; });
     batt.style.setProperty('--par', (calm ? 0 : -p * 60) + 'px');
   }
 
