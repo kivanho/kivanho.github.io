@@ -24,10 +24,10 @@
    Type: Schibsted Grotesk (headings and body), Martian Mono (figure labels, metadata). */
 :root{
   --paper:#FBFAF7; --surface:#FFFFFF; --wash:#F3F1EC;
-  --ink:#1C2127; --text:#2E343B; --muted:#6B7178; --line:#D8D4CA; --line-2:#ABA69A;
+  --ink:#1C2127; --text:#2E343B; --muted:#5F666D; --line:#D8D4CA; --line-2:#ABA69A;
   --accent:#0F6E6A; --accent-soft:#E3F1EE; --on-accent:#FFFFFF;
   --c2:#3E5C8A; --warn:#A8471F; --plate:#FFFFFF;
-  --grid:rgba(28,33,39,.045); --grid-major:rgba(28,33,39,.085);
+  --grid:rgba(28,33,39,.03); --grid-major:rgba(28,33,39,.06);
   --display:"Schibsted Grotesk","Avenir Next","Helvetica Neue",sans-serif;
   --body:"Schibsted Grotesk","Avenir Next","Helvetica Neue",sans-serif;
   --mono:"Martian Mono","IBM Plex Mono",Menlo,ui-monospace,monospace;
@@ -35,72 +35,102 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --paper:#15191D; --surface:#1B2026; --wash:#21272E;
-  --ink:#F1F3F5; --text:#D3D8DD; --muted:#98A0A8; --line:#3A434D; --line-2:#5B6671;
+  --ink:#F1F3F5; --text:#D3D8DD; --muted:#9BA3AB; --line:#3A434D; --line-2:#5B6671;
   --accent:#5DCAA5; --accent-soft:#183A33; --on-accent:#0E1A17;
   --c2:#8FB0E0; --warn:#F0997B; --plate:#FFFFFF;
-  --grid:rgba(255,255,255,.035); --grid-major:rgba(255,255,255,.065);
+  --grid:rgba(255,255,255,.025); --grid-major:rgba(255,255,255,.05);
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#15191D; --surface:#1B2026; --wash:#21272E;
-  --ink:#F1F3F5; --text:#D3D8DD; --muted:#98A0A8; --line:#3A434D; --line-2:#5B6671;
+  --ink:#F1F3F5; --text:#D3D8DD; --muted:#9BA3AB; --line:#3A434D; --line-2:#5B6671;
   --accent:#5DCAA5; --accent-soft:#183A33; --on-accent:#0E1A17;
   --c2:#8FB0E0; --warn:#F0997B; --plate:#FFFFFF;
-  --grid:rgba(255,255,255,.035); --grid-major:rgba(255,255,255,.065);
+  --grid:rgba(255,255,255,.025); --grid-major:rgba(255,255,255,.05);
   color-scheme:dark}
 
 *{box-sizing:border-box}
-html{background:var(--paper)}
-body{margin:0;color:var(--text);font-family:var(--body);font-size:16.5px;line-height:1.65;background-color:var(--paper);
+html{background:var(--paper);scroll-padding-top:16px}
+body{margin:0;color:var(--text);font-family:var(--body);font-size:16.5px;line-height:1.65;background:var(--paper);position:relative;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+/* the drafting grid stays on the landing area only and fades out before the reading sections */
+.grid-bg{position:absolute;left:0;right:0;top:0;height:min(1500px,170vh);z-index:0;pointer-events:none;
   background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
   background-size:120px 120px,120px 120px,24px 24px,24px 24px;background-position:-1px -1px;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+  -webkit-mask-image:linear-gradient(#000 45%,transparent 100%);mask-image:linear-gradient(#000 45%,transparent 100%)}
+body[data-page="experience"] .grid-bg{display:none}
 .wrap{max-width:1080px;margin:0 auto;position:relative;z-index:1}
+main[tabindex]:focus,main[tabindex]:focus-visible,h2[tabindex="-1"]:focus,h2[tabindex="-1"]:focus-visible,h3[tabindex="-1"]:focus,h3[tabindex="-1"]:focus-visible{outline:0}
 h1,h2,h3,h4{font-family:var(--display);color:var(--ink);text-wrap:balance;margin:0;line-height:1.12;font-weight:650;letter-spacing:-.015em}
 p{margin:0}
 a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
 a:hover{text-decoration-thickness:2px}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
 ::selection{background:var(--accent-soft);color:var(--ink)}
 .label{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:400}
 .muted{color:var(--muted)}
 .num{font-variant-numeric:tabular-nums}
 [data-show]:not(.on){display:none!important}
+.skip{position:absolute;left:16px;top:-100px;z-index:50;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none}
+.skip:focus{top:12px}
 
 /* masthead */
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px 20px;flex-wrap:wrap;padding-block:18px;border-bottom:1px solid var(--line)}
-.top nav{display:flex;gap:6px 22px;flex-wrap:wrap;align-items:center}
-.top nav a{color:var(--muted);text-decoration:none;font-size:14.5px;font-weight:500}
+.top{display:flex;justify-content:space-between;align-items:center;gap:6px 20px;flex-wrap:wrap;padding-block:10px;border-bottom:1px solid var(--line)}
+.top nav{display:flex;gap:0 8px;flex-wrap:wrap;align-items:center;margin-left:-10px}
+.top nav a{color:var(--muted);text-decoration:none;font-size:14.5px;font-weight:500;padding:11px 10px;border-radius:6px;display:inline-flex;align-items:center;min-height:44px;position:relative}
 .top nav a:hover{color:var(--ink)}
-.mark{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink)}
-.theme{font:400 11.5px var(--mono);letter-spacing:.04em;background:transparent;color:var(--muted);border:1px solid var(--line-2);border-radius:999px;padding:4px 11px;cursor:pointer}
+.top nav a[aria-current="page"]{color:var(--ink)}
+.top nav a[aria-current="page"]::after{content:"";position:absolute;left:10px;right:10px;bottom:7px;height:2px;background:var(--accent);border-radius:2px}
+.mark{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink);text-decoration:none;text-transform:uppercase;display:inline-flex;align-items:center;min-height:44px}
+.mark:hover{color:var(--accent)}
+.theme{font:400 11.5px var(--mono);letter-spacing:.04em;background:transparent;color:var(--muted);border:1px solid var(--line-2);border-radius:999px;padding:6px 12px;min-height:34px;cursor:pointer;margin-left:6px}
 .theme:hover{color:var(--ink);border-color:var(--ink)}
 
-/* track switch */
-.switch{display:inline-flex;border:1px solid var(--line-2);border-radius:999px;padding:3px;background:var(--surface);gap:2px;flex-wrap:wrap}
-.switch button{font:500 14px var(--body);border:0;background:transparent;color:var(--muted);padding:7px 15px;border-radius:999px;cursor:pointer}
-.switch button:hover{color:var(--ink)}
-.switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-.switch-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:28px}
-
-/* hero: title, abstract, view switch and project table */
-.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:56px;padding-block:56px 48px;align-items:start}
+/* hero: name, one stable identity line, a two-sentence lede, credentials, actions, then the view switch and the project index */
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:56px;padding-block:52px 44px;align-items:start}
+.intro{min-width:0}
 .side{display:grid;gap:26px;min-width:0;align-self:start;padding-bottom:190px} /* room for the drawing below the table */
-.side .plist-wrap{margin-top:0}
-.hero h1{font-size:clamp(46px,7.4vw,82px);font-weight:650;letter-spacing:-.035em;line-height:.98}
-.hero .role{font-size:clamp(18px,2.3vw,22px);font-weight:500;font-style:italic;color:var(--accent);margin-top:14px;max-width:36ch;line-height:1.3}
-.abstract{margin-top:18px}
-.hero .lede{font-size:17px;max-width:56ch}
-.facts{display:grid;margin:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
-.facts > div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:14px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
-.facts > div:last-child{border-bottom:0}
-.facts dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:4px}
-.facts dd{margin:0;color:var(--ink);line-height:1.5}
+.hero h1{font-size:clamp(44px,7vw,78px);font-weight:650;letter-spacing:-.035em;line-height:.98}
+.hero .role{font-size:clamp(18px,2.2vw,22px);font-weight:500;font-style:italic;color:var(--accent);margin-top:14px;max-width:34ch;line-height:1.3}
+.hero .lede{font-size:17px;max-width:54ch;margin-top:18px}
+.creds{display:flex;flex-wrap:wrap;gap:8px 26px;margin:22px 0 0;padding:12px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.creds > div{display:grid;gap:1px;min-width:0}
+.creds dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.creds dd{margin:0;font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.4}
+.seek{margin-top:16px;font-size:15px;color:var(--text)}
+.actions{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:9px 18px;border-radius:999px;font:500 15px var(--body);text-decoration:none;border:1px solid var(--line-2);color:var(--ink);background:var(--surface);cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn small{font:400 11.5px var(--mono);letter-spacing:.04em;opacity:.8}
+.textlink{font-weight:500;font-size:15px;padding:9px 4px;min-height:44px;display:inline-flex;align-items:center}
+
+/* view switch: a labelled segmented control; the selected view is filled and carries a check mark */
+.switch-row{display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap;margin-top:30px}
+.switch-label{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.switch{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--line-2);border-radius:999px;padding:3px;background:var(--surface);gap:2px}
+.switch button{font:500 14.5px var(--body);border:0;background:transparent;color:var(--muted);padding:9px 16px;min-height:40px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap}
+.switch button:hover{color:var(--ink)}
+.switch button::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor;flex:none;opacity:.55}
+.switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.switch button[aria-pressed="true"]::before{background:var(--accent);border-color:var(--accent);opacity:1}
+
+/* project index in the hero: title first, one evidence line second */
+.plist-wrap{margin-top:0}
+.plist{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--ink)}
+.plist li a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1px 14px;align-items:baseline;padding:11px 4px;min-height:44px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.plist li a:hover .pt{color:var(--accent)}
+.plist .pt{grid-column:1;grid-row:1;font-weight:500;font-size:15.5px;line-height:1.35}
+.plist .pe{grid-column:1;grid-row:2;font-size:12.5px;color:var(--muted);line-height:1.4}
+.plist .pe b{font-weight:500;color:var(--muted)}
+.plist .pg{color:var(--muted);font-family:var(--mono);grid-column:2;grid-row:1 / span 2;align-self:center;transition:transform .25s var(--ease)}
+.plist li a:hover .pg{transform:translateX(4px)}
 
 /* landing background: one drawing just below the project table, fading out as you scroll into
    the projects. It plays once on load (descent to the minimum / battery charging to full) and then follows the
-   table: hovering a project moves the descent to its milestone or charges the battery up to its cell. */
+   table: hovering a project moves the descent to its milestone or charges the battery up to its cell. Desktop only. */
 .bg-stage{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.15) 0,rgba(0,0,0,.25) 42%,#000 60%);mask-image:linear-gradient(90deg,rgba(0,0,0,.15) 0,rgba(0,0,0,.25) 42%,#000 60%)}
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.1) 0,rgba(0,0,0,.2) 42%,#000 60%);mask-image:linear-gradient(90deg,rgba(0,0,0,.1) 0,rgba(0,0,0,.2) 42%,#000 60%)}
 #bg-loss{position:absolute;inset:0;width:100%;height:100%}
 #bg-batt{position:absolute;left:var(--ax,72%);top:var(--ay,55%);width:var(--aw,min(36vw,440px));height:auto;transform:translate(-50%,var(--par,0px))}
 #bg-batt .shell,#bg-batt .cell{fill:none;stroke:var(--ink);stroke-opacity:.18;stroke-width:1.1;transition:stroke .4s,stroke-opacity .4s}
@@ -108,34 +138,28 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 #bg-batt.focusing .cellg:not(.focus) .fill{fill-opacity:.06}
 #bg-batt .cellg.focus .cell{stroke:var(--accent);stroke-opacity:.75;stroke-width:1.7}
 #bg-batt .cellg.focus .fill{fill-opacity:.34}
-@media (max-width:860px){.bg-stage{-webkit-mask-image:none;mask-image:none}.bg-stage>*{opacity:.45}#bg-batt{left:50%;top:50%;width:110vw;transform:translate(-50%,calc(-50% + var(--par,0px)))}}
-
-.creds{margin-top:22px;font-size:15px;font-weight:500;color:var(--ink)}
-.creds span{display:block}
-.seek{margin-top:6px;font-size:14.5px;color:var(--muted)}
-.seek a{font-weight:500}
 
 /* sections */
 section.block{padding-block:56px;border-top:1px solid var(--line)}
 .sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:34px}
 .sec-head h2{font-size:clamp(30px,3.8vw,40px);font-weight:650;letter-spacing:-.025em}
-.sec-head p{max-width:56ch;color:var(--muted);font-size:15px}
+.sec-head p{max-width:60ch;color:var(--muted);font-size:15px;margin-top:10px}
 .sec-head .label + h2{margin-top:6px}
 .exp-page .sec-head{margin-top:20px}
 .exp-page .sec-head h2{font-size:clamp(34px,5vw,48px)}
+.exp-page .sec-head p{margin-top:6px}
+.sec-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .dl{font-weight:500;font-size:15px}
 .after{margin-top:10px}
 .confidential{margin-top:14px;font-size:13.5px;color:var(--muted)}
 .plate.small{max-width:540px}
 .chart .plate{background:var(--surface)}
-.proj.duo h3{font-size:20px}
-.proj.duo .summary{font-size:15px}
 .pub .label{margin-bottom:6px}
 .talk .muted{margin-top:8px;max-width:62ch}
-button.ghost{font:500 13.5px var(--body);background:transparent;border:1px solid var(--line-2);color:var(--ink);padding:6px 14px;border-radius:999px;cursor:pointer}
+button.ghost{font:500 13.5px var(--body);background:transparent;border:1px solid var(--line-2);color:var(--ink);padding:9px 14px;min-height:40px;border-radius:999px;cursor:pointer}
 button.ghost:hover{border-color:var(--ink)}
 
-/* projects: each one an article in the paper */
+/* projects: each one an article in the paper. Featured cards carry a figure; supporting cards are set tighter. */
 .projects{display:flex;flex-direction:column;gap:30px}
 .proj{background:var(--surface);border:1px solid var(--line-2);border-radius:14px;position:relative;overflow:hidden;transition:border-color .25s var(--ease)}
 .proj:hover{border-color:var(--ink)}
@@ -145,37 +169,82 @@ button.ghost:hover{border-color:var(--ink)}
 .titleblock dd{margin:2px 0 0;font-size:14.5px;color:var(--ink);font-weight:500}
 .proj-main{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:34px;padding:30px 30px 26px;align-items:start}
 .proj-main.solo{grid-template-columns:minmax(0,1fr)}
+.proj-main.solo .brief{max-width:80ch}
 .proj h3{font-size:clamp(23px,2.7vw,30px);font-weight:650;margin-top:8px;letter-spacing:-.02em}
 .proj .summary{margin-top:12px;font-size:16.5px;max-width:68ch}
-.keys{margin:20px 0 0;padding:0;list-style:none;display:grid;gap:0}
-.keys li{display:grid;grid-template-columns:minmax(96px,auto) minmax(0,1fr);gap:16px;font-size:14.5px;align-items:baseline;padding:10px 0;border-top:1px solid var(--line)}
-.keys li b{font:600 18px var(--display);color:var(--accent);line-height:1.1;white-space:nowrap;font-variant-numeric:lining-nums tabular-nums;letter-spacing:-.01em}
+/* the four-line brief: problem, my part, result, limit */
+.brief{margin:18px 0 0;display:grid;border-top:1px solid var(--line)}
+.brief > div{display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.5}
+.brief dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.brief dd{margin:0;color:var(--text)}
+.brief dd b{color:var(--accent);font-weight:650;font-variant-numeric:lining-nums tabular-nums;letter-spacing:-.01em}
+.brief .limit dt{color:var(--warn)}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
 .tags span{font-family:var(--mono);font-size:11.5px;padding:3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:var(--paper)}
-.tags a.code{font-family:var(--mono);font-size:11.5px;padding:3px 11px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);text-decoration:none;background:var(--accent-soft)}
+.tags a.code{font-family:var(--mono);font-size:11.5px;padding:5px 11px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);text-decoration:none;background:var(--accent-soft)}
 .tags a.code:hover{background:var(--accent);color:var(--on-accent)}
 figure{margin:0;min-width:0}
 .plate{background:var(--plate);border:1px solid var(--line-2);border-radius:10px;padding:10px;overflow:hidden}
 .plate img{display:block;width:100%;height:auto}
-figcaption{font-size:13px;color:var(--muted);margin-top:9px;line-height:1.5}
+figcaption{font-size:13px;color:var(--muted);margin-top:9px;line-height:1.5;display:flex;justify-content:space-between;gap:6px 14px;flex-wrap:wrap;align-items:start}
+figcaption > span{flex:1 1 240px;min-width:0}
+.enlarge{font:500 12.5px var(--body);color:var(--accent);background:transparent;border:1px solid var(--line-2);border-radius:999px;padding:6px 12px;min-height:32px;cursor:pointer;flex:none;white-space:nowrap}
+.enlarge:hover{border-color:var(--accent)}
+.plate img.zoomable{cursor:zoom-in}
+
+/* supporting work: same content, set compactly: a one-line meta row, smaller title, small figure */
+.compact{gap:18px}
+.compact .proj{border-color:var(--line);border-radius:10px}
+.compact .proj:hover{border-color:var(--line-2)}
+.compact .titleblock{display:flex;flex-wrap:wrap;gap:2px 20px;padding:8px 20px;background:transparent}
+.compact .titleblock div{padding:0;display:flex;gap:7px;align-items:baseline}
+.compact .titleblock dt{font-size:10.5px}
+.compact .titleblock dd{font-size:13px;margin:0}
+.compact .proj-main{grid-template-columns:minmax(0,1fr) minmax(200px,.5fr);gap:22px;padding:18px 20px 18px}
+.compact .proj-main.solo{grid-template-columns:minmax(0,1fr)}
+.compact .proj h3{font-size:20px;margin-top:4px}
+.compact .proj .summary{font-size:15px;margin-top:8px}
+.compact .brief{margin-top:12px}
+.compact .brief > div{font-size:13.5px;padding:6px 0;grid-template-columns:76px minmax(0,1fr)}
+.compact .tags{margin-top:12px}
+.compact figcaption{font-size:12.5px}
+.compact .plate{padding:6px}
+.compact details.more > summary{padding:12px 20px;font-size:14.5px}
+.compact .deep{padding:4px 20px 24px}
+.compact .proj.duo .proj-main{grid-template-columns:repeat(2,minmax(0,1fr))}
+.compact .proj.duo h3{font-size:19px}
+.compact .proj.duo .summary{font-size:14.5px}
 
 /* disclosure */
 details.more{border-top:1px solid var(--line)}
-details.more > summary{list-style:none;cursor:pointer;padding:14px 30px;font-weight:500;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:12px}
+details.more > summary{list-style:none;cursor:pointer;padding:14px 30px;min-height:48px;font-weight:500;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:12px}
 details.more > summary::-webkit-details-marker{display:none}
 details.more > summary::before{content:"+";font-family:var(--mono);font-size:13px;line-height:1;width:22px;height:22px;display:inline-grid;place-items:center;border:1px solid var(--line-2);border-radius:50%;color:var(--accent);flex:none}
 details.more[open] > summary::before{content:"−";background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 details.more > summary:hover{background:var(--paper)}
-.deep{padding:6px 30px 32px;display:grid;gap:26px}
+.deep{padding:6px 30px 28px;display:grid;gap:26px}
 .deep-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px 34px} /* same columns as .proj-main, so details line up with the card above */
 .deep > *,.deep-grid > *{min-width:0}
 .deep h4{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 8px;font-weight:500}
 .deep p,.deep li{font-size:15.5px}
 .deep ul{margin:0;padding-left:18px;display:grid;gap:5px}
 .deep li::marker{color:var(--line-2)}
+.back-row{display:flex;justify-content:flex-end;padding-top:4px;border-top:1px solid var(--line)}
+.back-row a{font-size:14px;font-weight:500;text-decoration:none;padding:10px 4px;min-height:44px;display:inline-flex;align-items:center}
 /* limits read as a ruled note, not a warning box */
 .note{padding:2px 0 2px 16px;border-left:2px solid var(--accent);font-size:14.5px;color:var(--muted);max-width:72ch}
 .note b{color:var(--ink);font-weight:600}
+
+/* figure viewer */
+dialog.lightbox{border:0;padding:0;background:transparent;max-width:min(96vw,1400px);width:auto;color:var(--paper);margin:auto;overflow:visible}
+dialog.lightbox::backdrop{background:rgba(14,17,20,.86)}
+.lb-inner{display:grid;gap:10px;justify-items:center;max-width:100%}
+.lb-inner img{display:block;max-width:min(96vw,1400px);max-height:78vh;width:auto;height:auto;object-fit:contain;background:#fff;border-radius:8px;padding:8px}
+.lb-cap{font-size:14px;line-height:1.5;color:#E6E9EC;text-align:center;max-width:80ch;padding:0 8px}
+.lb-close{justify-self:end;font:500 14px var(--body);background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:9px 16px;min-height:44px;cursor:pointer}
+.lb-close:hover{background:rgba(255,255,255,.22)}
+.lb-close:focus-visible{outline-color:#fff}
+body.lb-open{overflow:hidden}
 
 /* tables: booktabs style */
 .tbl{overflow-x:auto}
@@ -207,19 +276,20 @@ details.more > summary:hover{background:var(--paper)}
 
 .crossref{margin-top:40px;padding:18px 22px;background:var(--paper);border:1px dashed var(--line-2);border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:15px}
 
-/* project index in the hero (table of contents) */
-.plist-wrap{margin-top:32px}
-.plist{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--ink)}
-.plist li a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:10px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
-.plist li a:hover .pt{color:var(--accent)}
-.plist .pt{font-weight:500;font-size:15.5px}
-.plist .pg{color:var(--muted);font-family:var(--mono);transition:transform .25s var(--ease)}
-.plist li a:hover .pg{transform:translateX(4px)}
-.exp-page{border-top:0;padding-block:40px 56px}
+/* CV page */
+.exp-page{border-top:0;padding-block:28px 56px}
 .cv-h{font-size:13px;font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:44px 0 12px}
 .exp-page .facts{max-width:760px}
 .exp-page .pub{margin-top:28px}
-.back{font-size:14.5px;font-weight:500;text-decoration:none}
+.back{font-size:14.5px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
+.facts{display:grid;margin:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.facts > div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:14px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.facts > div:last-child{border-bottom:0}
+.facts dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.facts dd{margin:0;color:var(--ink);line-height:1.5}
+.facts dd .sub{display:block;font:400 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.facts dd .sub:first-child{margin-top:0}
+.cv-foot{margin-top:40px;padding:18px 22px;background:var(--surface);border:1px solid var(--line-2);border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:12px 18px;flex-wrap:wrap;font-size:15px}
 
 /* experience */
 .log{display:grid;border-top:1px solid var(--ink)}
@@ -238,47 +308,66 @@ details.more > summary:hover{background:var(--paper)}
 .cols p{font-size:15px}
 .cols p + p{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
 .cols .sub{display:block;font:400 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
-.talk{margin-top:64px}
+.talk{margin-top:8px}
 .talk h2{font-size:clamp(32px,4.2vw,48px);font-weight:650;letter-spacing:-.03em}
 .contact{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin-top:22px}
-.email{font-family:var(--mono);font-size:14.5px;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:999px;padding:9px 16px;user-select:all}
-button.copy{font:500 14.5px var(--body);background:var(--accent);color:var(--on-accent);border:1px solid var(--accent);border-radius:999px;padding:9px 18px;cursor:pointer}
+.email{font-family:var(--mono);font-size:14.5px;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:999px;padding:11px 16px;min-height:44px;display:inline-flex;align-items:center;user-select:all}
+button.copy{font:500 14.5px var(--body);background:var(--accent);color:var(--on-accent);border:1px solid var(--accent);border-radius:999px;padding:9px 18px;min-height:44px;cursor:pointer}
 button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.copy-status{font-size:14px;color:var(--text);min-height:1.5em}
+.copy-status:empty{display:none}
+.contact > a:not(.email){padding:9px 2px;min-height:44px;display:inline-flex;align-items:center;font-weight:500}
 .foot{margin-top:60px;padding-top:16px;border-top:1px solid var(--line);font:400 11.5px var(--mono);letter-spacing:.03em;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 @media (max-width:520px){
-  .keys li{grid-template-columns:minmax(0,1fr);gap:2px}
-  .keys li b{white-space:normal}
   .flow .arr{display:none}
-
-  .switch{display:grid;width:100%;border-radius:14px}
-  .switch button{border-radius:10px;text-align:left}
+  .brief > div,.compact .brief > div{grid-template-columns:minmax(0,1fr);gap:1px;padding:8px 0}
+  .brief dt{padding-top:0}
   .facts > div{grid-template-columns:92px minmax(0,1fr)}
+  .switch{width:100%}
+  .switch button{padding:9px 8px;min-height:44px;font-size:14px}
+  .actions .btn{flex:1 1 auto}
+  .titleblock{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .compact .titleblock{gap:2px 14px}
+  .creds{gap:6px 18px}
+  .hero h1{font-size:clamp(40px,13vw,52px)}
 }
 @media (max-width:860px){
-  .hero,.proj-main,.deep-grid{grid-template-columns:minmax(0,1fr)}
-  .hero{gap:32px;padding-block:36px}
+  .hero,.proj-main,.deep-grid,.compact .proj-main,.compact .proj.duo .proj-main{grid-template-columns:minmax(0,1fr)}
+  .hero{gap:36px;padding-block:32px 28px}
   .side{padding-bottom:0}
   .titleblock{grid-template-columns:repeat(2,minmax(0,1fr))}
   .proj-main{padding:22px 20px}
   details.more > summary{padding:14px 20px}
   .deep{padding:4px 20px 24px}
   .entry{grid-template-columns:minmax(0,1fr);gap:4px}
+  .bg-stage{display:none}
+  .enlarge,button.ghost,.theme{min-height:44px}
+  .tags a.code{padding:9px 12px}
+  .compact figure{max-width:420px}
+  .top{padding-block:6px;gap:4px 12px}
+  .top nav{gap:0 2px;margin-left:-7px}
+  .top nav a{padding:11px 7px;font-size:14px}
+  .theme{margin-left:2px;padding:6px 10px}
+}
+@media (min-width:861px) and (max-width:1023px){
+  .hero{gap:36px;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
 }
 
 /* motion: a short settle on load, never hiding content */
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 @media (prefers-reduced-motion:no-preference){
-  .hero h1,.hero .role.on,.abstract,.switch-row,.plist-wrap,.side{animation:rise .6s var(--ease) both}
-  .hero .role.on{animation-delay:.06s}.abstract{animation-delay:.12s}.switch-row{animation-delay:.18s}
-  .plist-wrap{animation-delay:.24s}.side{animation-delay:.14s}
+  .hero h1,.hero .role,.hero .lede,.creds,.seek,.actions,.switch-row,.side{animation:rise .6s var(--ease) both}
+  .hero .role{animation-delay:.05s}.hero .lede{animation-delay:.1s}.creds,.seek{animation-delay:.14s}.actions{animation-delay:.18s}.switch-row{animation-delay:.22s}.side{animation-delay:.14s}
   details.more[open] .deep{animation:rise .35s var(--ease) both}
-  .switch button,button.ghost,.theme,button.copy,.tags a.code{transition:background .15s,color .15s,border-color .15s}
+  .switch button,button.ghost,.theme,button.copy,.tags a.code,.btn,.enlarge{transition:background .15s,color .15s,border-color .15s}
 }
 </style>
 <script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="grid-bg" aria-hidden="true"></div>
 <div class="bg-stage" aria-hidden="true">
     <canvas id="bg-loss" data-show="ml"></canvas>
     <svg id="bg-batt" data-show="energy" viewBox="80 54 306 142">
@@ -288,59 +377,68 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     </svg>
 </div>
 
-<div class="wrap">
+<div class="wrap" id="top">
   <header class="top">
-    <span class="mark">KIEN VAN HO · PORTFOLIO</span>
-    <nav aria-label="Sections">
-      <a href="#projects">Projects</a>
-      <a href="#cv">CV</a>
+    <a class="mark" href="#top">Kien van Ho · Portfolio</a>
+    <nav aria-label="Site">
+      <a href="#projects" data-nav="home">Projects</a>
+      <a href="#cv" data-nav="experience">CV</a>
       <a href="#contact">Contact</a>
       <a href="https://github.com/kivanho">GitHub ↗</a>
       <button class="theme" type="button" id="theme" title="Switch colour theme">Dark</button>
     </nav>
   </header>
 
+  <main id="main" tabindex="-1">
   <div class="page" data-page="home">
-  <section class="hero">
-        <div>
-      <h1>Kien van Ho</h1>
-      <p class="role" data-show="ml">Physics-informed ML and modelling for energy systems</p>
-      <p class="role" data-show="energy">Energy and process engineering: balances and scenario models</p>
-      <div class="abstract">
-          <p class="lede" data-show="ml">I build models that keep the physics and learn from the data, and I test them on small, expensive datasets. At Siemens Energy that was a hybrid crack-growth model for gas turbines. At Mercedes-Benz, a robot energy model. In my master's, an engine digital twin: I led the team of three and did most of the implementation.</p>
-          <p class="lede" data-show="energy">In my master's I built a scenario model of how much of Berlin's evening peak parked EVs could cover by 2030, and with a team of six I sized a drinking-water plant for Karachi. I also analysed CHP and Power-to-Gas cases. In industry: production engineering at Mercedes-Benz and a thesis with Siemens Energy on gas-turbine component life.</p>
+  <section class="hero" aria-labelledby="name">
+    <div class="intro">
+      <h1 id="name">Kien van Ho</h1>
+      <p class="role">Engineer combining physics-based modelling, machine learning and energy systems</p>
+      <p class="lede" data-show="ml">I build models that keep the physics and learn from the data, and I test them on small, expensive datasets from gas turbines, robots and engines. The aim is life, energy and efficiency predictions that stay physically plausible.</p>
+      <p class="lede" data-show="energy">I size, balance and model energy and process systems: parked EV fleets as grid storage, a drinking-water plant, CHP and Power-to-Gas cases. In industry I planned production for an electric-motor line and modelled energy use on the shop floor.</p>
+      <dl class="creds">
+        <div><dt>Degree</dt><dd>Erasmus Mundus double M.Sc. (ME3+)</dd></div>
+        <div><dt>Industry</dt><dd>Siemens Energy · Mercedes-Benz</dd></div>
+        <div><dt>Based in</dt><dd>Berlin</dd></div>
+      </dl>
+      <p class="seek" data-show="ml">Open to entry-level roles in ML, data science and hybrid modelling for the energy transition.</p>
+      <p class="seek" data-show="energy">Open to entry-level roles in energy-systems and process engineering for the energy transition.</p>
+      <div class="actions">
+        <a class="btn primary" href="#projects">View selected work</a>
+        <a class="btn" href="Kien_van_Ho_CV.pdf?v=2026-10-30c" download="Kien_van_Ho_CV.pdf">Download CV <small>PDF</small></a>
+        <a class="textlink" href="#contact">Contact →</a>
       </div>
-      <p class="creds"><span>Double Erasmus Mundus M.Sc. ME3+</span> <span>Siemens Energy · Mercedes-Benz · Berlin</span></p>
-      <p class="seek" data-show="ml">Open to entry-level roles in ML and data science for energy · <a href="Kien_van_Ho_CV.pdf?v=2026-10-30c">CV (PDF)</a></p>
-      <p class="seek" data-show="energy">Open to entry-level roles in energy-systems and process engineering · <a href="Kien_van_Ho_CV.pdf?v=2026-10-30c">CV (PDF)</a></p>
       <div class="switch-row">
-        <div class="switch" role="group" aria-label="Choose a view">
-          <button type="button" id="t-ml" data-track="ml" aria-pressed="true">Machine learning &amp; modelling</button>
-          <button type="button" id="t-energy" data-track="energy" aria-pressed="false">Energy &amp; process engineering</button>
+        <span class="switch-label" id="switch-label">Explore work</span>
+        <div class="switch" role="group" aria-labelledby="switch-label">
+          <button type="button" id="t-ml" data-track="ml" aria-pressed="true">ML &amp; modelling</button>
+          <button type="button" id="t-energy" data-track="energy" aria-pressed="false">Energy &amp; process</button>
         </div>
       </div>
     </div>
     <div class="side">
       <div class="plist-wrap">
-        <p class="label" id="plist-label">Projects</p>
+        <p class="label" id="plist-label">Project index · <span id="plist-track">ML &amp; modelling</span></p>
         <ol class="plist" id="plist" aria-labelledby="plist-label"></ol>
       </div>
     </div>
   </section>
 
-  <section class="block" id="projects">
+  <section class="block" id="projects" aria-labelledby="projects-h">
     <div class="sec-head">
       <div>
-        <p class="label" id="track-label">Machine learning &amp; modelling</p>
-        <h2>Projects</h2>
+        <p class="label" id="track-label">ML &amp; modelling</p>
+        <h2 id="projects-h">Selected work</h2>
+        <p>The projects with the strongest evidence for this view. Each card states the problem, my part, the result and its main limit; the case study underneath has the method and validation.</p>
       </div>
-      <button class="ghost" type="button" id="expand-all">Expand all</button>
+      <button class="ghost" type="button" id="expand-all">Expand all case studies</button>
     </div>
 
     <div class="projects" id="project-list">
 
       <!-- ============ MASTER'S THESIS ============ -->
-      <article class="proj" id="thesis" data-tracks="ml" data-order-ml="1">
+      <article class="proj" id="thesis" data-tracks="ml" data-order-ml="1" data-tier-ml="featured" data-ev-ml="Siemens Energy thesis · −20.1% log error vs. physics baseline, 56 blind predictions">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Master's thesis</dd></div>
           <div><dt>Partner</dt><dd>Siemens Energy</dd></div>
@@ -351,12 +449,13 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
           <div>
             <p class="label">Gas turbines · fracture mechanics · hybrid ML</p>
             <h3>Physics-informed ML for short-crack growth</h3>
-            <p class="summary">A neural network that predicts crack-growth curves for gas-turbine components with manufacturing defects. It is trained on experiments and held to the shape of an established fracture-mechanics model (IBESS) through the loss, so life estimates improve while the curves keep the physical model's shape.</p>
-            <ul class="keys">
-              <li><b>−20.1%</b><span>mean absolute log error vs. the physics baseline (0.965 → 0.771)</span></li>
-              <li><b>56</b><span>experimental specimens, each predicted blind with nested cross-validation</span></li>
-              <li><b>Trade-off</b><span>29 of 56 predictions now overestimate life (baseline: 8), so the model is less conservative; documented as the open problem</span></li>
-            </ul>
+            <p class="summary">A neural network that predicts crack-growth curves for gas-turbine components with manufacturing defects, trained on experiments and held to the shape of an established fracture-mechanics model (IBESS) through its loss.</p>
+            <dl class="brief">
+              <div><dt>Problem</dt><dd>The physical short-crack model is interpretable but systematically underestimated fatigue life on the experiments; with 56 specimens a free black-box model would overfit.</dd></div>
+              <div><dt>My part</dt><dd>Individual thesis in the Predictive Analytics team at Siemens Energy: model design, physics loss, nested cross-validation and all implementation.</dd></div>
+              <div><dt>Result</dt><dd><b>−20.1%</b> mean absolute log error vs. the physics baseline (0.965 → 0.771), each of the 56 specimens predicted blind.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>29 of 56 predictions now overestimate life (baseline: 8), the unsafe direction. A feasibility study, not a certified lifetime assessment.</dd></div>
+            </dl>
             <div class="tags"><span>Python</span><span>TensorFlow</span><span>scikit-learn</span><span>pandas</span><span>Nested CV</span><span>Custom physics loss</span><a class="code" href="https://github.com/kivanho/physics-informed-crack-growth">Method code, synthetic data ↗</a></div>
           </div>
           <figure>
@@ -369,7 +468,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
           <div class="deep">
             <div class="deep-grid">
               <div>
-                <h4>Problem</h4>
+                <h4>Starting point</h4>
                 <p>The physical short-crack model (IBESS) is interpretable but, on the experimental data, it systematically underestimated fatigue life. With only 56 specimens from one material at one nominal stress ratio (R = 0.1), a free black-box model would overfit and lose physical meaning.</p>
               </div>
               <div>
@@ -420,7 +519,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ DIGITAL TWIN ============ -->
-      <article class="proj" id="twin" data-tracks="ml energy" data-order-ml="2" data-order-energy="4">
+      <article class="proj" id="twin" data-tracks="ml energy" data-order-ml="2" data-order-energy="3" data-tier-ml="featured" data-tier-energy="featured" data-ev-ml="Team lead · FastAPI + Docker prototype, efficiency R² 0.93 held out" data-ev-energy="Team lead · dual-fuel engine twin, prototype">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Master's project</dd></div>
           <div><dt>Context</dt><dd>IMT Atlantique · GreenTwins</dd></div>
@@ -431,12 +530,13 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
           <div>
             <p class="label">Digital twin · dual-fuel engine · ML services</p>
             <h3>Digital twin of a dual-fuel engine</h3>
-            <p class="summary">A prototype twin of a 14.4 kWe dual-fuel (diesel and biogas) generator set: set power and fuel mix, and ML models plus physics formulas predict efficiency, exhaust temperature and the methane, CO₂ and diesel flows for each fuel mix, served through an API into a 3D platform.</p>
-            <ul class="keys">
-              <li><b>R² 0.93</b><span>kNN efficiency model on lab data, random 20% held out</span></li>
-              <li><b>FastAPI + Docker</b><span>models served through an API to the GreenTwins digital-twin platform (Datagrowb), with code and data on Azure</span></li>
-              <li><b>Prototype</b><span>inputs set by hand; a live connection to the engine was scoped as future work</span></li>
-            </ul>
+            <p class="summary">A prototype twin of a 14.4 kWe dual-fuel (diesel and biogas) generator set: set power and fuel mix, and ML models plus physics formulas predict efficiency, exhaust temperature and fuel and CO₂ flows, served through an API into a 3D platform.</p>
+            <dl class="brief">
+              <div><dt>Problem</dt><dd>GreenTwins wanted a working twin of the lab engine: predictions for any power and fuel mix, delivered into their digital-twin platform.</dd></div>
+              <div><dt>My part</dt><dd>Led the team of three and did most of the implementation: ML models, energy balance, flow control and the FastAPI service.</dd></div>
+              <div><dt>Result</dt><dd>kNN efficiency model <b>R² 0.93</b> on a random 20% hold-out; models served through <b>FastAPI in Docker</b> to the GreenTwins platform, code and data on Azure.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>Prototype: inputs set by hand, no live connection to the engine. The exhaust-temperature R² is a training fit, not a held-out score.</dd></div>
+            </dl>
             <div class="tags"><span>Python</span><span>scikit-learn</span><span>FastAPI</span><span>Docker</span><span>Azure</span><span>Blender</span><a class="code" href="https://github.com/kivanho/dual-fuel-digital-twin">Service code, synthetic engine map ↗</a></div>
           </div>
           <figure>
@@ -498,7 +598,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ MERCEDES ROBOT ENERGY (industry, confidential) ============ -->
-      <article class="proj" id="robot" data-tracks="ml" data-order-ml="3">
+      <article class="proj" id="robot" data-tracks="ml" data-order-ml="3" data-tier-ml="featured" data-ev-ml="Mercedes-Benz · up to 15% modelled savings potential">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Internship project</dd></div>
           <div><dt>Company</dt><dd>Mercedes-Benz AG</dd></div>
@@ -510,19 +610,19 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
             <p class="label">Hybrid modelling · industrial robots · energy efficiency</p>
             <h3>Energy model of an assembly robot</h3>
             <p class="summary">The physics-plus-data approach I later took further in my thesis, here on a universal robot in engine assembly: a physics-based model, a neural network that predicts its energy use, and trajectory studies to find where energy could be saved.</p>
-            <ul class="keys">
-              <li><b>Up to 15%</b><span>modelled savings potential from optimised instead of arbitrary trajectories</span></li>
-              <li><b>Physics</b><span>Python model of the robot's energy consumption along its motion</span></li>
-              <li><b>ML</b><span>neural network for energy prediction, developed and validated against the robot's data</span></li>
-            </ul>
+            <dl class="brief">
+              <div><dt>Problem</dt><dd>The robot's energy use depends on how it moves; the plant wanted to know how much an optimised trajectory could save.</dd></div>
+              <div><dt>My part</dt><dd>Individual intern project: Python physics model of the robot's energy consumption along its motion, a neural network for energy prediction validated against the robot's data, and trajectory studies.</dd></div>
+              <div><dt>Result</dt><dd><b>Up to 15%</b> modelled energy-savings potential from optimised instead of arbitrary trajectories.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>Modelled potential, not measured savings in production. Figures and code stay with Mercedes-Benz.</dd></div>
+            </dl>
             <div class="tags"><span>Python</span><span>Neural networks</span><span>Physics-based modelling</span><span>Production data</span></div>
-            <p class="confidential">Internal company project: figures and code stay with Mercedes-Benz. Happy to walk through the approach in an interview.</p>
           </div>
         </div>
       </article>
 
       <!-- ============ BACHELOR THESIS ============ -->
-      <article class="proj" id="bachelor" data-tracks="ml" data-order-ml="4">
+      <article class="proj" id="bachelor" data-tracks="ml" data-order-ml="4" data-tier-ml="supporting" data-ev-ml="Bachelor's thesis · 31 cars, 4 models, co-authored paper">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Bachelor's thesis</dd></div>
           <div><dt>Context</dt><dd>TU Berlin · product development</dd></div>
@@ -533,13 +633,13 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
           <div>
             <p class="label">Small-data regression · model selection</p>
             <h3>Predicting vehicle attributes from early design data</h3>
-            <p class="summary">Can you predict how a car will perform from nine design parameters, with data on only 31 cars? I compared four regression models on five functional attributes to find out where ML helps and where it doesn't.</p>
-            <ul class="keys">
-              <li><b>4 models</b><span>linear regression, Lasso, kNN and support vector regression</span></li>
-              <li><b>5 targets</b><span>passenger and cargo volume, fuel efficiency, towing, acceleration</span></li>
-              <li><b>Paper</b><span>the work fed into a 2025 <i>Proceedings of the Design Society</i> paper I co-authored</span></li>
-              <li><b>Re-checked</b><span>in the public code, a stricter protocol (nested, twin-aware cross-validation) lowers the median R² across models from 0.55–0.69 to 0.15–0.27</span></li>
-            </ul>
+            <p class="summary">Can you predict how a car will perform from nine design parameters, with data on only 31 cars? Four regression models compared on five functional attributes.</p>
+            <dl class="brief">
+              <div><dt>Problem</dt><dd>Early in design, few parameters are fixed and few comparable cars exist; the question was where ML helps and where it does not.</dd></div>
+              <div><dt>My part</dt><dd>Individual thesis at TU Berlin: feature selection, four models (linear, Lasso, kNN, SVR), cross-validation. The work fed into a 2025 <i>Proceedings of the Design Society</i> paper I co-authored.</dd></div>
+              <div><dt>Result</dt><dd>No single model won. Passenger and cargo volume were best explained (<b>R² up to 0.78</b>); towing capacity was not predictable.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>Thesis scores are optimistic (tuned and scored on the same folds). My 2026 re-check with nested, twin-aware cross-validation lowers the median R² to 0.15–0.27.</dd></div>
+            </dl>
             <div class="tags"><span>Python</span><span>scikit-learn</span><span>Feature selection</span><span>Cross-validation</span><a class="code" href="https://github.com/kivanho/small-data-model-selection">Code and re-evaluation ↗</a></div>
           </div>
           <figure>
@@ -594,7 +694,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ KARACHI ============ -->
-      <article class="proj" id="karachi" data-tracks="energy" data-order-energy="2">
+      <article class="proj" id="karachi" data-tracks="energy" data-order-energy="2" data-tier-energy="featured" data-ev-energy="Team of 6 · 189,250 m³/d plant, academic design">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Course project</dd></div>
           <div><dt>Context</dt><dd>IMT Atlantique · drinking water</dd></div>
@@ -605,12 +705,13 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
           <div>
             <p class="label">Water treatment · unit sizing · project finance</p>
             <h3>Drinking-water plant at Hub Dam, Karachi</h3>
-            <p class="summary">A full treatment plant for very hard, turbid reservoir water, from intake pipe to chlorination, sized unit by unit in Excel and costed with CAPEX, OPEX and IRR. My part was mainly the research and the sizing calculations.</p>
-            <ul class="keys">
-              <li><b>189,250 m³/d</b><span>design flow at full build-out (2.19 m³/s, about 50 MGD in US gallons; phase I 25 MGD)</span></li>
-              <li><b>$94.5 M</b><span>team estimate of CAPEX incl. 5% contingency; OPEX $12.1 M per year</span></li>
-              <li><b>IRR 8%</b><span>team estimate, against a 6–7% hurdle rate</span></li>
-            </ul>
+            <p class="summary">A full treatment plant for very hard, turbid reservoir water, from intake pipe to chlorination, sized unit by unit in Excel and costed with CAPEX, OPEX and IRR.</p>
+            <dl class="brief">
+              <div><dt>Problem</dt><dd>Karachi supplies about 650 MGD against 820–1,200 MGD of demand, and the Hub Dam water needs softening and strong particle removal, not just disinfection.</dd></div>
+              <div><dt>My part</dt><dd>Team of six; mainly the research and the unit sizing calculations.</dd></div>
+              <div><dt>Result</dt><dd>Treatment train sized for <b>189,250 m³/d</b> (2.19 m³/s, about 50 US MGD). Team estimates: CAPEX $94.5 M incl. 5% contingency, OPEX $12.1 M/yr, IRR 8% against a 6–7% hurdle.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>Academic design estimates, not an operating plant. The team diagram shows an earlier design iteration; the case-study table has the final sizing.</dd></div>
+            </dl>
             <div class="tags"><span>Excel</span><span>Process design</span><span>Hydraulics</span><span>CAPEX / OPEX</span></div>
           </div>
           <figure>
@@ -623,7 +724,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
           <div class="deep">
             <div class="deep-grid">
               <div>
-                <h4>Problem</h4>
+                <h4>Context</h4>
                 <p>Karachi supplies about 650 MGD against 820–1,200 MGD of demand. Karachi water-quality data show hardness up to 2,000 mg/L CaCO₃ and turbidity up to 65 NTU, which the design takes as its basis, so the plant needs softening and strong particle removal, not just disinfection.</p>
               </div>
               <div>
@@ -662,7 +763,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ CHP ============ -->
-      <article class="proj" id="chp" data-tracks="energy" data-order-energy="5">
+      <article class="proj" id="chp" data-tracks="energy" data-order-energy="5" data-tier-energy="supporting" data-ev-energy="Course case study · published assessment, not recalculated">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Course case study</dd></div>
           <div><dt>Context</dt><dd>BME · waste-heat utilisation</dd></div>
@@ -673,12 +774,13 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
           <div>
             <p class="label">CHP case analysis · heat demand · investment case</p>
             <h3>Gas CHP for a London university campus</h3>
-            <p class="summary">Should a London university campus run its own combined heat and power unit, and how big? A course presentation in which I worked through a published CHP assessment (Amber et al., 2018): load analysis, sizing logic, investment case and energy-price sensitivity.</p>
-            <ul class="keys">
-              <li><b>215 kW<sub>el</sub> / 304 kW<sub>th</sub></b><span>CHP option below the winter heat and electrical base loads</span></li>
-              <li><b>−395 t CO₂/yr</b><span>emissions cut estimated in the study</span></li>
-              <li><b>4.5–15 years</b><span>payback range across gas and electricity price scenarios</span></li>
-            </ul>
+            <p class="summary">Should a London university campus run its own combined heat and power unit, and how big? A course presentation working through a published CHP assessment (Amber et al., 2018).</p>
+            <dl class="brief">
+              <div><dt>Problem</dt><dd>A CHP unit only pays off when its heat is used, so sizing against the campus load profile decides the case.</dd></div>
+              <div><dt>My part</dt><dd>Individual: load analysis, sizing logic, investment case and price sensitivity, analysed and presented from the published study.</dd></div>
+              <div><dt>Result</dt><dd><b>215 kW<sub>el</sub> / 304 kW<sub>th</sub></b> option under the winter heat and electrical base loads; the study estimates −395 t CO₂/yr and a payback of 4.5–15 years across price scenarios.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>Concept-level: load, CO₂ and savings figures come from the published assessment, not recalculated from scratch.</dd></div>
+            </dl>
             <div class="tags"><span>Load analysis</span><span>CHP case analysis</span><span>Payback</span><span>Price sensitivity</span></div>
           </div>
           <figure>
@@ -717,7 +819,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ V2G ============ -->
-      <article class="proj" id="v2g" data-tracks="energy" data-order-energy="1">
+      <article class="proj" id="v2g" data-tracks="energy" data-order-energy="1" data-tier-energy="featured" data-ev-energy="Individual · 7.8–23.4% of the 2030 evening peak, optimistic case">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Course project</dd></div>
           <div><dt>Context</dt><dd>BME · energy storage + planning</dd></div>
@@ -729,11 +831,12 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
             <p class="label">Vehicle-to-grid · peak demand · scenarios</p>
             <h3>Can parked EVs cover Berlin's evening peak?</h3>
             <p class="summary">A scenario model of Berlin's battery-electric fleet from 2025 to 2030, estimating how much stored energy owners could feed back during the evening peak, by season and participation rate.</p>
-            <ul class="keys">
-              <li><b>7.8–23.4%</b><span>of summer evening-peak energy (18–22 h) in 2030, under optimistic assumptions</span></li>
-              <li><b>5.0–15.0%</b><span>in winter, when the peak is longer and higher</span></li>
-              <li><b>34k → 309k</b><span>modelled BEV fleet, 2025 to 2030</span></li>
-            </ul>
+            <dl class="brief">
+              <div><dt>Problem</dt><dd>Berlin's evening peak needs flexibility; could the growing EV fleet supply a meaningful share of it by 2030?</dd></div>
+              <div><dt>My part</dt><dd>Individual course project: demand, fleet and battery scenario model built in Excel from published planning-area data.</dd></div>
+              <div><dt>Result</dt><dd><b>7.8–23.4%</b> of summer evening-peak energy in 2030 (5.0–15.0% in winter), depending on how many owners take part.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>Optimistic growth and participation; one planning area's profile scaled citywide; battery wear, economics and local grid limits not modelled.</dd></div>
+            </dl>
             <div class="tags"><span>Excel</span><span>Scenario analysis</span><span>Energy storage</span><span>Demand profiles</span></div>
           </div>
           <figure class="chart">
@@ -804,7 +907,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ MERCEDES AXIAL-FLUX (industry) ============ -->
-      <article class="proj" id="axialflux" data-tracks="energy" data-order-energy="3">
+      <article class="proj" id="axialflux" data-tracks="energy" data-order-energy="4" data-tier-energy="featured" data-ev-energy="Mercedes-Benz · 1-year internship, facilities and Power BI">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Internship</dd></div>
           <div><dt>Company</dt><dd>Mercedes-Benz AG</dd></div>
@@ -816,18 +919,19 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
             <p class="label">Production planning · process data · predictive maintenance</p>
             <h3>Industrialising an axial-flux electric motor</h3>
             <p class="summary">A year in planning and industrialisation for a new axial-flux electric motor: engineering for the new production facilities and data-driven monitoring of a key machine.</p>
-            <ul class="keys">
-              <li><b>Facilities</b><span>designed extraction and filtration solutions for the new production facilities</span></li>
-              <li><b>Data</b><span>analysed critical process parameters and built a Power BI dashboard for monitoring and predictive maintenance of a press</span></li>
-            </ul>
+            <dl class="brief">
+              <div><dt>Problem</dt><dd>A new motor line needed production facilities designed and its critical machines kept reliable.</dd></div>
+              <div><dt>My part</dt><dd>Year-long intern: designed extraction and filtration solutions for the new facilities; analysed critical process parameters of a press.</dd></div>
+              <div><dt>Result</dt><dd>Extraction and filtration concepts for the facilities, and a <b>Power BI dashboard</b> for monitoring and predictive maintenance of the press.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>Internal project; documents stay with Mercedes-Benz, so outcomes are described, not shown. Happy to talk through it in an interview.</dd></div>
+            </dl>
             <div class="tags"><span>Production planning</span><span>Process parameters</span><span>Power BI</span><span>Predictive maintenance</span></div>
-            <p class="confidential">Internal company project: documents stay with Mercedes-Benz. Happy to talk through it in an interview.</p>
           </div>
         </div>
       </article>
 
       <!-- ============ POWER-TO-GAS ============ -->
-      <article class="proj" id="ptg" data-tracks="energy" data-order-energy="6">
+      <article class="proj" id="ptg" data-tracks="energy" data-order-energy="6" data-tier-energy="supporting" data-ev-energy="Course project · about 55% of electricity ends up as methane">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Course project</dd></div>
           <div><dt>Context</dt><dd>BME · biomass utilisation</dd></div>
@@ -838,12 +942,13 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
           <div>
             <p class="label">Hydrogen · methanation · energy balance</p>
             <h3>Power-to-Gas: hydrogen or synthetic methane?</h3>
-            <p class="summary">An assessment of whether Power-to-Gas is a key technology for the energy transition: energy and mass balances for both routes, a comparison of electrolyser and methanation technologies, and a real plant case.</p>
-            <ul class="keys">
-              <li><b>1 → 0.70 kWh</b><span>electricity to hydrogen (alkaline electrolysis, 25 bar)</span></li>
-              <li><b>→ 0.55 kWh</b><span>as synthetic methane after methanation (78%), about 55% overall</span></li>
-              <li><b>3 electrolysers</b><span>SOE, PEM and alkaline compared on efficiency, TRL and lifetime</span></li>
-            </ul>
+            <p class="summary">Is Power-to-Gas a key technology for the energy transition? Energy and mass balances for both routes, a comparison of electrolyser and methanation technologies, and a real plant case.</p>
+            <dl class="brief">
+              <div><dt>Problem</dt><dd>Hydrogen or synthetic methane: how much energy survives each route, and at what technology readiness?</dd></div>
+              <div><dt>My part</dt><dd>Individual: energy and mass balances per kWh, electrolyser comparison (SOE, PEM, alkaline), Werlte plant case.</dd></div>
+              <div><dt>Result</dt><dd>1 kWh of electricity gives <b>0.70 kWh</b> of hydrogen (alkaline electrolysis) and about <b>0.55 kWh</b> of methane after methanation, roughly 55% overall.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>Literature values; the real plant runs at 54 ± 3% and is not economic without subsidies.</dd></div>
+            </dl>
             <div class="tags"><span>Mass &amp; energy balance</span><span>Electrolysis</span><span>Methanation</span><span>Sector coupling</span></div>
           </div>
           <figure>
@@ -890,7 +995,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       </article>
 
       <!-- ============ REVIEWS: E-BUSES + SECOND-LIFE BATTERIES ============ -->
-      <article class="proj duo" id="reviews" data-tracks="energy" data-order-energy="7" data-title="E-buses and second-life batteries">
+      <article class="proj duo" id="reviews" data-tracks="energy" data-order-energy="7" data-title="E-buses and second-life batteries" data-tier-energy="supporting" data-ev-energy="Two literature reviews · e-buses, second-life batteries">
         <dl class="titleblock">
           <div><dt>Type</dt><dd>Course reviews</dd></div>
           <div><dt>Context</dt><dd>BME smart grids · TU Berlin EV tech</dd></div>
@@ -931,9 +1036,19 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
         </details>
       </article>
     </div>
+  </section>
+
+  <section class="block" id="supporting" aria-labelledby="supporting-h">
+    <div class="sec-head">
+      <div>
+        <h2 id="supporting-h">Supporting work</h2>
+        <p>Course projects, case analyses and literature reviews: smaller in scope than the selected work, set more compactly, with the same case-study detail underneath.</p>
+      </div>
+    </div>
+    <div class="projects compact" id="supporting-list"></div>
 
     <div class="crossref" data-show="ml">
-      <span>The energy and process view covers Berlin V2G scenarios, a water treatment plant, a campus CHP case analysis and Power-to-Gas.</span>
+      <span>The energy and process view covers Berlin V2G scenarios, a water treatment plant, the engine digital twin, a campus CHP case analysis and Power-to-Gas.</span>
       <button class="ghost" type="button" data-goto="energy">Show energy &amp; process view</button>
     </div>
     <div class="crossref" data-show="energy">
@@ -945,18 +1060,24 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
 
   <div class="page" data-page="experience" hidden>
   <section class="block exp-page" id="experience">
-    <a class="back" href="#projects">← Back to projects</a>
+    <a class="back" href="#top">← Back to the portfolio</a>
     <div class="sec-head">
-      <h2 id="exp-title" tabindex="-1">CV</h2>
-      <a class="dl" href="Kien_van_Ho_CV.pdf?v=2026-10-30c">Download CV (PDF)</a>
+      <div>
+        <h2 id="exp-title" tabindex="-1">CV</h2>
+        <p>Education, industry experience, location, languages and skills. The project case studies are in the portfolio view.</p>
+      </div>
+      <div class="sec-actions">
+        <a class="btn primary" href="Kien_van_Ho_CV.pdf?v=2026-10-30c" download="Kien_van_Ho_CV.pdf">Download CV <small>PDF</small></a>
+        <a class="btn" href="#contact">Contact</a>
+      </div>
     </div>
     <h3 class="cv-h">Profile</h3>
     <dl class="facts">
-      <div><dt>Education</dt><dd>Erasmus Mundus Master ME3+ (IMT Atlantique, FR &amp; BME, HU), double M.Sc. in Mechanical Engineering Modelling and Process &amp; Bioprocess Engineering, summa cum laude, 2026 · B.Sc. Engineering Science, TU Berlin, grade 1.4</dd></div>
-      <div><dt>Industry</dt><dd>Siemens Energy (master's thesis) · Mercedes-Benz (2 internships) · PSI Metals (working student)</dd></div>
+      <div><dt>Education</dt><dd><span class="sub">M.Sc. · 2024–2026</span>Erasmus Mundus Master ME3+ (IMT Atlantique, FR &amp; BME, HU): double M.Sc. in Mechanical Engineering Modelling and in Process &amp; Bioprocess Engineering, summa cum laude<span class="sub">B.Sc. · 2020–2024</span>Engineering Science, TU Berlin, final grade 1.4</dd></div>
+      <div><dt>Industry</dt><dd>Siemens Energy (master's thesis, 2026) · Mercedes-Benz (two internships, 2023–2024) · PSI Metals (working student, 2022–2023)</dd></div>
       <div><dt>Based in</dt><dd>Berlin (hybrid or on-site) · remote within Germany · open to relocating to Hamburg or Freiburg</dd></div>
       <div><dt>Languages</dt><dd>German, Vietnamese (native) · English C1–C2 · French B2</dd></div>
-      <div><dt>Code</dt><dd><a href="https://github.com/kivanho">github.com/kivanho</a></dd></div>
+      <div><dt>Contact</dt><dd><a href="mailto:vanhokien@gmail.com">vanhokien@gmail.com</a> · <a href="https://www.linkedin.com/in/kvanho/">LinkedIn</a> · <a href="https://github.com/kivanho">github.com/kivanho</a></dd></div>
     </dl>
 
     <h3 class="cv-h">Experience</h3>
@@ -964,7 +1085,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       <div class="entry">
         <p class="when num">09/2026 – now</p>
         <div><h4>Independent project, RAG system</h4><p class="org">Geoberlin · Berlin</p>
-          <ul><li>Designing and building a retrieval-augmented generation system for a surveying engineering firm.</li></ul></div>
+          <ul><li>Designing and building a retrieval-augmented generation system for a surveying engineering firm. Ongoing.</li></ul></div>
       </div>
       <div class="entry">
         <p class="when num">02/2026 – 08/2026</p>
@@ -1025,21 +1146,27 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       <div data-skill="sw"><h4>Software &amp; data</h4><p>FastAPI · Docker · Git · SQL / PL/SQL · MATLAB · Power BI · RAG and LLM applications · Claude Code</p></div>
       <div data-skill="energy"><h4>Energy &amp; process</h4><p><span class="sub">Knowledge</span>Thermodynamics · renewable integration · energy storage and V2G · smart grids · Power-to-Gas · CHP and waste heat · water treatment · plant sizing</p><p><span class="sub">Tools</span>Aspen · CycleTempo · Excel · Siemens Solid Edge · AutoCAD</p></div>
     </div>
+    <div class="cv-foot">
+      <span>Prefer the one-page version, or want to talk?</span>
+      <span class="sec-actions"><a class="btn" href="Kien_van_Ho_CV.pdf?v=2026-10-30c" download="Kien_van_Ho_CV.pdf">Download CV <small>PDF</small></a><a class="btn primary" href="#contact">Contact</a></span>
+    </div>
   </section>
   </div>
 
-  <section class="block" id="contact">
+  <section class="block" id="contact" aria-labelledby="contact-h">
 
     <div class="talk">
-      <h2>Let's talk</h2>
+      <h2 id="contact-h">Let's talk</h2>
       <p class="muted" data-show="ml">Looking for an entry-level role in ML, data science or hybrid modelling for the energy transition.</p>
       <p class="muted" data-show="energy">Looking for an entry-level role in energy-systems or process engineering for the energy transition.</p>
       <div class="contact">
         <a class="email" id="email" href="mailto:vanhokien@gmail.com">vanhokien@gmail.com</a>
-        <button class="copy" id="copy-email" type="button" aria-live="polite">Copy email</button>
+        <button class="copy" id="copy-email" type="button">Copy email</button>
         <a href="https://www.linkedin.com/in/kvanho/">LinkedIn ↗</a>
         <a href="https://github.com/kivanho">GitHub ↗</a>
+        <a href="Kien_van_Ho_CV.pdf?v=2026-10-30c" download="Kien_van_Ho_CV.pdf">CV (PDF) ↓</a>
       </div>
+      <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
     </div>
 
     <div class="foot">
@@ -1047,54 +1174,87 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       <span>Sources are named where figures come from published studies or team reports.</span>
     </div>
   </section>
+  </main>
 </div>
+
+<dialog class="lightbox" id="lightbox" aria-labelledby="lb-cap">
+  <div class="lb-inner">
+    <button class="lb-close" type="button" id="lb-close">Close <span aria-hidden="true">✕</span></button>
+    <img id="lb-img" alt="" src="">
+    <p class="lb-cap" id="lb-cap"></p>
+  </div>
+</dialog>
 
 <script>
 (function () {
-  var list = document.getElementById('project-list');
-  var projects = Array.prototype.slice.call(list.querySelectorAll('.proj'));
-  var labels = {ml: 'Machine learning & modelling', energy: 'Energy & process engineering'};
+  var featured = document.getElementById('project-list'), supporting = document.getElementById('supporting-list');
+  var projects = Array.prototype.slice.call(featured.querySelectorAll('.proj'));
+  var labels = {ml: 'ML & modelling', energy: 'Energy & process'};
   var skillOrder = {ml: ['ml', 'sw', 'energy'], energy: ['energy', 'ml', 'sw']};
   var track = 'ml';
 
-  function orderOf(p, t) { return Number(p.dataset[t === 'ml' ? 'orderMl' : 'orderEnergy']); }
+  function cap(t) { return t === 'ml' ? 'Ml' : 'Energy'; }
+  function orderOf(p, t) { return Number(p.dataset['order' + cap(t)]); }
+  function tierOf(p, t) { return p.dataset['tier' + cap(t)] || 'featured'; }
+  function evidenceOf(p, t) { return p.dataset['ev' + cap(t)] || p.dataset.ev || ''; }
   function inTrack(p, t) { return (' ' + p.dataset.tracks + ' ').indexOf(' ' + t + ' ') > -1; }
+  function sorted(t) {
+    return projects.filter(function (p) { return inTrack(p, t); })
+      .sort(function (x, y) { return orderOf(x, t) - orderOf(y, t); });
+  }
 
+  // the index: title first, one evidence line (partner or role, and one qualified result) second
   function renderList() {
     var ol = document.getElementById('plist');
     ol.textContent = '';
-    projects.filter(function (p) { return inTrack(p, track); })
-      .sort(function (x, y) { return orderOf(x, track) - orderOf(y, track); })
-      .forEach(function (p) {
-        var li = document.createElement('li'), a = document.createElement('a');
-        a.href = '#' + p.id;
-        var t = document.createElement('span'); t.className = 'pt';
-        t.textContent = p.dataset.title || p.querySelector('h3').textContent;
-        var g = document.createElement('span'); g.className = 'pg'; g.textContent = '→'; g.setAttribute('aria-hidden', 'true');
-        a.append(t, g); li.appendChild(a); ol.appendChild(li);
-      });
+    sorted(track).forEach(function (p) {
+      var li = document.createElement('li'), a = document.createElement('a');
+      a.href = '#' + p.id;
+      var t = document.createElement('span'); t.className = 'pt';
+      t.textContent = p.dataset.title || p.querySelector('h3').textContent;
+      a.appendChild(t);
+      var ev = evidenceOf(p, track);
+      if (ev) {
+        var e = document.createElement('span'); e.className = 'pe';
+        var parts = ev.split(' · ');
+        var b = document.createElement('b'); b.textContent = parts[0];
+        e.appendChild(b);
+        if (parts.length > 1) e.appendChild(document.createTextNode(' · ' + parts.slice(1).join(' · ')));
+        a.appendChild(e);
+      }
+      var g = document.createElement('span'); g.className = 'pg'; g.textContent = '→'; g.setAttribute('aria-hidden', 'true');
+      a.appendChild(g); li.appendChild(a); ol.appendChild(li);
+    });
+    document.getElementById('plist-track').textContent = labels[track];
   }
 
+  // the DOM itself is reordered, so visual, keyboard and screen-reader order agree
   function setTrack(t) {
     track = t;
-    projects.forEach(function (p) {
-      var on = inTrack(p, t);
-      p.hidden = !on;
-      p.style.order = on ? orderOf(p, t) : '';
+    document.body.dataset.track = t;
+    projects.forEach(function (p) { p.hidden = !inTrack(p, t); });
+    sorted(t).forEach(function (p) {
+      var dest = tierOf(p, t) === 'supporting' ? supporting : featured;
+      dest.appendChild(p);
     });
+    document.getElementById('supporting').hidden = !supporting.querySelector('.proj:not([hidden])');
     document.querySelectorAll('[data-show]').forEach(function (el) { el.classList.toggle('on', el.dataset.show === t); });
     document.querySelectorAll('.switch button').forEach(function (b) {
       b.setAttribute('aria-pressed', b.dataset.track === t ? 'true' : 'false');
     });
     document.getElementById('track-label').textContent = labels[t];
     var skills = document.getElementById('skills');
-    skillOrder[t].forEach(function (k, i) { skills.querySelector('[data-skill="' + k + '"]').style.order = i; });
+    skillOrder[t].forEach(function (k) { skills.appendChild(skills.querySelector('[data-skill="' + k + '"]')); });
     renderList();
     syncExpandLabel();
   }
 
   function showPage(name) {
     document.querySelectorAll('.page').forEach(function (pg) { pg.hidden = pg.dataset.page !== name; });
+    document.body.dataset.page = name;
+    document.querySelectorAll('.top nav a[data-nav]').forEach(function (a) {
+      if (a.dataset.nav === name) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
     window.dispatchEvent(new Event('pagechange'));
   }
 
@@ -1103,8 +1263,9 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
       .map(function (p) { return p.querySelector('details'); }).filter(Boolean);
   }
   function syncExpandLabel() {
-    var ds = visibleDetails();
-    document.getElementById('expand-all').textContent = ds.length && ds.every(function (d) { return d.open; }) ? 'Collapse all' : 'Expand all';
+    var ds = visibleDetails(), all = ds.length && ds.every(function (d) { return d.open; });
+    var btn = document.getElementById('expand-all');
+    btn.textContent = all ? 'Collapse all case studies' : 'Expand all case studies';
   }
   document.getElementById('expand-all').addEventListener('click', function () {
     var ds = visibleDetails(), open = !ds.every(function (d) { return d.open; });
@@ -1113,15 +1274,24 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
   });
   projects.forEach(function (p) { var d = p.querySelector('details'); if (d) d.addEventListener('toggle', syncExpandLabel); });
 
+  // a way back to the index at the end of every case study
+  document.querySelectorAll('.deep').forEach(function (deep) {
+    var row = document.createElement('p'), a = document.createElement('a');
+    row.className = 'back-row'; a.href = '#top'; a.textContent = '↑ Back to project index';
+    row.appendChild(a); deep.appendChild(row);
+  });
+
   var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function scrollToEl(el) { if (el) el.scrollIntoView({behavior: calm ? 'auto' : 'smooth', block: 'start'}); }
 
-  // Routes: ml | energy (view), experience (page), contact | projects (scroll), or a project id (open it).
+  // Routes: ml | energy (view), cv (page), top | projects | contact (scroll), or a project id (open it).
   function route(h, scroll) {
     if (h === 'ml' || h === 'energy') { showPage('home'); setTrack(h); if (scroll) scrollToEl(document.getElementById('projects')); }
     else if (h === 'cv' || h === 'experience') { showPage('experience'); window.scrollTo(0, 0); document.getElementById('exp-title').focus({preventScroll: true}); }
     else if (h === 'contact') { scrollToEl(document.getElementById('contact')); return; }
     else if (h === 'projects') { showPage('home'); scrollToEl(document.getElementById('projects')); }
+    else if (h === 'top' || h === '') { showPage('home'); window.scrollTo({top: 0, behavior: calm ? 'auto' : 'smooth'}); if (scroll) document.getElementById('main').focus({preventScroll: true}); }
+    else if (h === 'main') { document.getElementById('main').focus(); }
     else {
       var p = h && document.getElementById(h);
       if (!p || !p.classList.contains('proj')) { showPage('home'); return; }
@@ -1140,10 +1310,12 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     if (!a) return;
     e.preventDefault();
     var h = a.getAttribute('href').slice(1);
-    if (h !== 'contact' && h !== 'projects') { try { history.pushState(null, '', '#' + h); } catch (err) {} }
+    if (h === 'main') { route(h, true); return; }
+    if (h !== 'contact' && h !== 'projects' && h !== 'top') { try { history.pushState(null, '', '#' + h); } catch (err) {} }
+    else if (h === 'top' && document.body.dataset.page !== 'home') { try { history.pushState(null, '', '#' + track); } catch (err) {} }
     route(h, true);
   });
-  window.addEventListener('popstate', function () { route((location.hash || '').slice(1) || track, false); });
+  window.addEventListener('popstate', function () { route((location.hash || '').slice(1) || 'ml', false); }); // no hash = the default view
   document.querySelectorAll('.switch button').forEach(function (b) {
     b.addEventListener('click', function () { try { history.pushState(null, '', '#' + b.dataset.track); } catch (err) {} route(b.dataset.track, false); });
   });
@@ -1153,13 +1325,14 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
 
   var h0 = (location.hash || '').slice(1);
   setTrack('ml');
-  if (h0) route(h0, false);
+  showPage('home');
+  if (h0) requestAnimationFrame(function () { route(h0, false); }); // after the browser's own fragment scroll, so our focus sticks
 
   // theme: follows the OS until the visitor picks one; the button names the theme it switches to
   var root = document.documentElement, themeBtn = document.getElementById('theme');
   var dark = matchMedia('(prefers-color-scheme: dark)');
   function isDark() { var t = root.dataset.theme; return t ? t === 'dark' : dark.matches; }
-  function syncTheme() { themeBtn.textContent = isDark() ? 'Light' : 'Dark'; }
+  function syncTheme() { themeBtn.textContent = isDark() ? 'Light' : 'Dark'; themeBtn.setAttribute('aria-label', isDark() ? 'Switch to light theme' : 'Switch to dark theme'); }
   syncTheme();
   if (dark.addEventListener) dark.addEventListener('change', syncTheme);
   themeBtn.addEventListener('click', function () {
@@ -1168,15 +1341,56 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     syncTheme();
   });
 
+  // copy email: the button shows the outcome and a live region announces it
   document.getElementById('copy-email').addEventListener('click', function () {
-    var btn = this, el = document.getElementById('email');
-    function done(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = 'Copy email'; }, 1800); }
-    function fallback() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); done('Selected, copy it now'); }
-    try { navigator.clipboard.writeText(el.textContent).then(function () { done('Copied'); }, fallback); } catch (e) { fallback(); }
+    var btn = this, el = document.getElementById('email'), status = document.getElementById('copy-status');
+    function done(label, msg) { btn.textContent = label; status.textContent = msg; setTimeout(function () { btn.textContent = 'Copy email'; }, 2200); }
+    function fallback() {
+      try { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+      done('Select and copy', 'Clipboard access was blocked. The address is selected: press Ctrl+C or Cmd+C to copy it.');
+    }
+    try { navigator.clipboard.writeText(el.textContent).then(function () { done('Copied ✓', 'Email address copied to the clipboard.'); }, fallback); } catch (e) { fallback(); }
   });
+
+  // figure viewer: every photographed or exported figure gets an "Enlarge" control and opens in a dialog
+  var lb = document.getElementById('lightbox'), lbImg = document.getElementById('lb-img'), lbCap = document.getElementById('lb-cap'), opener = null;
+  if (lb && typeof lb.showModal === 'function') {
+    document.querySelectorAll('figure .plate > img').forEach(function (img) {
+      var fig = img.closest('figure'), cap = fig.querySelector('figcaption');
+      if (!cap) return;
+      var text = cap.textContent.trim();
+      if (!cap.querySelector('span')) { var s = document.createElement('span'); while (cap.firstChild) s.appendChild(cap.firstChild); cap.appendChild(s); }
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'enlarge'; btn.textContent = 'Enlarge ⤢';
+      btn.setAttribute('aria-label', 'Enlarge figure: ' + text.slice(0, 80));
+      cap.appendChild(btn);
+      function open() {
+        opener = btn;
+        lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt; lbCap.textContent = text;
+        document.body.classList.add('lb-open');
+        lb.showModal();
+        document.getElementById('lb-close').focus();
+      }
+      btn.addEventListener('click', open);
+      img.classList.add('zoomable');
+      img.addEventListener('click', open);
+    });
+    function closeLb() { if (lb.open) lb.close(); }
+    document.getElementById('lb-close').addEventListener('click', closeLb);
+    lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+    function cleanup() {
+      if (lb.open) return;
+      document.body.classList.remove('lb-open');
+      lbImg.removeAttribute('src');
+      if (opener) { opener.focus(); opener = null; }
+    }
+    lb.addEventListener('close', cleanup);
+    // some engines do not dispatch "close" reliably, so the open attribute is watched as well
+    new MutationObserver(cleanup).observe(lb, {attributes: true, attributeFilter: ['open']});
+  }
 })();
 
-// landing background: the project table row under the pointer or keyboard focus drives both drawings; colours come from the theme
+// landing background (desktop only): the project table row under the pointer or keyboard focus drives both drawings; colours come from the theme
 (function () {
   var cv = document.getElementById('bg-loss'), batt = document.getElementById('bg-batt');
   if (!cv || !cv.getContext || !batt) return;
@@ -1238,10 +1452,11 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
   var descent = tween(0), charging = tween(0), booted = false;
   var hoverId = null, shown = 0, stage = document.querySelector('.bg-stage'), hero = document.querySelector('.hero');
 
+  function active() { return innerWidth >= 861 && hero && hero.offsetParent !== null; }
   // scroll position within the landing view (0 at the top, 1 once the hero has scrolled away)
   function progress() { var h = hero ? hero.offsetHeight : innerHeight; return h > 0 ? Math.min(1, Math.max(0, scrollY / h)) : 0; }
   function fade() {
-    if (!hero || !hero.offsetParent) return 0;
+    if (!active()) return 0;
     var b = hero.getBoundingClientRect().bottom; return Math.min(1, Math.max(0, (b - innerHeight * 0.1) / (innerHeight * 0.45)));
   }
 
@@ -1251,8 +1466,8 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
     var cs = getComputedStyle(document.documentElement), ink = cs.getPropertyValue('--ink').trim(), acc = cs.getPropertyValue('--accent').trim();
-    var narrow = w < 860, a0 = anchor(), S = narrow ? w * 0.4 : Math.min(a0.w * 0.36, h * 0.26), H = S * 0.6;
-    var cx = narrow ? w * 0.5 : a0.cx, cy = narrow ? h * 0.5 - (calm ? 0 : p * h * 0.1) : a0.bottom - 190 + 20 + S * 1.15;
+    var a0 = anchor(), S = Math.min(a0.w * 0.36, h * 0.26), H = S * 0.6;
+    var cx = a0.cx, cy = a0.bottom - 190 + 20 + S * 1.15;
     var a = calm ? -0.45 : -0.7 + p * 0.8, ca = Math.cos(a), sa = Math.sin(a), c30 = Math.cos(Math.PI / 6), s30 = 0.5;
     function P(u, v) { var X = u * ca - v * sa, Y = u * sa + v * ca; return [cx + (X - Y) * c30 * S, cy + (X + Y) * s30 * S - f(u, v) * H + H * 0.55]; }
     function at(t) { var i = Math.floor(t), fr = t - i, A = pts[i], B = pts[Math.min(i + 1, LAST)]; return [A[0] + (B[0] - A[0]) * fr, A[1] + (B[1] - A[1]) * fr]; }
@@ -1286,8 +1501,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     return r && r.width ? {cx: r.left + r.width / 2, bottom: r.bottom, w: r.width} : {cx: innerWidth * 0.72, bottom: innerHeight * 0.45, w: innerWidth * 0.36};
   }
   function updateBatt(p, cur) {
-    if (innerWidth >= 860) { var a = anchor(); batt.style.setProperty('--ax', a.cx + 'px'); batt.style.setProperty('--ay', (a.bottom - 190 + 24) + 'px'); batt.style.setProperty('--aw', Math.min(a.w * 0.7, 320) + 'px'); }
-    else { batt.style.removeProperty('--ax'); batt.style.removeProperty('--ay'); batt.style.removeProperty('--aw'); }
+    var a = anchor(); batt.style.setProperty('--ax', a.cx + 'px'); batt.style.setProperty('--ay', (a.bottom - 190 + 24) + 'px'); batt.style.setProperty('--aw', Math.min(a.w * 0.7, 320) + 'px');
     var at = cur && cellOf[cur] != null ? cellOf[cur] : -1;
     cells.forEach(function (c, i) {
       var fr = Math.min(1, Math.max(0, soc - i));
@@ -1302,6 +1516,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
   function frame() {
     queued = false;
     var o = fade(); stage.style.opacity = o;
+    if (o <= 0) return; // off-screen, on the CV page or on a phone: no drawing work at all
     var now = performance.now(), p = progress(), cur = hoverId;
     var goal = cur && milestone[cur] != null ? cum[milestone[cur]] / cum[LAST] : 1;
     var full = cells.length, charge = cur && cellOf[cur] != null ? cellOf[cur] + 1 : full;
@@ -1311,7 +1526,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
     if (calm) { descent.v = goal; charging.v = charge; }
     else { var moving = advance(descent, now); moving = advance(charging, now) || moving; if (moving) request(); }
     shown = idxAt(descent.v); soc = charging.v;
-    if (o > 0) { drawLoss(p, cur); updateBatt(p, cur); }
+    drawLoss(p, cur); updateBatt(p, cur);
   }
   function request() { if (!queued) { queued = true; requestAnimationFrame(frame); } }
   addEventListener('scroll', request, {passive: true}); addEventListener('resize', request); addEventListener('pagechange', request);
