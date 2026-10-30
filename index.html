@@ -514,6 +514,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
               </div>
             </div>
             <div class="note"><b>Limits I documented.</b> A "late" prediction overestimates life, which is the unsafe direction, so the model is less conservative than the baseline. One specimen was predicted at more than three times its measured life, showing instability with so little data. A deployable version would need a lower bound, a one-sided loss or a safety factor, and data across more materials and stress ratios. The thesis is a feasibility study, not a certified lifetime assessment.</div>
+            <div class="note"><b>Public code (2026).</b> The <a href="https://github.com/kivanho/physics-informed-crack-growth">repository</a> re-implements the method on <b>synthetic specimens</b> (the experiments and the partner's physics code are private, and nothing in it reproduces the numbers above). It benchmarks the decoder against simpler corrections of the same physics model on identical cross-validation folds. On that synthetic task a 15-parameter ridge regression on the log lifetime correction beats the 1,280-parameter decoder (MAE in log cycles 0.265 vs. 0.314 over three fold seeds), while the decoder leaves fewer late predictions (26 vs. 31 of 56). The physics penalties change the curve shapes but barely move the lifetime error, because the lifetime is one scalar warp. I kept this negative result; the repository is a method demonstration, not evidence that the architecture is the best lifetime predictor. It also fixes a NaN gradient in the interpolation, refuses to score runs with invalid predictions, and ships a pinned environment, run manifests and CI.</div>
           </div>
         </details>
       </article>
@@ -535,7 +536,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
               <div><dt>Problem</dt><dd>GreenTwins wanted a working twin of the lab engine: predictions for any power and fuel mix, delivered into their digital-twin platform.</dd></div>
               <div><dt>My part</dt><dd>Led the team of three and did most of the implementation: ML models, energy balance, flow control and the FastAPI service.</dd></div>
               <div><dt>Result</dt><dd>kNN efficiency model <b>R² 0.93</b> on a random 20% hold-out; models served through <b>FastAPI in Docker</b> to the GreenTwins platform, code and data on Azure.</dd></div>
-              <div class="limit"><dt>Limit</dt><dd>Prototype: inputs set by hand, no live connection to the engine. The exhaust-temperature R² is a training fit, not a held-out score.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>Prototype: inputs set by hand, no live connection to the engine. The exhaust-temperature R² is a training fit, not a held-out score. The public code runs on a synthetic engine map, not the lab data.</dd></div>
             </dl>
             <div class="tags"><span>Python</span><span>scikit-learn</span><span>FastAPI</span><span>Docker</span><span>Azure</span><span>Blender</span><a class="code" href="https://github.com/kivanho/dual-fuel-digital-twin">Service code, synthetic engine map ↗</a></div>
           </div>
@@ -558,7 +559,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
                 <span class="arr" aria-hidden="true">→</span>
                 <div class="node"><b>Flow control</b><span>PID loops regulate fuel flows (PI on a valve model in the public code); power, current and torque computed</span></div>
                 <span class="arr" aria-hidden="true">→</span>
-                <div class="node"><b>FastAPI in Docker</b><span>/update_inputs, /live_state stream, /reset; Azure</span></div>
+                <div class="node"><b>FastAPI in Docker</b><span>/update_inputs, /live_state stream, /reset (public code adds /stop, /start, /ready); Azure</span></div>
                 <span class="arr" aria-hidden="true">→</span>
                 <div class="node"><b>GreenTwins</b><span>dashboards and Blender 3D model</span></div>
               </div>
@@ -593,6 +594,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
               <figcaption>Engine view inside the GreenTwins platform.</figcaption>
             </figure>
             <div class="note"><b>Limits.</b> Inputs are set by hand; a live data connection to the running engine was scoped as future work, together with controller tuning and predictive maintenance. The exhaust-temperature R² is a training fit, not a held-out score.</div>
+            <div class="note"><b>Public code (2026).</b> The <a href="https://github.com/kivanho/dual-fuel-digital-twin">repository</a> is a simulation and inference-service prototype on a <b>synthetic engine map</b>; the lab data stay private, so its scores are implementation checks, not engine validation. Training is separate from serving: a command writes a versioned model bundle (models, feature schema and units, supported operating domain, data fingerprint, evaluation, dependency versions) that the service validates at startup. Requested operating points are checked against equipment limits and the training domain, including a nearest-neighbour support check, and are rejected or flagged. One simulated engine is shared by all clients on purpose, with explicit reset, stop and start semantics tested over subsequent ticks. The evaluation adds held-out operating regions and baselines: the kNN efficiency model reaches R² 0.93 on a random hold-out but cannot extrapolate into a held-out low-load band, where a ridge regression is better, and adding diesel energy share as a feature makes it worse on every split even though the synthetic generator depends on it. The exhaust-temperature R² of 0.99 is the noise floor of a linear generator and says nothing about engines.</div>
           </div>
         </details>
       </article>
@@ -638,7 +640,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
               <div><dt>Problem</dt><dd>Early in design, few parameters are fixed and few comparable cars exist; the question was where ML helps and where it does not.</dd></div>
               <div><dt>My part</dt><dd>Individual thesis at TU Berlin: feature selection, four models (linear, Lasso, kNN, SVR), cross-validation. The work fed into a 2025 <i>Proceedings of the Design Society</i> paper I co-authored.</dd></div>
               <div><dt>Result</dt><dd>No single model won. Passenger and cargo volume were best explained (<b>R² up to 0.78</b>); towing capacity was not predictable.</dd></div>
-              <div class="limit"><dt>Limit</dt><dd>Thesis scores are optimistic (tuned and scored on the same folds). My 2026 re-check with nested, twin-aware cross-validation lowers the median R² to 0.15–0.27.</dd></div>
+              <div class="limit"><dt>Limit</dt><dd>Thesis scores are optimistic (tuned and scored on the same folds). My 2026 re-check with nested, twin-aware cross-validation lowers the median R² of the four thesis models to 0.15–0.27. A plain ridge regression on all nine features does better (0.40), and the complete selection procedure, scored honestly, reaches 0.23.</dd></div>
             </dl>
             <div class="tags"><span>Python</span><span>scikit-learn</span><span>Feature selection</span><span>Cross-validation</span><a class="code" href="https://github.com/kivanho/small-data-model-selection">Code and re-evaluation ↗</a></div>
           </div>
@@ -686,7 +688,7 @@ button.copy:hover{background:var(--ink);border-color:var(--ink);color:var(--pape
               </div>
               <div>
                 <h4>Re-evaluated in 2026</h4>
-                <p>The thesis tuned and scored on the same folds, and badge-engineered twins such as the Ford Taurus and Mercury Sable could land on both sides of a split. I re-implemented that protocol (median R² 0.55–0.69 across models) and compared it with repeated nested cross-validation that keeps twins in the same fold, after dropping 11 placeholder towing values. The median R² falls to 0.15–0.27. With the best model, cargo volume stays partly predictable (R² about 0.5) and passenger volume less so (about 0.4), fuel efficiency and acceleration are weak, and towing capacity is not predictable from these variables. <a href="https://github.com/kivanho/small-data-model-selection">Code and results ↗</a></p>
+                <p>The thesis tuned and scored on the same folds, and badge-engineered twins such as the Ford Taurus and Mercury Sable could land on both sides of a split. I re-implemented that protocol (median R² 0.55–0.69 across models) and compared it with repeated nested cross-validation that keeps twins in the same fold, after dropping 11 placeholder towing values. The median R² of the four thesis models falls to 0.15–0.27. Three baselines on the same folds change the picture: a ridge regression on all nine features, with no feature selection, has the best median (0.40) and wins on passenger volume and acceleration; Lasso without feature selection matches Lasso with it. Sequential feature selection costs 80–99% of the runtime and picks a different subset in most folds, so it mainly adds instability here. Picking the "best" model family after seeing the outer scores is itself optimistic: when family, hyperparameters and features are all chosen inside the inner loop, the complete procedure scores 0.23, below the post-hoc best family on every attribute. Cargo and passenger volume stay partly predictable (R² 0.4–0.5), fuel efficiency and acceleration are weak, and for towing capacity the training-fold mean beats every fitted model. The seed-to-seed spread reshuffles folds and random search together, so it is not a confidence interval. <a href="https://github.com/kivanho/small-data-model-selection">Code, tests and full artifacts ↗</a></p>
               </div>
             </div>
           </div>
